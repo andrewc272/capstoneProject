@@ -20,7 +20,7 @@ def show_username():
 
 @app.route("/setuser", methods=['GET', 'POST'])
 def setUser():
-    
+   pass 
 
     
 
