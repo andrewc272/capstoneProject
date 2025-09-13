@@ -1,6 +1,7 @@
 body, html {
 	height: 100%;
-	margin: 0;
+	overflow: hidden;
+	background-color: #323232;
 }
 
 #screen {
@@ -10,18 +11,85 @@ body, html {
 
 #game {
 	margin: 0 auto;
-	height: 100%;
+	height: 98vh;
+	max-height: 200vw;
 	max-width: 50vh;
 	width: 100%;
+	background-color: black;
+	border: black 2px solid;
+	border-radius: 0.5rem;
 }
 
 #chat{
 	height: 90%;
-	border: red 2px solid;
+	background-color: black;
+	border-radius: 0.5rem 0.5rem 0 0;
 }
 
 #textbox{
+	width: 100%;
 	height: 10%;
-	border: blue 2px solid;
+	display: flex;
+	flex-direction: column;
+}
+
+ul {
+	list-style-type: none;
+	padding: 0 0 0 20%;
+	margin: 0;
+	max-height: 100%;
+	overflow-y: auto;
+}
+
+li {
+	color: white;
+	background-color: blue;
+	margin: 20px;
+	padding: 0.5rem 1rem;
+	height: auto;
+	min-height: 16px;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, 
+               Helvetica, Arial, sans-serif;
+	font-size: 16px;
+	line-height: 1.4;
+	border-radius: 1.5rem;
+}
+
+form {
+	min-width: 98%;
+	padding: 5px;
+	display: flex;
+	gap: 5px;
+	margin-top: auto;
+	background: #202020;
+}
+
+#chatbox {
+	background-color: black;
+	border: white 2px solid;
+	border-radius: 1rem;
+	color: white;
+	font-size: 16px;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, 
+               Helvetica, Arial, sans-serif;
+	min-width: 85%;
+}
+
+#send {
+	min-width: 5%;
+	background: blue;
+	color: white;
+	border: none;
+	border-radius: 50%;
+}
+
+#send.hover {
+	background: background: #005ecb;
+	color: white;
+}
+
+#send.active{
+	background: blue;
+	color: white;
 }
 
