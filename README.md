@@ -64,7 +64,12 @@ With the AI model being the most unknown and potentially time consuming part of 
 
 ### People
 
-Grant, Xavier, Sanjay, Andrew
+Grant, Xavier, Sanjay,
+
+Andrew Carlson: 
+<a href="https://github.com/yourusername">
+  <i class="fab fa-github"></i>
+</a>
 
 Non-monetary Sponsor: Northrop Grumman 
 
