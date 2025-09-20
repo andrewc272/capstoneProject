@@ -18,9 +18,10 @@ body, html {
 	background-color: black;
 	border: black 2px solid;
 	border-radius: 0.5rem;
+	color: white;
 }
 
-#chat{
+#chat_area{
 	height: 90%;
 	background-color: black;
 	border-radius: 0.5rem 0.5rem 0 0;
@@ -93,3 +94,6 @@ form {
 	color: white;
 }
 
+p {
+	color: white;
+}
