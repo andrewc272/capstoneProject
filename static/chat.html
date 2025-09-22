@@ -1,10 +1,4 @@
-<div id="chat_area">
-	<ul>
-		{% for message in chatlog %}
-		<li>{{message}}</li>
-		{% endfor %}
-	</ul>
-</div>
+<div id="chat_area"></div>
 <div id="textbox">
 	<form action="/message" method="post">
 		<input id="chatbox" type=text name=message>

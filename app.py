@@ -4,6 +4,7 @@ import time
 app = Flask(__name__)
 
 gamePhase = ["lobby", "chat", "guess", "results"]
+chats = []
 current_phase_index = 0
 
 @app.route("/", methods=["GET", "POST"])
@@ -17,10 +18,11 @@ def gameState():
 
     if request.method == "GET": # GET: /gameState
         index = int(time.time() / 5) % len(gamePhase)
-        currentPhase = gamePhase[index]
+        currentPhase = gamePhase[current_phase_index]
 
         data = {
-            "gamePhase": currentPhase
+            "gamePhase": currentPhase,
+            "chats" : chats
         }
         return jsonify(data)
 
@@ -30,3 +32,17 @@ def gameState():
             current_phase_index = (current_phase_index + 1) % len(gamePhase)
         print("Received via POST:", data)
         return jsonify(status="ok")
+
+@app.route("/message", methods=["POST"])
+def addMessage():
+    if request.method == "POST":
+        message= request.form.get("message")
+        print(f'Message received: {message}')
+        chats.append(message)
+    return redirect("/")
+
+# Resolves ERROR 404 /favicon.ico not found
+@app.route('/favicon.ico')
+def favicon():
+    return '', 204  # No content
+
