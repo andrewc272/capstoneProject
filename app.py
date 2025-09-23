@@ -66,7 +66,14 @@ def addMessage():
     """
     # TODO will need to be changed to obtain JSON data and return status "OK"
     if request.method == "POST":
+        data = request.get_json()
+        chats.append(data.get("message"))
+        print("received via POST:", data)
+        return jsonify(status="ok")
+
+        '''
+        previous solution
         message= request.form.get("message")
         print(f'Message received: {message}')
         chats.append(message)
-    return redirect("/")
+    return redirect("/")'''

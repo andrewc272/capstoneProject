@@ -58,6 +58,29 @@ async function chatJS(){
 			${gameState.chats.map(chat => `<li>${chat}</li>`).join('')}
 		</ul>
 		`;
+
+	const form = document.getElementById("textbox_form");
+	if (form && !form.dataset.listenerAdded){
+		form.addEventListener('submit', function(event) {
+			event.preventDefault();
+			const formData = new FormData(form);
+			const data = {};
+			formData.forEach((value, key) => {
+				data[key] = value;
+			});
+
+			fetch('/message', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify(data)
+			})
+			.then(res => res.json())
+			.then(data => console.log("POST response:", data));
+		});
+		form.dataset.listenerAdded = "True";
+	}
 }
 
 async function updateGame(){
