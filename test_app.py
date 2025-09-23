@@ -18,4 +18,20 @@ class TestApp(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn(b'<html', response.data)
 
-    
+    def test_gameState(self):
+        
+        # Test initial state
+        response = self.app.get('/gameState')
+        data = response.get_json()
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('gamePhase', data)
+        self.assertEqual(data['gamePhase'], 'lobby')
+
+        # Test moving to the next page
+        self.app.post('/gameState', json={'nextPhase': True})
+        response = self.app.get('/gameState')
+        data = response.get_json()
+        self.assertEqual(response.status_code, 200)
+        self.assertIn('gamePhase', data)
+        self.assertEqual(data['gamePhase'], 'chat')
+        
