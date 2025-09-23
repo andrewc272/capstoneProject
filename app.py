@@ -22,7 +22,8 @@ def getPage():
         Returns:
             HTML: the rendered index.html file
     """
-    return render_template("index.html")
+    pass
+    #return render_template("index.html")
 
 
 @app.route("/gameState", methods=["GET", "POST"])
