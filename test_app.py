@@ -1,4 +1,5 @@
 import unittest
+from app import app
 
 class TestUnittest(unittest.TestCase):
     def test_true(self):
@@ -6,3 +7,15 @@ class TestUnittest(unittest.TestCase):
     
     def test_false(self):
         self.assertFalse(False)
+
+class TestApp(unittest.TestCase):
+    def setUp(self):
+        self.app = app.test_client()
+        self.app.testing = True
+
+    def test_index(self):
+        response = self.app.get('/')
+        self.assertEqual(response.status_code, 200)
+        self.assertIn(b'<html', response.data)
+
+    
