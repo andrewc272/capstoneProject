@@ -5,14 +5,24 @@ Web API implemented with flask
 """
 
 from flask import *
-import time
+import uuid
+from dotenv import load_dotenv
+import os
+
+load_dotenv()
 
 app = Flask(__name__)
+app.secret_key = os.getenv("SECRET_KEY")
 
 # TODO move this to a sperate file as a sort of "game state object"
 gamePhase = ["lobby", "chat", "guess", "results"]
 chats = []
 current_phase_index = 0
+
+@app.before_request
+def assignSessionID():
+    if 'user_id' not in session:
+        session['user_id'] = str(uuid.uuid4())
 
 @app.route("/")
 def getPage():
@@ -66,14 +76,7 @@ def addMessage():
     """
     # TODO will need to be changed to obtain JSON data and return status "OK"
     if request.method == "POST":
+        user_id = session.get('user_id')
         data = request.get_json()
-        chats.append(data.get("message"))
-        print("received via POST:", data)
+        chats.append((user_id, data.get("message")))
         return jsonify(status="ok")
-
-        '''
-        previous solution
-        message= request.form.get("message")
-        print(f'Message received: {message}')
-        chats.append(message)
-    return redirect("/")'''
