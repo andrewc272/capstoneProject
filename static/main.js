@@ -55,7 +55,7 @@ async function chatJS(){
 	// TODO make the messaging more seemless by adding JS to fetch and send a POST to flask
 	document.getElementById('chat_area').innerHTML = `
 		<ul>
-			${gameState.chats.map(chat => `<li>${chat}</li>`).join('')}
+			${gameState.chats.map(chat => `<li>${chat[0]} sent ${chat[1]}</li>`).join('')}
 		</ul>
 		`;
 
