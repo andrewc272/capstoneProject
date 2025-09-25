@@ -64,7 +64,7 @@ def gameState():
     elif request.method == "POST": # POST: /gameState
         data = request.get_json()
         if data.get("nextPhase") == True:
-            current_phase_index = (current_phase_index + 1) % len(gamePhase)
+            current_phase_index = 1
         print("Received via POST:", data)
         return jsonify(status="ok")
 
