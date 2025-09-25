@@ -1,6 +1,8 @@
 let gameState;
 let realized_gameState;
 let game_HTML;
+let users;
+
 
 async function update_gameState(){
 	// updates the game state on client side
@@ -11,6 +13,7 @@ async function update_gameState(){
 			throw new Error(`HTTP error! status: ${response.status}`);
 		}
 		gameState = await response.json();
+		users = gameState.users;
 	} catch (error) {
 		console.error('Error fetching data:', error);
 		return;
@@ -35,6 +38,7 @@ async function lobbyJS(){
 	const startButton = document.getElementById("start_game"); 
 	if (startButton && !startButton.dataset.listenerAdded) {
 		startButton.addEventListener('click', function() {	
+			users = gameState.users;
 			fetch('/gameState', {
 				method: 'POST',
 				headers: {
@@ -47,6 +51,9 @@ async function lobbyJS(){
 		});
 		startButton.dataset.listenerAdded = "True";
 	}
+	document.getElementById("lobby_list").innerHTML= `
+		${gameState.users.map((user, index) => `<li id="player${index + 1}">Player ${index + 1} is here!!</li>`).join('')}
+	`;
 
 }
 
@@ -55,7 +62,7 @@ async function chatJS(){
 	// TODO make the messaging more seemless by adding JS to fetch and send a POST to flask
 	document.getElementById('chat_area').innerHTML = `
 		<ul>
-			${gameState.chats.map(chat => `<li>${chat[0]} sent ${chat[1]}</li>`).join('')}
+			${gameState.chats.map(chat => `<li id="player${users.indexOf(chat[0]) + 1}">${chat[1]}</li>`).join('')}
 		</ul>
 		`;
 
@@ -101,4 +108,4 @@ async function updateGame(){
 
 
 //TODO make an async request that won't return until there is a change to the state of the game this will prevent issues that could arise 
-setInterval(updateGame, 1000);
+setInterval(updateGame, 500);

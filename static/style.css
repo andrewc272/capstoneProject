@@ -42,19 +42,6 @@ ul {
 	overflow-y: auto;
 }
 
-li {
-	color: white;
-	background-color: blue;
-	margin: 20px;
-	padding: 0.5rem 1rem;
-	height: auto;
-	min-height: 16px;
-	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, 
-               Helvetica, Arial, sans-serif;
-	font-size: 16px;
-	line-height: 1.4;
-	border-radius: 1.5rem;
-}
 
 form {
 	min-width: 98%;
@@ -97,3 +84,42 @@ form {
 p {
 	color: white;
 }
+
+li {
+	color: white;
+	background-color: blue;
+	margin: 20px;
+	padding: 0.5rem 1rem;
+	height: auto;
+	min-height: 16px;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, 
+               Helvetica, Arial, sans-serif;
+	font-size: 16px;
+	line-height: 1.4;
+	border-radius: 1.5rem;
+}
+
+#player1 {
+	background-color: red;	
+}
+
+#player2 {
+	background-color: orange;
+}
+
+#player3 {
+	background-color: green;
+}
+
+#player4 {
+	background-color: purple;
+}
+
+#player5 {
+	background-color: darkGrey;
+}
+
+#player6 {
+	background-color: brown;
+}
+
