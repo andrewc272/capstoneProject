@@ -14,6 +14,8 @@ load_dotenv()
 app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY")
 
+active_users = set()
+
 # TODO move this to a sperate file as a sort of "game state object"
 gamePhase = ["lobby", "chat", "guess", "results"]
 chats = []
@@ -32,6 +34,7 @@ def getPage():
         Returns:
             HTML: the rendered index.html file
     """
+    active_users.add(session['user_id'])
     return render_template("index.html")
 
 
@@ -52,8 +55,10 @@ def gameState():
         currentPhase = gamePhase[current_phase_index]
         data = {
             "gamePhase": currentPhase,
-            "chats" : chats
+            "chats" : chats,
+            "users" : list(active_users)
         }
+        print(data)
         return jsonify(data)
 
     elif request.method == "POST": # POST: /gameState
