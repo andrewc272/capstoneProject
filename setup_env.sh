@@ -68,7 +68,7 @@ if [ ! -f .env ]; then
 	echo ".env created with secret key"
 else
 	if grep -q "^SECRET_KEY=" .env; then
-		sed -i.bak "s/^SECRET_KEY=.*/SECRET_KEY=$SECRET_KEY/" .env
+		sed -i "s/^SECRET_KEY=.*/SECRET_KEY=$SECRET_KEY/" .env
 		echo "SECRET_KEY updated"
 	else
 		echo "SECRET_KEY=$SECRET_KEY" >> .env
