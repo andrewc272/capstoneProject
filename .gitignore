@@ -2,4 +2,5 @@
 *.pyo
 __pycache__/
 .env
+.env.bak
 chatroom/node_modules/*
