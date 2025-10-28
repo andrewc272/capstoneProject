@@ -123,3 +123,37 @@ li {
 	background-color: brown;
 }
 
+ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  max-height: 100%;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Default message (others) */
+.other-player {
+  align-self: flex-start;
+  background-color: blue;
+  color: white;
+  border-radius: 1.5rem;
+  margin: 10px;
+  padding: 0.5rem 1rem;
+  max-width: 70%;
+  word-wrap: break-word;
+}
+
+/* Your own message */
+.self-player {
+  align-self: flex-end;
+  background-color: darkgrey;
+  color: black;
+  border-radius: 1.5rem;
+  margin: 10px;
+  padding: 0.5rem 1rem;
+  max-width: 70%;
+  word-wrap: break-word;
+}
+

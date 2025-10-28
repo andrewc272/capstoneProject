@@ -33,6 +33,39 @@ async function update_gameFrame(){
 
 }
 
+async function introJS(){
+	//if the game is at the lobby stage create a event listener for it to start the game
+	const joinButton = document.getElementById("join_game"); 
+	if (joinButton && !joinButton.dataset.listenerAdded) {
+		joinButton.addEventListener('click', function() {	
+			users = gameState.users;
+			fetch('/gameState', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({ nextPhase: true })
+			})
+			.then(res => res.json())
+			.then(data => console.log("POST response:", data));
+		});
+		joinButton.dataset.listenerAdded = "True";
+	}
+
+	const myId = gameState.myId;
+	document.getElementById("lobby_list").innerHTML = `
+  		${gameState.users.map((user, index) => {
+    		const isSelf = user === myId;
+    		const playerId = isSelf ? 'player-self' : `player${index + 1}`;
+    		const playerClass = isSelf ? 'self-player' : 'other-player';
+    		const playerLabel = isSelf ? 'You are here!!' : `Player ${index + 1} is here!!`;
+
+    		return `<li id="${playerId}" class="${playerClass}">${playerLabel}</li>`;
+  		}).join('')}
+	`;
+}
+
+
 async function lobbyJS(){
 	//if the game is at the lobby stage create a event listener for it to start the game
 	const startButton = document.getElementById("start_game"); 
@@ -51,8 +84,17 @@ async function lobbyJS(){
 		});
 		startButton.dataset.listenerAdded = "True";
 	}
-	document.getElementById("lobby_list").innerHTML= `
-		${gameState.users.map((user, index) => `<li id="player${index + 1}">Player ${index + 1} is here!!</li>`).join('')}
+
+	const myId = gameState.myId;
+	document.getElementById("lobby_list").innerHTML = `
+  		${gameState.users.map((user, index) => {
+    		const isSelf = user === myId;
+    		const playerId = isSelf ? 'player-self' : `player${index + 1}`;
+    		const playerClass = isSelf ? 'self-player' : 'other-player';
+    		const playerLabel = isSelf ? 'You are here!!' : `Player ${index + 1} is here!!`;
+
+    		return `<li id="${playerId}" class="${playerClass}">${playerLabel}</li>`;
+  		}).join('')}
 	`;
 
 }
@@ -60,11 +102,19 @@ async function lobbyJS(){
 async function chatJS(){
 	// generates the chats on the screen
 	// TODO make the messaging more seemless by adding JS to fetch and send a POST to flask
+	
+	const myId = gameState.myId;
 	document.getElementById('chat_area').innerHTML = `
 		<ul>
-			${gameState.chats.map(chat => `<li id="player${users.indexOf(chat[0]) + 1}">${chat[1]}</li>`).join('')}
+			${gameState.chats.map(chat => {
+			const isSelf = chat[0] === myId;
+			const playerId = isSelf ? 'self-player' : `player${users.indexOf(chat[0]) + 1}`;
+			const playerClass = isSelf ? 'self-player' : 'other-player';
+
+			return `<li id="player${users.indexOf(chat[0]) + 1}" class="${playerClass}">${chat[1]}</li>`
+			}).join('')}
 		</ul>
-		`;
+	`;
 
 	const form = document.getElementById("textbox_form");
 	if (form && !form.dataset.listenerAdded){
@@ -90,6 +140,22 @@ async function chatJS(){
 	}
 }
 
+async function guessJS(){
+	
+	const myId = gameState.myId;
+
+	document.getElementById("lobby_list").innerHTML = `
+  		${gameState.users.map((user, index) => {
+    		const isSelf = user === myId;
+    		const playerId = isSelf ? 'player-self' : `player${index + 1}`;
+    		const playerClass = isSelf ? 'self-player' : 'other-player';
+    		const playerLabel = isSelf ? 'Yourself' : `Player ${index + 1}`;
+
+    		return `<li id="${playerId}" class="${playerClass}">${playerLabel}</li>`;
+  		}).join('')}
+	`;
+}
+
 async function updateGame(){
 	update_gameState();
 
@@ -98,11 +164,17 @@ async function updateGame(){
 	}
 
 	//implements JS for each of the phases of the game
-	if (gameState.gamePhase == "lobby"){
+	if (gameState.gamePhase == "intro"){
+		introJS();
+	}
+	else if (gameState.gamePhase == "lobby"){
 		lobbyJS();
 	}
 	else if (gameState.gamePhase == "chat"){
 		chatJS();
+	}
+	else if (gameState.gamePhase == "guess"){
+		guessJS();
 	}
 }
 

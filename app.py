@@ -14,10 +14,10 @@ load_dotenv()
 app = Flask(__name__)
 app.secret_key = os.getenv("SECRET_KEY")
 
-active_users = set()
+active_users = []
 
 # TODO move this to a sperate file as a sort of "game state object"
-gamePhase = ["lobby", "chat", "guess", "results"]
+gamePhase = ["intro", "lobby", "chat", "guess", "results"]
 chats = []
 current_phase_index = 0
 
@@ -34,7 +34,6 @@ def getPage():
         Returns:
             HTML: the rendered index.html file
     """
-    active_users.add(session['user_id'])
     return render_template("index.html")
 
 
@@ -49,13 +48,17 @@ def gameState():
         Returns:
             JSON: either returning the status or the gameState
     """
-    global current_phase_index
+    global current_phase_index, chats
 
     if request.method == "GET": # GET: /gameState
+        if len(chats) >= 10: 
+            current_phase_index += 1
+            chats = []
         currentPhase = gamePhase[current_phase_index]
         data = {
             "gamePhase": currentPhase,
             "chats" : chats,
+            "myId" : session["user_id"],
             "users" : list(active_users)
         }
         print(data)
@@ -64,9 +67,16 @@ def gameState():
     elif request.method == "POST": # POST: /gameState
         data = request.get_json()
         if data.get("nextPhase") == True:
-            current_phase_index = 1
+            if current_phase_index == 0:
+                addPlayer()
+            current_phase_index += 1
         print("Received via POST:", data)
         return jsonify(status="ok")
+
+@app.route("/addPlayer", methods=["GET"])
+def addPlayer():
+    active_users.append(session['user_id'])
+    return jsonify(status="ok")
 
 @app.route("/message", methods=["POST"])
 def addMessage():
