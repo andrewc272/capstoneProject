@@ -1,5 +1,6 @@
 import unittest
 from app import app
+from Bot.bot import Bot
 
 class TestUnittest(unittest.TestCase):
     def test_true(self):
@@ -25,7 +26,7 @@ class TestApp(unittest.TestCase):
         data = response.get_json()
         self.assertEqual(response.status_code, 200)
         self.assertIn('gamePhase', data)
-        self.assertEqual(data['gamePhase'], 'lobby')
+        self.assertEqual(data['gamePhase'], 'intro')
 
         # Test moving to the next page
         self.app.post('/gameState', json={'nextPhase': True})
@@ -33,5 +34,5 @@ class TestApp(unittest.TestCase):
         data = response.get_json()
         self.assertEqual(response.status_code, 200)
         self.assertIn('gamePhase', data)
-        self.assertEqual(data['gamePhase'], 'chat')
+        self.assertEqual(data['gamePhase'], 'lobby')
         

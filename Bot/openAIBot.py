@@ -1,0 +1,38 @@
+import requests
+import time
+import os
+from openai import OpenAI
+from dotenv import load_dotenv
+from bot import Bot
+
+load_dotenv()
+client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+seen_messages = set()
+
+class openAI(Bot):
+    def get_message(self, chat):
+        for msg in chat:
+            sender = msg[0] if len(msg) > 0 else None
+            text = msg[1].strip() if len(msg) > 1 else ""
+            msg_id = (sender, text)
+
+            if msg_id in seen_messages:
+                continue
+            seen_messages.add(msg_id)
+
+            if text.lower().startswith("@bot"):
+                print(f'Detected bot summon: {text}')
+                prompt = text[len("@bot"):].strip()
+                response = client.chat.completions.create(
+                        model="gpt-4o-mini",
+                        messages=[
+                            {"role": "system", "content": "You are playing a game. You are playing against a human, who is trying to detect if you are a bot. You must decieve them into thinking they are human. You are supposed to ask each other questions to figure out if each other is the bot. Keep responses, short, skeptical, and not over excited. You must put yourself in the shoes of the human playing and try to behave as they would. You have to also question the user to show you are trying to figure out if they are a bot."},
+                            {"role": "user", "content": prompt}
+                            ]
+                        )
+                return response.choices[0].message.content.strip()
+
+
+if __name__ == '__main__':
+    bot = openAI("bot")
+    bot.run()
