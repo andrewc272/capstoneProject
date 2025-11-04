@@ -2,6 +2,7 @@ let gameState;
 let realized_gameState;
 let game_HTML;
 let users;
+let form_shown = false;
 
 
 async function update_gameState(){
@@ -50,8 +51,9 @@ async function introJS(){
 			.then(data => console.log("POST response:", data));
 		});
 		joinButton.dataset.listenerAdded = "True";
-	}
 
+
+	}
 	const myId = gameState.myId;
 	document.getElementById("lobby_list").innerHTML = `
   		${gameState.users.map((user, index) => {
@@ -63,6 +65,7 @@ async function introJS(){
     		return `<li id="${playerId}" class="${playerClass}">${playerLabel}</li>`;
   		}).join('')}
 	`;
+
 }
 
 
@@ -140,20 +143,40 @@ async function chatJS(){
 	}
 }
 
+
 async function guessJS(){
-	
-	const myId = gameState.myId;
 
-	document.getElementById("lobby_list").innerHTML = `
-  		${gameState.users.map((user, index) => {
-    		const isSelf = user === myId;
-    		const playerId = isSelf ? 'player-self' : `player${index + 1}`;
-    		const playerClass = isSelf ? 'self-player' : 'other-player';
-    		const playerLabel = isSelf ? 'Yourself' : `Player ${index + 1}`;
+	const form = document.getElementById("submit_button");
+	if (submitButton && !submitButton.dataset.listenerAdded) {
+		submitButton.addEventListener('click', function() {	
+			fetch('/gameState', {
+				method: 'POST',
+				headers: {
+					'Content-Type': 'application/json'
+				},
+				body: JSON.stringify({ nextPhase: true })
+			})
+			.then(res => res.json())
+			.then(data => console.log("POST response:", data));
+		});
+		submitButton.dataset.listenerAdded = "True";
+	}
 
-    		return `<li id="${playerId}" class="${playerClass}">${playerLabel}</li>`;
-  		}).join('')}
-	`;
+	if( !form_shown ){
+		const myId = gameState.myId;
+
+		document.getElementById("lobby_list").innerHTML = `
+  			${gameState.users.map((user, index) => {
+    			const isSelf = user === myId;
+    			const playerId = isSelf ? 'player-self' : `player${index + 1}`;
+    			const playerClass = isSelf ? 'self-player' : 'other-player';
+    			const playerLabel = isSelf ? 'Yourself' : `Player ${index + 1}`;
+
+    			return `<label><input type="checkbox" name="element" value="${playerId}">${playerLabel}</label>`;
+  			}).join('')}
+		`;
+			form_shown = true;
+	}
 }
 
 async function updateGame(){

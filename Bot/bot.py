@@ -30,6 +30,8 @@ class Bot:
     def run(self):
         phase = None
         chats = None
+        turnID = None
+        myID = None
         while True:
             
             # Get state
@@ -42,6 +44,8 @@ class Bot:
 
                 gameState = gameState_response.json()
                 phase = gameState.get("gamePhase", "")
+                turnID = gameState.get("turnID")
+                myID = gameState.get("myId")
 
                 if phase == "chat": chats = gameState.get("chats", [])
             
@@ -49,7 +53,7 @@ class Bot:
                 print("Error getting state:", e)
                 time.sleep(2)
             
-            if phase == "chat":
+            if phase == "chat" and turnID == myID:
                 # Get message
                 message = self.get_message(chats)
 

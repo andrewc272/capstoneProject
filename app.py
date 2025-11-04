@@ -20,6 +20,7 @@ active_users = []
 gamePhase = ["intro", "lobby", "chat", "guess", "results"]
 chats = []
 current_phase_index = 0
+turnID = None
 
 @app.before_request
 def assignSessionID():
@@ -48,17 +49,19 @@ def gameState():
         Returns:
             JSON: either returning the status or the gameState
     """
-    global current_phase_index, chats
+    global current_phase_index, chats, turnID
 
     if request.method == "GET": # GET: /gameState
         if len(chats) >= 10: 
             current_phase_index += 1
             chats = []
+        if len(active_users) > 0: turnID = active_users[len(chats)%len(active_users)]
         currentPhase = gamePhase[current_phase_index]
         data = {
             "gamePhase": currentPhase,
             "chats" : chats,
             "myId" : session["user_id"],
+            "turnID" : turnID,
             "users" : list(active_users)
         }
         print(data)
@@ -69,6 +72,8 @@ def gameState():
         if data.get("nextPhase") == True:
             if current_phase_index == 0:
                 addPlayer()
+            elif current_phase_index == 1:
+                turnID = active_users[0]
             current_phase_index += 1
         print("Received via POST:", data)
         return jsonify(status="ok")
@@ -90,8 +95,12 @@ def addMessage():
             a redirect to "/" (to be changed)
     """
     # TODO will need to be changed to obtain JSON data and return status "OK"
+    global turnID
     if request.method == "POST":
         user_id = session.get('user_id')
+        if user_id != turnID:
+            chats.append((user_id, "Played out of turn"))
+            return jsonify(status="ok")
         data = request.get_json()
         chats.append((user_id, data.get("message")))
         return jsonify(status="ok")
