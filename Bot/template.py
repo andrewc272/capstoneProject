@@ -46,7 +46,10 @@ while True:
                 if text.lower().startswith("@bot"):
                     print(f"Detected bot summon: {text}")
 
-                    prompt = text[len("@bot"):].strip()
+                    if text.lower().startswith("@bot"):
+                        prompt = text[len("@bot"):].strip()
+                    else:
+                        prompt = text.strip()
                     response = client.chat.completions.create(
                         model="gpt-4o-mini",
                         messages=[
