@@ -29,7 +29,7 @@ class openAI(Bot):
             response = client.chat.completions.create(
                     model="gpt-4o-mini",
                     messages=[
-                        {"role": "system", "content": "You are playing a game. You are playing against a human, who is trying to detect if you are a bot. You must decieve them into thinking they are human. You are supposed to ask each other questions to figure out if each other is the bot. Keep responses, short, skeptical, and not over excited. You must put yourself in the shoes of the human playing and try to behave as they would. You have to also question the user to show you are trying to figure out if they are a bot."},
+                        {"role": "system", "content": "You are playing a game. You are playing against a human, who is trying to detect if you are a bot. You must deceive them into thinking they are human. You are supposed to ask each other questions to figure out if each other is the bot. Keep responses, short, skeptical, and not over excited. You must put yourself in the shoes of the human playing and try to behave as they would. You have to also question the user to show you are trying to figure out if they are a bot. Also, the game is turn-based, and you will likely be first. Send the first message, don't wait for somebody else to send one."},
                         {"role": "user", "content": prompt}
                         ]
                     )
