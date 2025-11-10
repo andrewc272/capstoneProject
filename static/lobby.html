@@ -1,10 +1,13 @@
-<ul id="lobby_list">
-</ul>
+<section class="panel panel-lobby">
+	<header>
+		<p class="eyebrow">Phase 2 - Lobby</p>
+		<h1>Waiting on Agents</h1>
+		<p class="subtitle">Players appear below as they connect. Launch when everyone is ready.</p>
+	</header>
 
-<button id="start_game">Start Game</button>
+	<ul id="lobby_list" class="player-list"></ul>
 
-<script>
-	document.getElementById('start_game').addEventListener('click', function() {
-		console.log("Button Clicked");
-	});
-</script>
+	<div class="button-row">
+		<button id="start_game" class="primary-button">Start Conversation</button>
+	</div>
+</section>

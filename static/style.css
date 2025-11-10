@@ -1,159 +1,262 @@
+* {
+	box-sizing: border-box;
+}
+
 body, html {
 	height: 100%;
-	overflow: hidden;
-	background-color: #323232;
+	margin: 0;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+	background: #f4f4f6;
+	color: #1e1f25;
 }
 
 #screen {
-	height: 100%;
-	width: 100%;
+	min-height: 100%;
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	padding: clamp(1rem, 4vw, 2.5rem);
 }
 
 #game {
-	margin: 0 auto;
-	height: 98vh;
-	max-height: 200vw;
-	max-width: 50vh;
-	width: 100%;
-	background-color: black;
-	border: black 2px solid;
-	border-radius: 0.5rem;
-	color: white;
+	width: min(960px, 100%);
+	min-height: 75vh;
+	background: #ffffff;
+	border: 1px solid #d9dce4;
+	border-radius: 1rem;
+	box-shadow: 0 18px 35px rgba(30, 33, 52, 0.1);
+	padding: clamp(1.25rem, 2.5vw, 2rem);
+	overflow: hidden;
 }
 
-#chat_area{
-	height: 90%;
-	background-color: black;
-	border-radius: 0.5rem 0.5rem 0 0;
+.panel {
+	display: flex;
+	flex-direction: column;
+	gap: 1.5rem;
+	height: 100%;
 }
 
-#textbox{
-	width: 100%;
-	height: 10%;
+.panel header {
+	display: flex;
+	flex-direction: column;
+	gap: 0.4rem;
+}
+
+.eyebrow {
+	font-size: 0.75rem;
+	text-transform: uppercase;
+	letter-spacing: 0.2em;
+	color: #9ea4ff;
+	margin: 0;
+}
+
+.panel h1 {
+	margin: 0;
+	font-size: clamp(1.4rem, 4vw, 2rem);
+}
+
+.subtitle {
+	margin: 0;
+	color: #4f5569;
+	font-size: 0.95rem;
+}
+
+.how-to {
+	margin: 0;
+	padding-left: 1rem;
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+}
+
+.tip {
+	margin: 0;
+	font-style: italic;
+	color: #3e7cb1;
+}
+
+.player-list {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 0.5rem;
+}
+
+.player-list li {
+	padding: 0.75rem 1rem;
+	border-radius: 0.75rem;
+	background: #f3f5fb;
+	border: 1px solid #e1e5ef;
+}
+
+.player-list.compact li {
+	font-size: 0.9rem;
+}
+
+.self-player {
+	align-self: flex-end;
+	background: #dde8ff;
+	color: #1f2b4a;
+}
+
+.other-player {
+	align-self: flex-start;
+	background: #e8eef7;
+}
+
+.button-row {
+	display: flex;
+	justify-content: flex-end;
+}
+
+.primary-button {
+	padding: 0.65rem 1.4rem;
+	border-radius: 0.65rem;
+	border: none;
+	background: #1f4ed8;
+	color: #ffffff;
+	font-weight: 600;
+	cursor: pointer;
+	transition: background 0.2s ease, transform 0.2s ease;
+}
+
+.primary-button:hover {
+	background: #163cad;
+	transform: translateY(-1px);
+}
+
+#chat_area {
+	flex: 1;
+	background: #f9fafc;
+	border-radius: 0.75rem;
+	padding: 1rem;
+	overflow: hidden;
 	display: flex;
 	flex-direction: column;
 }
 
-ul {
-	list-style-type: none;
-	padding: 0 0 0 20%;
+#chat_area ul {
+	list-style: none;
 	margin: 0;
-	max-height: 100%;
+	padding: 0;
+	display: flex;
+	flex-direction: column;
+	gap: 0.75rem;
 	overflow-y: auto;
+	scrollbar-width: thin;
 }
 
+.chat-scroll {
+	border: 1px solid #e6e9f1;
+}
 
-form {
-	min-width: 98%;
-	padding: 5px;
+.chat-header {
+	gap: 0.25rem;
+}
+
+.other-player,
+.self-player {
+	max-width: 80%;
+	padding: 0.65rem 0.85rem;
+	border-radius: 1rem;
+	font-size: 0.95rem;
+	line-height: 1.4;
+	word-break: break-word;
+}
+
+#textbox {
+	padding-top: 0.5rem;
+}
+
+#textbox form {
 	display: flex;
-	gap: 5px;
-	margin-top: auto;
-	background: #202020;
+	gap: 0.5rem;
+	align-items: center;
+	background: #eff1f7;
+	padding: 0.35rem 0.4rem;
+	border-radius: 0.65rem;
 }
 
 #chatbox {
-	background-color: black;
-	border: white 2px solid;
-	border-radius: 1rem;
-	color: white;
-	font-size: 16px;
-	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, 
-               Helvetica, Arial, sans-serif;
-	min-width: 85%;
+	flex: 1;
+	background: transparent;
+	border: none;
+	color: #1f2b4a;
+	font-size: 1rem;
+	padding: 0.5rem 0.75rem;
+}
+
+#chatbox:focus {
+	outline: none;
 }
 
 #send {
-	min-width: 5%;
-	background: blue;
-	color: white;
+	width: 42px;
+	height: 42px;
+	border-radius: 0.55rem;
 	border: none;
-	border-radius: 50%;
+	background: #1f4ed8;
+	color: #ffffff;
+	font-size: 1.05rem;
+	cursor: pointer;
+	display: flex;
+	align-items: center;
+	justify-content: center;
 }
 
-#send.hover {
-	background: background: #005ecb;
-	color: white;
+#send span {
+	line-height: 1;
 }
 
-#send.active{
-	background: blue;
-	color: white;
+.panel-guess .guess-form {
+	display: flex;
+	flex-direction: column;
+	gap: 1rem;
 }
 
-p {
-	color: white;
+.guess-grid {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+	gap: 0.75rem;
 }
 
-li {
-	color: white;
-	background-color: blue;
-	margin: 20px;
-	padding: 0.5rem 1rem;
-	height: auto;
-	min-height: 16px;
-	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, 
-               Helvetica, Arial, sans-serif;
-	font-size: 16px;
-	line-height: 1.4;
-	border-radius: 1.5rem;
+.guess-grid label {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	padding: 0.75rem;
+	background: #f3f4fa;
+	border: 1px solid #e0e4f0;
+	border-radius: 0.75rem;
 }
 
-#player1 {
-	background-color: red;	
+.panel-results .results-card {
+	padding: 1.25rem;
+	border-radius: 0.85rem;
+	background: #f8f9fc;
+	border: 1px solid #e1e4ed;
 }
 
-#player2 {
-	background-color: orange;
+.results-list {
+	list-style: disc;
+	margin: 0.75rem 0 0 1.25rem;
+	padding: 0;
+	color: #41475b;
 }
 
-#player3 {
-	background-color: green;
-}
+@media (max-width: 768px) {
+	#screen {
+		padding: 1rem;
+	}
 
-#player4 {
-	background-color: purple;
-}
+	#game {
+		min-height: auto;
+	}
 
-#player5 {
-	background-color: darkGrey;
-}
-
-#player6 {
-	background-color: brown;
-}
-
-ul {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-  max-height: 100%;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-}
-
-/* Default message (others) */
-.other-player {
-  align-self: flex-start;
-  background-color: blue;
-  color: white;
-  border-radius: 1.5rem;
-  margin: 10px;
-  padding: 0.5rem 1rem;
-  max-width: 70%;
-  word-wrap: break-word;
-}
-
-/* Your own message */
-.self-player {
-  align-self: flex-end;
-  background-color: darkgrey;
-  color: black;
-  border-radius: 1.5rem;
-  margin: 10px;
-  padding: 0.5rem 1rem;
-  max-width: 70%;
-  word-wrap: break-word;
+	.guess-grid {
+		grid-template-columns: 1fr;
+	}
 }
 

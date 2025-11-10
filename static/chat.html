@@ -1,7 +1,18 @@
-<div id="chat_area"></div>
-<div id="textbox">
-	<form id="textbox_form" action="/message" method="post">
-		<input id="chatbox" type=text name=message>
-		<input id="send" type=submit value=➤>
-	</form>
-</div>
+<section class="panel panel-chat">
+	<header class="chat-header">
+		<p class="eyebrow">Phase 3 - Chat</p>
+		<h1>Conversation Live</h1>
+		<p class="subtitle">Take turns. Stay human. Bots might be hiding in plain sight.</p>
+	</header>
+
+	<div id="chat_area" class="chat-scroll"></div>
+
+	<div id="textbox">
+		<form id="textbox_form" action="/message" method="post">
+			<input id="chatbox" type="text" name="message" placeholder="Type your response..." autocomplete="off">
+			<button id="send" type="submit" aria-label="Send message">
+				<span>&rarr;</span>
+			</button>
+		</form>
+	</div>
+</section>
