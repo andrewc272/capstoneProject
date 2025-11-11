@@ -1,0 +1,41 @@
+services:
+  flask-app:
+    build: .
+    container_name: flask-app
+    ports:
+      - "5000:5000"
+    environment:
+      - FLASK_ENV=production
+    env_file:
+      - .env
+    networks:
+      - capstone_net
+
+  openai-bot:
+    build: ./Bot
+    container_name: openai-bot
+    environment:
+      - SCRIPT=openAIBot.py
+    env_file:
+      - .env
+    depends_on:
+      - flask-app
+    networks:
+      - capstone_net
+
+  cli-player:
+    build: ./Bot
+    container_name: cli-player
+    environment:
+      - SCRIPT=cliPlayer.py
+    env_file:
+      - .env
+    depends_on:
+      - flask-app
+    networks:
+      - capstone_net
+
+networks:
+  capstone_net:
+    driver: bridge
+
