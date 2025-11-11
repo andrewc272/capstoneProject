@@ -25,6 +25,7 @@ turnID = None
 
 @app.before_request
 def assignSessionID():
+    """This assigns a user ID to each player that connects"""
     if 'user_id' not in session:
         session['user_id'] = str(uuid.uuid4())
 
@@ -81,6 +82,7 @@ def gameState():
 
 @app.route("/addPlayer", methods=["GET"])
 def addPlayer():
+    """This adds joins the player to the game and should be called when a player wants to join a game"""
     active_users.append(session['user_id'])
     return jsonify(status="ok")
 
