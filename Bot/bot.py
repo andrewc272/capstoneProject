@@ -9,11 +9,12 @@ import os
 from dotenv import load_dotenv
 
 class Bot:
-    def __init__(self, name, url="http://flask-app:5000"):
+    def __init__(self, name, url="http://flask-app:5000"): # flask-app is used for docker otherwise use localhost
+        """ Creates a  bot and adds it into the game """
         self.name = name
         self.url = url
         self.session = requests.Session()
-        self.session.get(f'{self.url}/addPlayer')  # ensures session cookie
+        # self.session.get(f'{self.url}/addPlayer')  # ensures session cookie #DELETE
         print(f"{self.name} connected to server.")
 
         # Retry connection until Flask server is ready
