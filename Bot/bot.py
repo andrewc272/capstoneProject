@@ -1,86 +1,73 @@
-'''
-This is the parent object of a bot and it will be used to help define every
-bot and it will make it easier to spin up different instances of bots.
-'''
-
 import requests
 import time
 import os
 from dotenv import load_dotenv
 
 class Bot:
-    def __init__(self, name, url="http://flask-app:5000"): # flask-app is used for docker otherwise use localhost
-        """ Creates a  bot and adds it into the game """
+    '''This creates a bot and adds it to the game'''
+    def __init__(self, name, url="http://flask-app:5000"):
         self.name = name
         self.url = url
         self.session = requests.Session()
-        # self.session.get(f'{self.url}/addPlayer')  # ensures session cookie #DELETE
-        print(f"{self.name} connected to server.")
 
-        # Retry connection until Flask server is ready
-        for _ in range(10):  # try up to 10 times (about 30 seconds total)
+        print(f"{self.name} connecting to {url}...")
+
+        for attempt in range(40):
             try:
-                response = self.session.get(f"{self.url}/addPlayer")
-                if response.status_code == 200:
-                    print(f"{name} connected to Flask app successfully!")
+                r = self.session.get(f"{self.url}/addPlayer", timeout=3)
+                if r.status_code == 200:
+                    print(f"{self.name} registered with server.")
                     break
-                else:
-                    print(f"Waiting for Flask app... (status {response.status_code})")
             except Exception as e:
-                print("Flask not ready yet, retrying...", e)
-                time.sleep(3)
+                print(f"{self.name} waiting for Flask... {e}")
+            time.sleep(2)
         else:
-            print("Failed to connect after several tries.")
-            exit(1)
+            print(f"{self.name} could not connect after many attempts.")
+            return
 
-        print(f"{name} has been started")
+        print(f"{self.name} bot initialized.")
 
-    def get_message(self, chats=[]) -> str:
-        time.sleep(5)
+    def get_message(self, chats=[]):
+        """
+        Override this in subclasses to implement actual bot behavior.
+        `chats` contains the full list of (user_id, message) tuples.
+        """
+        time.sleep(2)
         return "Hello this is a bot"
 
     def run(self):
-        phase = None
-        chats = None
-        turnID = None
-        myID = None
         while True:
-            # Get state
             try:
-                gameState_response = self.session.get(f'{self.url}/gameState')
-                if gameState_response.status_code != 200:
-                    print("Error: could not fetch game state!!")
+                res = self.session.get(f"{self.url}/gameState")
+                if res.status_code != 200:
+                    print("Could not fetch state")
                     time.sleep(1)
                     continue
 
-                gameState = gameState_response.json()
-                phase = gameState.get("gamePhase", "")
-                turnID = gameState.get("turnID")
-                myID = gameState.get("myId")
-
-                if phase == "chat":
-                    chats = gameState.get("chats", [])
+                gs = res.json()
+                phase = gs.get("gamePhase")
+                chats = gs.get("chats", [])
+                myID = gs.get("myId")
+                turnID = gs.get("turnID")
 
             except Exception as e:
-                print("Error getting state:", e)
+                print("State error:", e)
                 time.sleep(2)
                 continue
 
+            # ONLY send if it's the bot's turn
             if phase == "chat" and turnID == myID:
-                # Get message
-                message = self.get_message(chats)
+                message = self.get_message(chats)  # full chat history available
 
-                if message is not None:
-                    # Post message
-                    message_data = {"message": message}
+                if message:
                     try:
-                        post_response = self.session.post(f'{self.url}/message', json=message_data)
-                        print(f'Sent: {message}')
+                        self.session.post(f"{self.url}/message", json={"message": message})
+                        print(f"{self.name} sent: {message}")
                     except Exception as e:
-                        print("Error sending message:", e)
-                        time.sleep(2)
+                        print("Send error:", e)
 
             time.sleep(1)
+
 
 
 

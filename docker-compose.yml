@@ -11,31 +11,36 @@ services:
     networks:
       - capstone_net
 
-  openai-bot:
+  bot1:
     build: ./Bot
-    container_name: openai-bot
+    container_name: bot1
     environment:
       - SCRIPT=openAIBot.py
+      - BOT_NAME=bot1
     env_file:
       - .env
-    depends_on:
-      - flask-app
     networks:
       - capstone_net
+    depends_on:
+      - flask-app
+    restart: unless-stopped
 
-  cli-player:
+  bot2:
     build: ./Bot
-    container_name: cli-player
+    container_name: bot2
     environment:
-      - SCRIPT=cliPlayer.py
+      - SCRIPT=openAIBot.py
+      - BOT_NAME=bot2
     env_file:
       - .env
-    depends_on:
-      - flask-app
     networks:
       - capstone_net
+    depends_on:
+      - flask-app
+    restart: unless-stopped
 
 networks:
   capstone_net:
     driver: bridge
+
 
