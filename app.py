@@ -17,11 +17,13 @@ app.secret_key = os.getenv("SECRET_KEY", "dev_fallback_secret_key")
 
 active_users = []
 
-# TODO move this to a sperate file as a sort of "game state object"
+# TODO move this to a separate file as a sort of "game state object"
 gamePhase = ["intro", "lobby", "chat", "guess", "results"]
 chats = []
 current_phase_index = 0
 turnID = None
+
+
 
 @app.before_request
 def assignSessionID():
@@ -54,10 +56,10 @@ def gameState():
     global current_phase_index, chats, turnID
 
     if request.method == "GET": # GET: /gameState
-        if len(chats) >= 10: 
+        if len(chats) >= 10:
             current_phase_index += 1
             chats = []
-        if len(active_users) > 0: turnID = active_users[len(chats)%len(active_users)]
+        if len(active_users) > 0: turnID = active_users[(len(chats) + 2)%len(active_users)]
         currentPhase = gamePhase[current_phase_index]
         data = {
             "gamePhase": currentPhase,
@@ -72,9 +74,10 @@ def gameState():
     elif request.method == "POST": # POST: /gameState
         data = request.get_json()
         if data.get("nextPhase") == True:
-            if current_phase_index == 0:
-                addPlayer()
-            elif current_phase_index == 1:
+            #if current_phase_index == 0:
+            #    addPlayer()
+            #was elif
+            if current_phase_index == 1:
                 turnID = active_users[0]
             current_phase_index += 1
         print("Received via POST:", data)
