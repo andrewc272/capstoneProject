@@ -34,11 +34,38 @@ async function update_gameFrame(){
 
 }
 
-async function introJS(){
-	//if the game is at the lobby stage create a event listener for it to start the game
-	const joinButton = document.getElementById("join_game"); 
+async function introJS() {
+	// If the game is at the intro stage, add an event listener to the Join Game button
+	const joinButton = document.getElementById("join_game");
 	if (joinButton && !joinButton.dataset.listenerAdded) {
-		joinButton.addEventListener('click', function() {	
+		joinButton.addEventListener('click', async function() {
+			try {
+				// Step 1: Tell the backend this player is joining
+				const joinResponse = await fetch('/addPlayer');
+				const joinData = await joinResponse.json();
+				console.log("Player joined:", joinData);
+
+				// Step 2: Then move from 'intro' → 'lobby' (but do NOT start the game yet)
+				//const phaseResponse = await fetch('/gameState', {
+					//method: 'POST',
+					//headers: { 'Content-Type': 'application/json' },
+					//body: JSON.stringify({ nextPhase: true })
+				//});
+				//const phaseData = await phaseResponse.json();
+				//console.log("Phase advanced:", phaseData);
+
+			} catch (error) {
+				console.error("Error joining game:", error);
+			}
+		});
+
+		joinButton.dataset.listenerAdded = "True";
+	}
+
+    //stolen from lobbyJS
+	const startButton = document.getElementById("start_game");
+	if (startButton && !startButton.dataset.listenerAdded) {
+		startButton.addEventListener('click', function() {
 			users = gameState.users;
 			fetch('/gameState', {
 				method: 'POST',
@@ -50,10 +77,11 @@ async function introJS(){
 			.then(res => res.json())
 			.then(data => console.log("POST response:", data));
 		});
-		joinButton.dataset.listenerAdded = "True";
-
-
+		startButton.dataset.listenerAdded = "True";
 	}
+
+
+	// Display the current list of players in the lobby
 	const myId = gameState.myId;
 	document.getElementById("lobby_list").innerHTML = `
   		${gameState.users.map((user, index) => {
@@ -65,8 +93,8 @@ async function introJS(){
     		return `<li id="${playerId}" class="${playerClass}">${playerLabel}</li>`;
   		}).join('')}
 	`;
-
 }
+
 
 
 async function lobbyJS(){
