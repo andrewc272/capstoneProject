@@ -172,40 +172,123 @@ async function chatJS(){
 }
 
 
-async function guessJS(){
+async function guessJS() {
+    const myId = gameState.myId;
+    const users = gameState.users;
 
-	const form = document.getElementById("submit_button");
-	if (submitButton && !submitButton.dataset.listenerAdded) {
-		submitButton.addEventListener('click', function() {	
-			fetch('/gameState', {
-				method: 'POST',
+    // creating player list with buttons
+    if (!form_shown) {
+        const lobbyDiv = document.getElementById("lobby_list");
+
+        lobbyDiv.innerHTML = `
+            ${users.map((userId, index) => {
+                const isSelf = userId === myId;
+                const labelName = isSelf ? "You" : `Player ${index + 1}`;
+
+                // Use the real userId in the "name" so we can map it back on submit
+                const fieldName = `vote-${userId}`;
+
+                return `
+                    <div class="player-row">
+                        <span class="player-name">${labelName}</span>
+
+                        <label>
+                            <input type="radio"
+                                   name="${fieldName}"
+                                   value="human"
+                                   required>
+                            Human
+                        </label>
+
+                        <label>
+                            <input type="radio"
+                                   name="${fieldName}"
+                                   value="ai">
+                            AI
+                        </label>
+                    </div>
+                `;
+            }).join('')}
+        `;
+
+        form_shown = true;
+    }
+
+    // 2) Attach a submit handler to the form (once)
+    const form = document.getElementById("guess_form");
+    if (form && !form.dataset.listenerAdded) {
+        form.addEventListener("submit", async function (event) {
+            event.preventDefault();
+
+            const formData = new FormData(form);
+
+            // Build an array of { target: <user_id>, guess: "human" | "ai" }
+            const votes = users.map((userId) => {
+                const fieldName = `vote-${userId}`;
+                const guess = formData.get(fieldName);  // "human" or "ai"
+                return { target: userId, guess: guess };
+            });
+
+			// Send votes to backend
+			await fetch("/vote", {
+				method: "POST",
 				headers: {
-					'Content-Type': 'application/json'
+					"Content-Type": "application/json"
 				},
-				body: JSON.stringify({ nextPhase: true })
-			})
-			.then(res => res.json())
-			.then(data => console.log("POST response:", data));
-		});
-		submitButton.dataset.listenerAdded = "True";
-	}
+				body: JSON.stringify({ votes })
+			});
 
-	if( !form_shown ){
-		const myId = gameState.myId;
+			Array.from(form.elements).forEach(el => el.disabled = true);
 
-		document.getElementById("lobby_list").innerHTML = `
-  			${gameState.users.map((user, index) => {
-    			const isSelf = user === myId;
-    			const playerId = isSelf ? 'player-self' : `player${index + 1}`;
-    			const playerClass = isSelf ? 'self-player' : 'other-player';
-    			const playerLabel = isSelf ? 'Yourself' : `Player ${index + 1}`;
-
-    			return `<label><input type="checkbox" name="element" value="${playerId}">${playerLabel}</label>`;
-  			}).join('')}
-		`;
-			form_shown = true;
-	}
+    		console.log("Votes submitted");
+        });
+	
+        form.dataset.listenerAdded = "True";
+    }
 }
+
+
+async function resultsJS() {
+    const myId = gameState.myId;
+    const users = gameState.users;      // list of user_ids in turn order / join order
+    const players = gameState.players;  // [{ user_id, votes }, ...]
+
+    const container = document.getElementById("results_container");
+    if (!container) return;
+
+    // Build a quick lookup: user_id -> votes
+    const votesById = {};
+    players.forEach(p => {
+        votesById[p.user_id] = p.votes;
+    });
+
+	const maxVotes = players.length > 0
+        ? Math.max(...players.map(p => p.votes))
+        : 0;
+
+    // Build HTML rows in the same order as `users`
+    container.innerHTML = `
+        <ul class="results-list">
+            ${users.map((userId, index) => {
+                const isSelf = userId === myId;
+                const displayName = isSelf ? "You" : `Player ${index + 1}`;
+                const votes = votesById[userId] ?? 0;
+
+                const isWinner = votes === maxVotes && maxVotes > 0;
+                const liClass = isWinner ? "result-row winner" : "result-row";
+
+                return `
+                    <li class="${liClass}">
+                        <span class="player-name">${displayName}</span>
+                        <span class="player-votes">${votes} vote${votes === 1 ? "" : "s"}</span>
+                    </li>
+                `;
+            }).join("")}
+        </ul>
+    `;
+}
+
+
 
 async function updateGame(){
 	update_gameState();
@@ -226,6 +309,9 @@ async function updateGame(){
 	}
 	else if (gameState.gamePhase == "guess"){
 		guessJS();
+	}
+	else if (gameState.gamePhase == "results"){
+		resultsJS();
 	}
 }
 

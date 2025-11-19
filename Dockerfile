@@ -15,7 +15,7 @@ COPY . .
 
 RUN if [ ! -f .env ]; then python -c "from secrets import token_hex; open('.env', 'w').write('SECRET_KEY=' + token_hex(32))"; fi
 
-EXPOSE 5000
+EXPOSE 5001
 
 CMD ["flask", "run", "--host=0.0.0.0"]
 

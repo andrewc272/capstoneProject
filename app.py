@@ -24,6 +24,7 @@ current_phase_index = 0
 chats = []
 turn_index = 0
 turnID = None
+votes_submitted = 0
 
 
 @app.before_request
@@ -44,7 +45,7 @@ def index():
 
 @app.route("/gameState", methods=["GET", "POST"])
 def gameState():
-    global current_phase_index, chats, turn_index, turnID
+    global current_phase_index, chats, turn_index, turnID, votes_submitted
 
     if request.method == "GET":
         if len(chats) >= 10:
@@ -79,7 +80,8 @@ def gameState():
         if gamePhase[current_phase_index] == "chat":
             turn_index = 0
             turnID = active_users[0] if active_users else None
-
+        if gamePhase[current_phase_index] == "guess":
+            votes_submitted = 0
     print("Current phase:", gamePhase[current_phase_index])
 
     return jsonify(status="ok")
@@ -140,15 +142,30 @@ def addMessage():
 
 @app.route("/vote", methods=["POST"])
 def vote():
+    global current_phase_index, votes_submitted
     data = request.get_json()
-    target = data.get("target")
-    if target in players:
-        players[target].votes += 1
+    
+    # { "votes": [ { "target": "<user_id>", "guess": "human"|"ai" }, ... ] }
+    votes = data.get("votes", [])
+
+    for vote in votes:
+        target = vote.get("target")
+        guess = vote.get("guess")
+
+        # increment votes for AI guesses 
+        if guess == "ai" and target in players:
+            players[target].votes += 1
+
+    votes_submitted = votes_submitted + 1
+    
+    # minus 2 to remove the bots having to vote
+    if votes_submitted == len(players) - 2:
+        current_phase_index = 4
+
     return jsonify(status="ok")
 
-
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5000)
+    app.run(host="0.0.0.0", port=5002)
 
 
 
