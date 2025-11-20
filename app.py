@@ -48,7 +48,7 @@ def gameState():
     global current_phase_index, chats, turn_index, turnID, votes_submitted
 
     if request.method == "GET":
-        if len(chats) >= 10:
+        if len(chats) >= 20:
             chats = []
             current_phase_index = min(current_phase_index + 1, len(gamePhase) - 1)
 

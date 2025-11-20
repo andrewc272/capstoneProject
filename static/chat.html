@@ -1,7 +1,28 @@
-<div id="chat_area"></div>
-<div id="textbox">
-	<form id="textbox_form" action="/message" method="post">
-		<input id="chatbox" type=text name=message>
-		<input id="send" type=submit value=➤>
-	</form>
+<div id="chat_area">
+    <ul id="chat_list"></ul>
 </div>
+
+<div id="textbox">
+    <form id="textbox_form" action="/message" method="post">
+        <input id="chatbox" type="text" name="message">
+        <input id="send" type="submit" value="➤">
+    </form>
+</div>
+
+<script>
+function scrollChatToBottom() {
+    const chatArea = document.getElementById("chat_area");
+    chatArea.scrollTop = chatArea.scrollHeight;
+}
+
+const chatList = document.getElementById("chat_list");
+const observer = new MutationObserver(scrollChatToBottom);
+
+observer.observe(chatList, {
+    childList: true
+});
+
+window.onload = scrollChatToBottom;
+</script>
+
+

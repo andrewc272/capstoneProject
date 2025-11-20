@@ -21,13 +21,18 @@ body, html {
 	color: white;
 }
 
-#chat_area{
+#chat_area {
 	height: 90%;
 	background-color: black;
 	border-radius: 0.5rem 0.5rem 0 0;
+	overflow-y: auto;
+	display: flex;
+	flex-direction: column;
+	padding: 12px;
+	box-sizing: border-box;
 }
 
-#textbox{
+#textbox {
 	width: 100%;
 	height: 10%;
 	display: flex;
@@ -36,12 +41,12 @@ body, html {
 
 ul {
 	list-style-type: none;
-	padding: 0 0 0 20%;
+	padding: 0;
 	margin: 0;
-	max-height: 100%;
-	overflow-y: auto;
+	display: flex;
+	flex-direction: column;
+	gap: 6px;
 }
-
 
 form {
 	min-width: 98%;
@@ -58,9 +63,10 @@ form {
 	border-radius: 1rem;
 	color: white;
 	font-size: 16px;
-	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, 
-               Helvetica, Arial, sans-serif;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 	min-width: 85%;
+	box-sizing: border-box;
+	padding: 8px;
 }
 
 #send {
@@ -71,89 +77,42 @@ form {
 	border-radius: 50%;
 }
 
-#send.hover {
-	background: background: #005ecb;
-	color: white;
-}
-
-#send.active{
-	background: blue;
-	color: white;
-}
-
 p {
 	color: white;
+	margin: 0;
 }
 
 li {
-	color: white;
-	background-color: blue;
-	margin: 20px;
+	margin: 0;
 	padding: 0.5rem 1rem;
-	height: auto;
-	min-height: 16px;
-	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, 
-               Helvetica, Arial, sans-serif;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
 	font-size: 16px;
 	line-height: 1.4;
 	border-radius: 1.5rem;
+	box-sizing: border-box;
+	max-width: 75%;
+	overflow-wrap: break-word;
+	word-break: break-word;
 }
 
-#player1 {
-	background-color: red;	
-}
-
-#player2 {
-	background-color: orange;
-}
-
-#player3 {
-	background-color: green;
-}
-
-#player4 {
-	background-color: purple;
-}
-
-#player5 {
-	background-color: darkGrey;
-}
-
-#player6 {
-	background-color: brown;
-}
-
-ul {
-  list-style-type: none;
-  padding: 0;
-  margin: 0;
-  max-height: 100%;
-  overflow-y: auto;
-  display: flex;
-  flex-direction: column;
-}
-
-/* Default message (others) */
 .other-player {
-  align-self: flex-start;
-  background-color: blue;
-  color: white;
-  border-radius: 1.5rem;
-  margin: 10px;
-  padding: 0.5rem 1rem;
-  max-width: 70%;
-  word-wrap: break-word;
+	align-self: flex-start;
+	background-color: blue;
+	color: white;
 }
 
-/* Your own message */
 .self-player {
-  align-self: flex-end;
-  background-color: darkgrey;
-  color: black;
-  border-radius: 1.5rem;
-  margin: 10px;
-  padding: 0.5rem 1rem;
-  max-width: 70%;
-  word-wrap: break-word;
+	align-self: flex-end;
+	background-color: darkgrey;
+	color: black;
 }
+
+#player1 { background-color: red; }
+#player2 { background-color: orange; }
+#player3 { background-color: green; }
+#player4 { background-color: purple; }
+#player5 { background-color: blue; }
+#player6 { background-color: yellow; }
+
+
 
