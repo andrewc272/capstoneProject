@@ -12,6 +12,7 @@ class OpenAIBot:
         self.url = url.rstrip("/")
         self.name = name
         self.session = requests.Session()
+        self.session.headers.update({"X-Bot-Name": self.name})
         self.myID = None
         self.added = False
         self.client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))

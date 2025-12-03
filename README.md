@@ -96,3 +96,34 @@ As it sits currently, clone the repository, and enter the commad `flask run`
 Dependancies: Python, flask, Browser(for previewing web app)
 
 Also `flask run --host=0.0.0.0` will broadcast the app to the local network allowing other devices to connect as will be important when we want to add multi-player functionality.
+
+## Local AI Bots
+
+The first human that joins the lobby is treated as the host and now sees a **Match Setup** panel during the intro/lobby phases. That panel lets the host decide whether the round should rely on the original cloud/API bots or spin up fully local agents. Everyone else sees a read‑only summary of whichever option the host picked.
+
+### Model presets
+
+| ID      | Summary                     | Hardware Notes                                        |
+| ------- | --------------------------- | ----------------------------------------------------- |
+| pocket  | Pocket Chat (ultralight)    | Runs `llama3.2:1b` through Ollama – fine on almost any CPU. |
+| lounge  | Campus Lounge (laptop)      | Targets `llama3.2`, ideal for 16 GB RAM laptops or Apple Silicon. |
+| studio  | Studio 8G (dedicated GPU)   | Uses `llama3.1:8b`, best with ~8 GB VRAM or a beefy CPU. |
+
+Each preset keeps replies short, injects 18‑23 year old slang, and can be multiplied by the host (1‑6 unique bot instances). Presets live in `bot_profiles.py`, so feel free to tweak prompts or add new entries.
+
+### Running local agents
+
+1. Run `python scripts/setup_local_agents.py`. This helper tries to install Ollama (winget on Windows, the official install script on macOS/Linux) and automatically pulls every model referenced by the presets. If you already have Ollama, it just refreshes the required models.
+2. Start the Flask server with `flask run`. If you expose it on a non‑default port, set `LOCAL_BOT_SERVER_URL=http://127.0.0.1:5001` (or similar) so the spawned agents know where to call back.
+3. Join the lobby in a browser, click **Join Game**, then, as the host, select **Local AI agents**, pick the preset, and choose how many bots to spawn.
+4. When you click **Start Game**, the Flask app launches `Bot/local_agent.py` in the background. Each bot polls `/gameState`, only speaks on its turn, and queries Ollama (or falls back to heuristics if Ollama isn’t running).
+5. Optional environment variables:
+   - `OLLAMA_URL` – change this if your Ollama server isn’t on `http://127.0.0.1:11434`.
+   - `LOCAL_BOT_SERVER_URL` – point to the Flask instance when it runs behind Docker or a custom hostname.
+
+Switching back to “Cloud API bots” immediately tears down the local processes so the original OpenAI/Mistral bots can keep working unchanged.
+
+### Testing + dev tips
+
+- Automated tests now cover the host selection flow. Run them with `python -m unittest test_app.py`.
+- If you need to disable process spawning during automated runs, export `CAPSTONE_SKIP_BOT_MANAGER=1` before starting the app (the tests do this automatically).

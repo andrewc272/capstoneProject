@@ -11,6 +11,7 @@ client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
 
 url = "http://localhost:5000"
 session = requests.Session()
+session.headers.update({"X-Bot-Name": os.getenv("BOT_NAME", "TemplateBot")})
 
 #initializes the state
 seen_messages = set()
