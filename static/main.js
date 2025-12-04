@@ -246,6 +246,16 @@ async function resultsJS() {
 			}).join("")}
 		</ul>
 	`;
+
+	// --- Restart button wiring ---
+	const restartBtn = document.getElementById("restart_game");
+	if (restartBtn && !restartBtn.dataset.listenerAdded) {
+		restartBtn.addEventListener("click", async () => {
+			await fetch("/resetGame", { method: "POST" });
+			// updateGame loop will detect gamePhase reset and reload intro
+		});
+		restartBtn.dataset.listenerAdded = "True";
+	}
 }
 
 async function updateGame(){

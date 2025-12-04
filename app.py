@@ -164,6 +164,30 @@ def vote():
 
     return jsonify(status="ok")
 
+
+@app.route("/resetGame", methods=["POST"])
+def resetGame():
+    global players, active_users, current_phase_index, chats, turn_index, turnID, votes_submitted
+
+    # keep only the first two users (assumed bots)
+    kept_users = active_users[:2]
+
+    # rebuild players dict so only those two remain, with fresh vote counts
+    players = {uid: Player(uid) for uid in kept_users}
+
+    # active users list becomes just the two bots
+    active_users = kept_users
+
+    # reset game state
+    current_phase_index = 0          # back to "intro"
+    chats = []
+    votes_submitted = 0
+    turn_index = 0
+    turnID = kept_users[0] if kept_users else None
+
+    return jsonify(status="ok")
+
+
 if __name__ == "__main__":
     app.run(host="0.0.0.0", port=5002)
 
