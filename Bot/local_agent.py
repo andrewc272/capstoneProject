@@ -69,38 +69,31 @@ class LocalAgent(Bot):
         history = render_history(trimmed, self.my_id)
         latest = latest_non_self_message(trimmed, self.my_id)
 
-        # Detect message type
-        latest_lower = latest.lower().strip()
-        is_greeting = any(g in latest_lower for g in ['hi', 'hey', 'hello', 'sup', 'yo', 'whats up', "what's up"])
-        is_name_question = any(x in latest_lower for x in ['your name', 'whats your name', "what's your name", 'who are you', 'introduce yourself'])
-        is_unreasonable = any(x in latest_lower for x in ['write an essay', 'write essay', 'write a paragraph', 'write me'])
+        latest_lower = (latest or "").lower().strip()
+        is_name_question = any(x in latest_lower for x in [
+            "your name", "what's your name", "whats your name", "who are you"
+        ])
 
+        guidance = [
+            f"You are {self.human_name}, a believable college student hanging out in a group chat.",
+            "Keep the tone natural and varied – some replies can be short, others can be a couple sentences.",
+            "React to the actual conversation instead of repeating generic filler.",
+            "It is fine to show opinions, humor, or mild emotion if the moment calls for it."
+        ]
         if is_name_question:
-            length_hint = f"Someone asked your name. Your name is {self.human_name}. Just say your name simply, like 'im {self.human_name}' or 'hey im {self.human_name}'"
-        elif is_greeting and len(latest) < 20:
-            length_hint = "Just say hi back in 2-4 words."
-        elif is_unreasonable:
-            length_hint = "This is a casual chat, not homework. Politely refuse or joke about it. Example: 'lol nah im not writing an essay rn'"
-        else:
-            length_hint = "Reply in 1-2 short sentences. Answer any questions directly."
+            guidance.append(f"Someone asked your name. Casually tell them you're {self.human_name}.")
 
         prompt = textwrap.dedent(
             f"""
-            You are {self.human_name}, a college student in a group chat. This is casual texting with friends.
+            {" ".join(guidance)}
 
-            Chat so far:
+            Group chat log (most recent last):
             {history}
 
-            Last message: "{latest}"
+            Last message you saw: "{latest}"
 
-            IMPORTANT:
-            - Your name is {self.human_name}. If anyone asks your name, tell them.
-            - {length_hint}
-            - ANSWER THE QUESTION that was asked. Don't deflect or change subject.
-            - Stay on topic. Respond to what was actually said.
-            - Be brief and casual like real texting.
-
-            Your reply (just the message, nothing else):
+            Reply as {self.human_name}. If you answer a question, provide enough detail to sound human.
+            End with just the text you would send.
             """
         ).strip()
 
@@ -137,17 +130,6 @@ class LocalAgent(Bot):
                 reply = reply[len(prefix):].strip()
                 if reply and reply[0].islower():
                     reply = reply[0].upper() + reply[1:]
-
-        # Check if reply is too similar to recent messages
-        for uid, msg in chats[-5:]:
-            if msg and uid != self.my_id:
-                # If more than 60% of words overlap, reject
-                reply_words = set(reply.lower().split())
-                msg_words = set(msg.lower().split())
-                if len(reply_words) > 3 and len(msg_words) > 3:
-                    overlap = len(reply_words & msg_words)
-                    if overlap / len(reply_words) > 0.6:
-                        return None
 
         return reply if reply else None
 
