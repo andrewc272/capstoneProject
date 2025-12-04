@@ -99,6 +99,30 @@ function createChatListIfNeeded() {
 
 async function chatJS(){
 	const myId = gameState.myId;
+    const users = gameState.users || [];
+    const turnID = gameState.turnID;
+
+    // --- TURN BANNER UPDATE (chat screen only) ---
+    const banner = document.getElementById("turn_banner");
+    if (banner) {
+        let text = "";
+
+        if (!turnID) {
+            text = "";  // no active turn
+        } else if (turnID === myId) {
+            text = "Your turn to play";
+        } else {
+            const idx = users.indexOf(turnID);
+            const label = idx >= 0 ? `Player ${idx + 1}` : "Another player";
+            text = `${label}'s turn to play`;
+        }
+
+        banner.textContent = text;
+        banner.style.visibility = text ? "visible" : "hidden";
+    }
+    // --- END TURN BANNER UPDATE ---
+
+
 	const chatArea = document.getElementById('chat_area');
 	if (!chatArea) return;
 	const ul = createChatListIfNeeded();
