@@ -1,26 +1,23 @@
-import uuid
 import requests
 import time
 import os
-from openai import OpenAI
 from dotenv import load_dotenv
+from ollama import chat as chatGemma
+from ollama import ChatResponse
 
 load_dotenv()
 
 
-class OpenAIBot:
-    def __init__(self, url, name="OpenAI Bot"):
+class GemmaBot:
+    def __init__(self, url, name="Gemma Bot"):
         self.url = url.rstrip("/")
         self.name = name
         self.session = requests.Session()
         self.myID = None
         self.added = False
-        self.client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
-        #Unique identifier for bots
-        self.unique_id = "bot-" + uuid.uuid4().hex
 
     def _headers(self):
-        return {"Content-Type": "application/json", "X-Bot-Name": self.unique_id}
+        return {"Content-Type": "application/json"}
 
     def register(self):
         """Register the bot and get its ID."""
@@ -36,13 +33,16 @@ class OpenAIBot:
 
     def get_message(self, chats):
         system_prompt = (
-            "You are secretly an AI participating in a social deduction game. "
-            "Your goal is to convince the human players that you are human. "
-            "Never reveal that you are an AI, and never speak unnaturally. "
-            "Write short, casual, conversational messages like a real person. "
-            "If the conversation has no messages yet, introduce yourself naturally. "
-            "If asked about being a bot, deny it casually and confidently."
-            "Keep responses short, use poor grammar, and use poor punctuation. Make your responses as realistically human as possible"
+                '''
+                You exist as a Human player in a chat game.
+                You are to respond to previous chats and continue the conversation well.
+                You are to respond briefly and casually.
+                The length of your response should be no longer than a sentence.
+                It is urgent that you are not detected so act like a human as best you can. 
+                Change your grammar and spelling slightly rarely.
+                If you get caught bad things could happen so again DO NOT GET CAUGHT.
+                If you are in a pinch there are two options you have either you can try to change the topic SLIGHTLY or you can shift the blame.
+                '''
         )
 
         if not chats:
@@ -55,19 +55,13 @@ class OpenAIBot:
 
         prompt = conversation + f"{self.name}:"
 
-        try:
-            response = self.client.chat.completions.create(
-                model="gpt-4o-mini",
-                messages=[
-                    {"role": "system", "content": system_prompt},
-                    {"role": "user", "content": prompt}
-                ],
-                max_tokens=50
-            )
-            return response.choices[0].message.content.strip()
-        except Exception as e:
-            print(f"[ERROR] OpenAI API call failed: {e}")
-            return "I pass."
+        response = chatGemma(model='gemma3',
+            messages=[
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": prompt}
+            ]
+        )
+        return response['message']['content']
 
 
     def play(self):
@@ -102,11 +96,5 @@ class OpenAIBot:
 
 
 if __name__ == "__main__":
-    bot = OpenAIBot("http://flask-app:5000", name="OpenAI Bot")
+    bot = GemmaBot("http://localhost:5000", name="Ollama Bot")
     bot.play()
-
-
-
-
-
-

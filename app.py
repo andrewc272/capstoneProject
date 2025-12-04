@@ -10,9 +10,10 @@ app.secret_key = os.getenv("SECRET_KEY", "dev_fallback_secret_key")
 
 
 class Player:
-    def __init__(self, user_id):
+    def __init__(self, user_id, is_a_bot):
         self.user_id = user_id
         self.votes = 0
+        self.is_a_bot = is_a_bot
 
 
 players = {}
@@ -48,7 +49,7 @@ def gameState():
     global current_phase_index, chats, turn_index, turnID, votes_submitted
 
     if request.method == "GET":
-        if len(chats) >= 20:
+        if len(chats) >= 10:
             chats = []
             current_phase_index = min(current_phase_index + 1, len(gamePhase) - 1)
 
@@ -63,7 +64,7 @@ def gameState():
             turnID = None
 
         currentPhase = gamePhase[current_phase_index]
-        player_list = [{"user_id": p.user_id, "votes": p.votes} for p in players.values()]
+        player_list = [ {"user_id": p.user_id, "votes": p.votes, "is_a_bot": p.is_a_bot} for p in players.values() ]
 
         return jsonify({
             "gamePhase": currentPhase,
@@ -90,10 +91,16 @@ def gameState():
 @app.route("/addPlayer", methods=["GET"])
 def addPlayer():
     uid = g.user_id
-    if uid not in active_users:
+
+    # Detect bots using the same header as before_request
+    is_a_bot = "X-Bot-Name" in request.headers
+
+    if uid not in active_users and len(active_users) <= 6:
         active_users.append(uid)
-    if uid not in players:
-        players[uid] = Player(uid)
+
+    if uid not in players and len(players) <= 6:
+        players[uid] = Player(uid, is_a_bot)  #Pass true for bots
+
     return jsonify(status="ok")
 
 
