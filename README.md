@@ -124,7 +124,7 @@ Use the helper script to launch the stack whether you are on macOS or Windows:
    - Build the Flask image.
    - Launch the stack defined in `docker-compose.yml` (Flask at `http://localhost:5000` by default).
 4. When you are finished, run `./scripts/dev.sh down` (or `bash scripts/dev.sh down` on Windows) to stop everything. Add `-d` to run detached (`./scripts/dev.sh up -d`) and use `./scripts/dev.sh logs flask-app` to follow logs.
-5. If Windows reports permissions errors running the script, execute the commands inside WSL (`wsl` → `cd /mnt/c/Users/.../capstone` → `./scripts/dev.sh up`).
+5. If Windows reports permissions errors running the script, execute the commands inside WSL (`wsl` → `cd /mnt/c/Users/.../capstoneProject` → `./scripts/dev.sh up`).
 
 **Enabling the OpenAI cloud bots:** add both `OPENAI_API_KEY=...` and `CAPSTONE_ENABLE_CLOUD_BOTS=1` to `.env` before running `./scripts/dev.sh up`. Those settings start the `bot1`/`bot2` containers (disabled by default so the stack still works without API access).
 
