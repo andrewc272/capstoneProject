@@ -10,9 +10,10 @@ app.secret_key = os.getenv("SECRET_KEY", "dev_fallback_secret_key")
 
 
 class Player:
-    def __init__(self, user_id):
+    def __init__(self, user_id, is_a_bot):
         self.user_id = user_id
         self.votes = 0
+        self.is_a_bot = is_a_bot
 
 
 players = {}
@@ -48,7 +49,7 @@ def gameState():
     global current_phase_index, chats, turn_index, turnID, votes_submitted
 
     if request.method == "GET":
-        if len(chats) >= 20:
+        if len(chats) >= 10:
             chats = []
             current_phase_index = min(current_phase_index + 1, len(gamePhase) - 1)
 
@@ -63,7 +64,7 @@ def gameState():
             turnID = None
 
         currentPhase = gamePhase[current_phase_index]
-        player_list = [{"user_id": p.user_id, "votes": p.votes} for p in players.values()]
+        player_list = [{"user_id": p.user_id, "votes": p.votes, "is_a_bot": p.is_a_bot} for p in players.values()]
 
         return jsonify({
             "gamePhase": currentPhase,
@@ -90,10 +91,16 @@ def gameState():
 @app.route("/addPlayer", methods=["GET"])
 def addPlayer():
     uid = g.user_id
-    if uid not in active_users:
+
+    # Detect bots using the same header as before_request
+    is_a_bot = "X-Bot-Name" in request.headers
+
+    if uid not in active_users and len(active_users) <= 6:
         active_users.append(uid)
-    if uid not in players:
-        players[uid] = Player(uid)
+
+    if uid not in players and len(players) <= 6:
+        players[uid] = Player(uid, is_a_bot)  # Pass true for bots
+
     return jsonify(status="ok")
 
 
@@ -144,7 +151,7 @@ def addMessage():
 def vote():
     global current_phase_index, votes_submitted
     data = request.get_json()
-    
+
     # { "votes": [ { "target": "<user_id>", "guess": "human"|"ai" }, ... ] }
     votes = data.get("votes", [])
 
@@ -152,34 +159,41 @@ def vote():
         target = vote.get("target")
         guess = vote.get("guess")
 
-        # increment votes for AI guesses 
+        # increment votes for AI guesses
         if guess == "ai" and target in players:
             players[target].votes += 1
 
     votes_submitted = votes_submitted + 1
-    
+
     # minus 2 to remove the bots having to vote
     if votes_submitted == len(players) - 2:
         current_phase_index = 4
 
     return jsonify(status="ok")
 
-
 @app.route("/resetGame", methods=["POST"])
 def resetGame():
     global players, active_users, current_phase_index, chats, turn_index, turnID, votes_submitted
 
-    # keep only the first two users (assumed bots)
+    # Keep only the bots
     kept_users = active_users[:2]
 
-    # rebuild players dict so only those two remain, with fresh vote counts
-    players = {uid: Player(uid) for uid in kept_users}
+    # Rebuild players dict using the original bot flags
+    new_players = {}
+    for uid in kept_users:
+        if uid in players:
+            new_players[uid] = Player(uid, players[uid].is_a_bot)
+        else:
+            # fallback if somehow missing
+            new_players[uid] = Player(uid, True)
 
-    # active users list becomes just the two bots
+    players = new_players
+
+    # Reset active users
     active_users = kept_users
 
-    # reset game state
-    current_phase_index = 0          # back to "intro"
+    # Reset game state
+    current_phase_index = 0   # back to "intro"
     chats = []
     votes_submitted = 0
     turn_index = 0
@@ -189,7 +203,7 @@ def resetGame():
 
 
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5002)
+    app.run(host="0.0.0.0", port=5000)
 
 
 

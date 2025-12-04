@@ -1,3 +1,4 @@
+import uuid
 import requests
 import time
 import os
@@ -15,9 +16,11 @@ class OpenAIBot:
         self.myID = None
         self.added = False
         self.client = OpenAI(api_key=os.getenv("OPENAI_API_KEY"))
+        #Unique identifier for bots
+        self.unique_id = "bot-" + uuid.uuid4().hex
 
     def _headers(self):
-        return {"Content-Type": "application/json"}
+        return {"Content-Type": "application/json", "X-Bot-Name": self.unique_id}
 
     def register(self):
         """Register the bot and get its ID."""
@@ -101,7 +104,6 @@ class OpenAIBot:
 if __name__ == "__main__":
     bot = OpenAIBot("http://flask-app:5000", name="OpenAI Bot")
     bot.play()
-
 
 
 
