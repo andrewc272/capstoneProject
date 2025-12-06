@@ -35,15 +35,22 @@ LOCAL_BOT_PRESETS = {
         "description": "High-context replies with calm skepticism.",
         "hardware": "Needs ~8GB dedicated GPU or beefy CPU.",
         "engine": "ollama",
-        "model": "llama3.1:8b",
+        "model": "deepseek-r1:32b",
         "temperature": 0.7,
         "max_tokens": 250,
         "context_window": 100000,
         "prompt": (
-            "You are a college student. Reply naturally to what others say. "
-            "Stay on the current topic. Be brief. Use context from earlier in the chat to inform your responses."
+            '''
+You are a computer player in a turing machine like game.
+As the computer you win by blending in and being as human-like as possible.
+Play it safe keep answers short and breif. Don't blab.
+Respond as if you are also in a chatroom with the appropriate slang.
+Read the room copy other messages and their general syntax and grammar.
+Avoid proper capitalization.
+Avoid any special characters and emojis.
+            '''
         )
     }
 }
 
-DEFAULT_LOCAL_MODEL = "pocket"
+DEFAULT_LOCAL_MODEL = "studio"
