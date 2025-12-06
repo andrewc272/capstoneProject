@@ -276,6 +276,30 @@ function createChatListIfNeeded() {
 
 async function chatJS(){
 	const myId = gameState.myId;
+    const users = gameState.users || [];
+    const turnID = gameState.turnID;
+
+    // --- TURN BANNER UPDATE (chat screen only) ---
+    const banner = document.getElementById("turn_banner");
+    if (banner) {
+        let text = "";
+
+        if (!turnID) {
+            text = "";  // no active turn
+        } else if (turnID === myId) {
+            text = "Your turn to play";
+        } else {
+            const idx = users.indexOf(turnID);
+            const label = idx >= 0 ? `Player ${idx + 1}` : "Another player";
+            text = `${label}'s turn to play`;
+        }
+
+        banner.textContent = text;
+        banner.style.visibility = text ? "visible" : "hidden";
+    }
+    // --- END TURN BANNER UPDATE ---
+
+
 	const chatArea = document.getElementById('chat_area');
 	if (!chatArea) return;
 	const ul = createChatListIfNeeded();
@@ -375,30 +399,61 @@ async function guessJS(){
 
 async function resultsJS() {
 	const myId = gameState.myId;
-	const users = gameState.users;
-	const players = gameState.players || [];
-	const container = document.getElementById("results_container");
-	if (!container) return;
-	const votesById = {};
-	players.forEach(p => votesById[p.user_id] = p.votes);
-	const maxVotes = players.length > 0 ? Math.max(...players.map(p => p.votes)) : 0;
-	container.innerHTML = `
-		<ul class="results-list">
-			${users.map((userId, index) => {
-				const isSelf = userId === myId;
-				const displayName = isSelf ? "You" : `Player ${index + 1}`;
-				const votes = votesById[userId] || 0;
-				const isWinner = votes === maxVotes && maxVotes > 0;
-				const liClass = isWinner ? "result-row winner" : "result-row";
-				return `
-					<li class="${liClass}">
-						<span class="player-name">${displayName}</span>
-						<span class="player-votes">${votes} vote${votes === 1 ? "" : "s"}</span>
-					</li>
-				`;
-			}).join("")}
-		</ul>
-	`;
+    const users = gameState.users;
+    const players = gameState.players || [];
+    const container = document.getElementById("results_container");
+    if (!container) return;
+
+    // Build vote lookup
+    const votesById = {};
+    players.forEach(p => votesById[p.user_id] = p.votes);
+
+    const maxVotes =
+        players.length > 0 ? Math.max(...players.map(p => p.votes)) : 0;
+
+    // Bots (these exist in players[], may not exist in users[])
+    const bots = players.filter(p => p.is_a_bot);
+
+    container.innerHTML = `
+        <ul class="results-list">
+            ${users.map((userId, index) => {
+                const isSelf = userId === myId;
+                const displayName = isSelf ? "You" : `Player ${index + 1}`;
+                const votes = votesById[userId] || 0;
+                const isWinner = votes === maxVotes && maxVotes > 0;
+                const liClass = isWinner ? "result-row winner" : "result-row";
+                return `
+                    <li class="${liClass}">
+                        <span class="player-name">${displayName}</span>
+                        <span class="player-votes">${votes} vote${votes === 1 ? "" : "s"}</span>
+                    </li>
+                `;
+            }).join("")}
+        </ul>
+
+        <div class="bot-reveal">
+            <h3>Bots in This Game</h3>
+            <ul>
+                ${bots.map(b => {
+                    // Find bot's index based on players[] ordering
+                    const idx = players.findIndex(p => p.user_id === b.user_id);
+                    const displayName =
+                        b.user_id === myId ? "You (Bot)" : `Player ${idx + 1}`;
+                    return `<li>${displayName}</li>`;
+                }).join("")}
+            </ul>
+        </div>
+    `;
+
+	// --- Restart button wiring ---
+	const restartBtn = document.getElementById("restart_game");
+	if (restartBtn && !restartBtn.dataset.listenerAdded) {
+		restartBtn.addEventListener("click", async () => {
+			await fetch("/resetGame", { method: "POST" });
+			// updateGame loop will detect gamePhase reset and reload intro
+		});
+		restartBtn.dataset.listenerAdded = "True";
+	}
 }
 
 async function updateGame(){

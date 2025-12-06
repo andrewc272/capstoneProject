@@ -22,7 +22,7 @@ body, html {
 }
 
 #chat_area {
-	height: 90%;
+	height: 83%;
 	background-color: black;
 	border-radius: 0.5rem 0.5rem 0 0;
 	overflow-y: auto;
@@ -75,6 +75,17 @@ form {
 	color: white;
 	border: none;
 	border-radius: 50%;
+}
+
+#turn_banner {
+    width: 94%;
+    padding: 12px;
+    background-color: #222;
+    color: white;
+    text-align: center;
+    font-size: 1.2rem;
+    font-weight: bold;
+    border-bottom: 2px solid #444;
 }
 
 p {

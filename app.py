@@ -16,10 +16,17 @@ app.secret_key = os.getenv("SECRET_KEY", "dev_fallback_secret_key")
 
 
 class Player:
+<<<<<<< HEAD
     def __init__(self, user_id, is_bot=False):
         self.user_id = user_id
         self.votes = 0
         self.is_bot = is_bot
+=======
+    def __init__(self, user_id, is_a_bot):
+        self.user_id = user_id
+        self.votes = 0
+        self.is_a_bot = is_a_bot
+>>>>>>> main
 
 
 players = {}
@@ -151,7 +158,7 @@ def gameState():
     global current_phase_index, chats, turn_index, turnID, votes_submitted
 
     if request.method == "GET":
-        if len(chats) >= 20:
+        if len(chats) >= 10:
             chats = []
             current_phase_index = min(current_phase_index + 1, len(gamePhase) - 1)
 
@@ -166,10 +173,14 @@ def gameState():
             turnID = None
 
         currentPhase = gamePhase[current_phase_index]
+<<<<<<< HEAD
         player_list = [
             {"user_id": p.user_id, "votes": p.votes, "isBot": p.is_bot}
             for p in players.values()
         ]
+=======
+        player_list = [{"user_id": p.user_id, "votes": p.votes, "is_a_bot": p.is_a_bot} for p in players.values()]
+>>>>>>> main
 
         return jsonify({
             "gamePhase": currentPhase,
@@ -210,11 +221,22 @@ def gameState():
 @app.route("/addPlayer", methods=["GET"])
 def addPlayer():
     uid = g.user_id
-    if uid not in active_users:
+
+    # Detect bots using the same header as before_request
+    is_a_bot = "X-Bot-Name" in request.headers
+
+    if uid not in active_users and len(active_users) <= 6:
         active_users.append(uid)
+<<<<<<< HEAD
     if uid not in players:
         players[uid] = Player(uid, is_bot=getattr(g, "is_bot", False))
     ensure_host_present()
+=======
+
+    if uid not in players and len(players) <= 6:
+        players[uid] = Player(uid, is_a_bot)  # Pass true for bots
+
+>>>>>>> main
     return jsonify(status="ok")
 
 
@@ -267,6 +289,7 @@ def addMessage():
 
 @app.route("/vote", methods=["POST"])
 def vote():
+<<<<<<< HEAD
     global current_phase_index, votes_submitted, votes_recorded
     if getattr(g, "is_bot", False):
         return jsonify(status="ok")
@@ -277,27 +300,72 @@ def vote():
     if uid in votes_recorded:
         return jsonify(status="ok")
 
+=======
+    global current_phase_index, votes_submitted
+    data = request.get_json()
+
+    # { "votes": [ { "target": "<user_id>", "guess": "human"|"ai" }, ... ] }
+>>>>>>> main
     votes = data.get("votes", [])
 
     for vote_payload in votes:
         target = vote_payload.get("target")
         guess = vote_payload.get("guess")
 
-        # increment votes for AI guesses 
+        # increment votes for AI guesses
         if guess == "ai" and target in players:
             players[target].votes += 1
 
+<<<<<<< HEAD
     votes_recorded.add(uid)
     votes_submitted = len(votes_recorded)
 
     human_players = [p for p in players.values() if not p.is_bot]
     if votes_submitted >= len(human_players) and human_players:
         current_phase_index = len(gamePhase) - 1
+=======
+    votes_submitted = votes_submitted + 1
+
+    # minus 2 to remove the bots having to vote
+    if votes_submitted == len(players) - 2:
+        current_phase_index = 4
+>>>>>>> main
 
     return jsonify(status="ok")
 
+@app.route("/resetGame", methods=["POST"])
+def resetGame():
+    global players, active_users, current_phase_index, chats, turn_index, turnID, votes_submitted
+
+    # Keep only the bots
+    kept_users = active_users[:2]
+
+    # Rebuild players dict using the original bot flags
+    new_players = {}
+    for uid in kept_users:
+        if uid in players:
+            new_players[uid] = Player(uid, players[uid].is_a_bot)
+        else:
+            # fallback if somehow missing
+            new_players[uid] = Player(uid, True)
+
+    players = new_players
+
+    # Reset active users
+    active_users = kept_users
+
+    # Reset game state
+    current_phase_index = 0   # back to "intro"
+    chats = []
+    votes_submitted = 0
+    turn_index = 0
+    turnID = kept_users[0] if kept_users else None
+
+    return jsonify(status="ok")
+
+
 if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=5002)
+    app.run(host="0.0.0.0", port=5000)
 
 
 
