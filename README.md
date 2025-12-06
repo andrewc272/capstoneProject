@@ -96,3 +96,62 @@ As it sits currently, clone the repository, and enter the commad `flask run`
 Dependancies: Python, flask, Browser(for previewing web app)
 
 Also `flask run --host=0.0.0.0` will broadcast the app to the local network allowing other devices to connect as will be important when we want to add multi-player functionality.
+
+## Local AI Bots
+
+The first human that joins the lobby is treated as the host and now sees a **Match Setup** panel during the intro/lobby phases. That panel lets the host decide whether the round should rely on the original cloud/API bots or spin up fully local agents. Everyone else sees a read‑only summary of whichever option the host picked.
+
+### Model presets
+
+| ID      | Summary                     | Hardware Notes                                        |
+| ------- | --------------------------- | ----------------------------------------------------- |
+| pocket  | Pocket Chat (ultralight)    | Runs `llama3.2:1b` through Ollama – fine on almost any CPU. |
+| lounge  | Campus Lounge (laptop)      | Targets `llama3.2`, ideal for 16 GB RAM laptops or Apple Silicon. |
+| studio  | Studio 8G (dedicated GPU)   | Uses `llama3.1:8b`, best with ~8 GB VRAM or a beefy CPU. |
+
+Each preset keeps replies short, injects 18‑23 year old slang, and can be multiplied by the host (1‑6 unique bot instances). Presets live in `bot_profiles.py`, so feel free to tweak prompts or add new entries.
+
+### Running with Docker (macOS & Windows)
+
+Use the helper script to launch the stack whether you are on macOS or Windows:
+
+1. Install [Docker Desktop](https://www.docker.com/products/docker-desktop/) and make sure it is running.
+2. Open a terminal (macOS) or PowerShell (Windows) at the repo root and run:
+   - macOS/Linux: `./scripts/dev.sh up`
+   - Windows PowerShell: `bash scripts/dev.sh up` (requires Git Bash or WSL) or run the commands inside WSL.
+3. The script will:
+   - Generate `.env` with a random `SECRET_KEY` if it does not exist.
+   - Build the Flask image.
+   - Launch the stack defined in `docker-compose.yml` (Flask at `http://localhost:5000` by default).
+4. When you are finished, run `./scripts/dev.sh down` (or `bash scripts/dev.sh down` on Windows) to stop everything. Add `-d` to run detached (`./scripts/dev.sh up -d`) and use `./scripts/dev.sh logs flask-app` to follow logs.
+5. If Windows reports permissions errors running the script, execute the commands inside WSL (`wsl` → `cd /mnt/c/Users/.../capstoneProject` → `./scripts/dev.sh up`).
+
+**Enabling the OpenAI cloud bots:** add both `OPENAI_API_KEY=...` and `CAPSTONE_ENABLE_CLOUD_BOTS=1` to `.env` before running `./scripts/dev.sh up`. Those settings start the `bot1`/`bot2` containers (disabled by default so the stack still works without API access).
+
+**Custom host port:** macOS Control Center already listens on port 5000. If you hit the “address already in use” error, set `CAPSTONE_HOST_PORT=5050` (or any free port) in `.env` and rerun `./scripts/dev.sh up`. Docker will map that host port to the container’s 5000.
+
+**Using local AI bots with Docker (macOS/Windows):**
+
+1. On the host OS (not in Docker) run `python scripts/setup_local_agents.py`. On Windows, run this in PowerShell or WSL using the Python that has network access.
+2. Ensure Ollama is running on the host (`ollama serve`). Keep `OLLAMA_URL=http://host.docker.internal:11434` in `.env` so the containerized Flask app can reach the host’s Ollama endpoint.
+3. Start the stack with `./scripts/dev.sh up` (or `bash scripts/dev.sh up` on Windows) and open the UI in a browser.
+4. In the lobby, switch to **Local AI agents**. The Flask container will spawn `Bot/local_agent.py` processes that talk to the host’s Ollama server via `host.docker.internal`.
+
+If you prefer to run everything directly on your OS instead of Docker (useful for debugging), you can still follow `setup.sh` → `source .venv/bin/activate` → `flask run` and then follow the local agent instructions below.
+
+### Running local agents
+
+1. Run `python scripts/setup_local_agents.py`. This helper tries to install Ollama (winget on Windows, the official install script on macOS/Linux) and automatically pulls every model referenced by the presets. If you already have Ollama, it just refreshes the required models.
+2. Start the Flask server with `flask run`. If you expose it on a non‑default port, set `LOCAL_BOT_SERVER_URL=http://127.0.0.1:5001` (or similar) so the spawned agents know where to call back.
+3. Join the lobby in a browser, click **Join Game**, then, as the host, select **Local AI agents**, pick the preset, and choose how many bots to spawn.
+4. When you click **Start Game**, the Flask app launches `Bot/local_agent.py` in the background. Each bot polls `/gameState`, only speaks on its turn, and queries Ollama (or falls back to heuristics if Ollama isn’t running).
+5. Optional environment variables:
+   - `OLLAMA_URL` – change this if your Ollama server isn’t on `http://127.0.0.1:11434`.
+   - `LOCAL_BOT_SERVER_URL` – point to the Flask instance when it runs behind Docker or a custom hostname.
+
+Switching back to “Cloud API bots” immediately tears down the local processes so the original OpenAI/Mistral bots can keep working unchanged.
+
+### Testing + dev tips
+
+- Automated tests now cover the host selection flow. Run them with `python -m unittest test_app.py`.
+- If you need to disable process spawning during automated runs, export `CAPSTONE_SKIP_BOT_MANAGER=1` before starting the app (the tests do this automatically).

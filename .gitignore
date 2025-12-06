@@ -5,3 +5,4 @@ __pycache__/
 .env.bak
 chatroom/node_modules/*
 ".env" 
+.DS_Store

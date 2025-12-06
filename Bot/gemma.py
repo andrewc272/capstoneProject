@@ -13,6 +13,7 @@ class GemmaBot:
         self.url = url.rstrip("/")
         self.name = name
         self.session = requests.Session()
+        self.session.headers.update({"X-Bot-Name": self.name})
         self.myID = None
         self.added = False
 

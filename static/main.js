@@ -4,6 +4,9 @@ let game_HTML;
 let users;
 let form_shown = false;
 let lastChatLength = 0;
+let hostSettings = { botMode: "cloud_api", localModel: null, localBotCount: 1 };
+let modelOptions = [];
+let hostConfigTimer = null;
 
 async function update_gameState(){
 	try {
@@ -11,6 +14,8 @@ async function update_gameState(){
 		if (!response.ok) return;
 		gameState = await response.json();
 		users = gameState.users || [];
+		modelOptions = gameState.modelOptions || [];
+		syncHostSettingsFromState();
 	} catch {
 		return;
 	}
@@ -26,6 +31,150 @@ async function update_gameFrame(){
 	} catch {}
 }
 
+function syncHostSettingsFromState() {
+	if (!gameState) return;
+	if (gameState.botMode) {
+		hostSettings.botMode = gameState.botMode;
+	}
+	if (gameState.localModel) {
+		hostSettings.localModel = gameState.localModel;
+	}
+	if (typeof gameState.localBotCount !== 'undefined') {
+		const parsed = parseInt(gameState.localBotCount, 10);
+		if (!Number.isNaN(parsed) && parsed > 0) {
+			hostSettings.localBotCount = parsed;
+		}
+	}
+	if (!hostSettings.localModel && modelOptions.length > 0) {
+		hostSettings.localModel = modelOptions[0].id;
+	}
+	if (modelOptions.length > 0 && !modelOptions.some(opt => opt.id === hostSettings.localModel)) {
+		hostSettings.localModel = modelOptions[0].id;
+	}
+}
+
+function persistHostSettings() {
+	if (!gameState || !gameState.isHost) return;
+	if (hostConfigTimer) {
+		clearTimeout(hostConfigTimer);
+	}
+	hostConfigTimer = setTimeout(async () => {
+		const payload = {
+			botMode: hostSettings.botMode,
+			localModel: hostSettings.localModel,
+			localBotCount: hostSettings.localBotCount
+		};
+		try {
+			await fetch('/gameState', {
+				method: 'POST',
+				headers: { 'Content-Type': 'application/json' },
+				body: JSON.stringify(payload)
+			});
+		} catch {
+			/* ignore network hiccups */
+		}
+	}, 150);
+}
+
+function renderHostPanel(force = false) {
+	const container = document.getElementById("host_panel");
+	if (!container || !gameState) return;
+	const signature = JSON.stringify({
+		isHost: gameState.isHost,
+		mode: hostSettings.botMode,
+		model: hostSettings.localModel,
+		count: hostSettings.localBotCount,
+		options: modelOptions.map(opt => opt.id),
+	});
+	if (!force && container.dataset.signature === signature) return;
+	container.dataset.signature = signature;
+
+	const status = gameState.botStatus || {};
+	if (!gameState.isHost) {
+		const selected = modelOptions.find(opt => opt.id === gameState.localModel);
+		container.innerHTML = `
+			<div class="host-config">
+				<p class="host-note">Waiting for host to start the round…</p>
+				<p>Mode: ${gameState.botMode === "local_ai" ? "Local AI agents" : "Cloud API bots"}</p>
+				${selected ? `<p>Model: ${selected.label}</p>` : ""}
+				<p class="host-model-hint">Local bots running: ${status.running || 0}</p>
+			</div>
+		`;
+		return;
+	}
+
+	const optionsHtml = modelOptions.map(opt => `
+		<option value="${opt.id}" ${opt.id === hostSettings.localModel ? "selected" : ""}>
+			${opt.label}
+		</option>
+	`).join("") || `<option>No models found</option>`;
+
+	const selected = modelOptions.find(opt => opt.id === hostSettings.localModel);
+	const localSectionClass = hostSettings.botMode === "local_ai" ? "host-local" : "host-local hidden";
+	const desc = selected ? `${selected.description} <br> <strong>${selected.hardware}</strong>` : "Configure models in bot_profiles.py.";
+
+	container.innerHTML = `
+		<div class="host-config">
+			<h3>Match Setup</h3>
+			<label class="host-radio">
+				<input type="radio" name="host_bot_mode" value="cloud_api" ${hostSettings.botMode !== "local_ai" ? "checked" : ""}>
+				<span>Cloud API bots (existing behavior)</span>
+			</label>
+			<label class="host-radio">
+				<input type="radio" name="host_bot_mode" value="local_ai" ${hostSettings.botMode === "local_ai" ? "checked" : ""}>
+				<span>Local AI agents</span>
+			</label>
+			<div class="${localSectionClass}">
+				<label>
+					Local model
+					<select id="local_model_select">
+						${optionsHtml}
+					</select>
+				</label>
+				<label>
+					Number of local bots (1-6)
+					<input id="local_bot_count" type="number" min="1" max="6" value="${hostSettings.localBotCount}">
+				</label>
+				<div class="host-model-hint">${desc}</div>
+			</div>
+			<p class="host-model-hint">
+				Local bots requested: ${hostSettings.localBotCount} • Active: ${status.running || 0}
+			</p>
+		</div>
+	`;
+
+	const modeInputs = container.querySelectorAll('input[name="host_bot_mode"]');
+	modeInputs.forEach(input => {
+		input.addEventListener('change', () => {
+			hostSettings.botMode = input.value;
+			renderHostPanel(true);
+			persistHostSettings();
+		});
+	});
+
+	const modelSelect = container.querySelector('#local_model_select');
+	if (modelSelect) {
+		modelSelect.addEventListener('change', () => {
+			hostSettings.localModel = modelSelect.value;
+			renderHostPanel(true);
+			persistHostSettings();
+		});
+	}
+
+	const countInput = container.querySelector('#local_bot_count');
+	if (countInput) {
+		countInput.addEventListener('change', () => {
+			const parsed = parseInt(countInput.value, 10);
+			if (!Number.isNaN(parsed)) {
+				hostSettings.localBotCount = Math.min(6, Math.max(1, parsed));
+				countInput.value = hostSettings.localBotCount;
+				renderHostPanel(true);
+				persistHostSettings();
+			}
+		});
+	}
+}
+
 async function introJS() {
 	const joinButton = document.getElementById("join_game");
 	if (joinButton && !joinButton.dataset.listenerAdded) {
@@ -37,14 +186,28 @@ async function introJS() {
 	const startButton = document.getElementById("start_game");
 	if (startButton && !startButton.dataset.listenerAdded) {
 		startButton.addEventListener('click', function() {
+			if (!gameState) return;
+			const payload = {
+				nextPhase: true
+			};
+			if (gameState.isHost) {
+				payload.botMode = hostSettings.botMode;
+				payload.localModel = hostSettings.localModel;
+				payload.localBotCount = hostSettings.localBotCount;
+			}
 			fetch('/gameState', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ nextPhase: true })
+				body: JSON.stringify(payload)
 			});
 		});
 		startButton.dataset.listenerAdded = "True";
 	}
+	if (startButton) {
+		startButton.disabled = !gameState.isHost;
+		startButton.title = gameState.isHost ? "" : "Waiting for host";
+	}
+	renderHostPanel();
 	const myId = gameState.myId;
 	const lobby = document.getElementById("lobby_list");
 	if (lobby) {
@@ -63,14 +226,28 @@ async function lobbyJS(){
 	const startButton = document.getElementById("start_game");
 	if (startButton && !startButton.dataset.listenerAdded) {
 		startButton.addEventListener('click', function() {
+			if (!gameState) return;
+			const payload = {
+				nextPhase: true
+			};
+			if (gameState.isHost) {
+				payload.botMode = hostSettings.botMode;
+				payload.localModel = hostSettings.localModel;
+				payload.localBotCount = hostSettings.localBotCount;
+			}
 			fetch('/gameState', {
 				method: 'POST',
 				headers: { 'Content-Type': 'application/json' },
-				body: JSON.stringify({ nextPhase: true })
+				body: JSON.stringify(payload)
 			});
 		});
 		startButton.dataset.listenerAdded = "True";
 	}
+	if (startButton) {
+		startButton.disabled = !gameState.isHost;
+		startButton.title = gameState.isHost ? "" : "Waiting for host";
+	}
+	renderHostPanel();
 	const myId = gameState.myId;
 	const lobby = document.getElementById("lobby_list");
 	if (lobby) {
