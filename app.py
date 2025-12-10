@@ -16,17 +16,10 @@ app.secret_key = os.getenv("SECRET_KEY", "dev_fallback_secret_key")
 
 
 class Player:
-<<<<<<< HEAD
     def __init__(self, user_id, is_bot=False):
         self.user_id = user_id
         self.votes = 0
         self.is_bot = is_bot
-=======
-    def __init__(self, user_id, is_a_bot):
-        self.user_id = user_id
-        self.votes = 0
-        self.is_a_bot = is_a_bot
->>>>>>> main
 
 
 players = {}
@@ -173,14 +166,10 @@ def gameState():
             turnID = None
 
         currentPhase = gamePhase[current_phase_index]
-<<<<<<< HEAD
         player_list = [
             {"user_id": p.user_id, "votes": p.votes, "isBot": p.is_bot}
             for p in players.values()
         ]
-=======
-        player_list = [{"user_id": p.user_id, "votes": p.votes, "is_a_bot": p.is_a_bot} for p in players.values()]
->>>>>>> main
 
         return jsonify({
             "gamePhase": currentPhase,
@@ -227,16 +216,13 @@ def addPlayer():
 
     if uid not in active_users and len(active_users) <= 6:
         active_users.append(uid)
-<<<<<<< HEAD
     if uid not in players:
         players[uid] = Player(uid, is_bot=getattr(g, "is_bot", False))
     ensure_host_present()
-=======
 
     if uid not in players and len(players) <= 6:
         players[uid] = Player(uid, is_a_bot)  # Pass true for bots
 
->>>>>>> main
     return jsonify(status="ok")
 
 
@@ -289,7 +275,6 @@ def addMessage():
 
 @app.route("/vote", methods=["POST"])
 def vote():
-<<<<<<< HEAD
     global current_phase_index, votes_submitted, votes_recorded
     if getattr(g, "is_bot", False):
         return jsonify(status="ok")
@@ -300,12 +285,6 @@ def vote():
     if uid in votes_recorded:
         return jsonify(status="ok")
 
-=======
-    global current_phase_index, votes_submitted
-    data = request.get_json()
-
-    # { "votes": [ { "target": "<user_id>", "guess": "human"|"ai" }, ... ] }
->>>>>>> main
     votes = data.get("votes", [])
 
     for vote_payload in votes:
@@ -316,20 +295,12 @@ def vote():
         if guess == "ai" and target in players:
             players[target].votes += 1
 
-<<<<<<< HEAD
     votes_recorded.add(uid)
     votes_submitted = len(votes_recorded)
 
     human_players = [p for p in players.values() if not p.is_bot]
     if votes_submitted >= len(human_players) and human_players:
         current_phase_index = len(gamePhase) - 1
-=======
-    votes_submitted = votes_submitted + 1
-
-    # minus 2 to remove the bots having to vote
-    if votes_submitted == len(players) - 2:
-        current_phase_index = 4
->>>>>>> main
 
     return jsonify(status="ok")
 
