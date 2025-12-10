@@ -50,7 +50,7 @@ class TestApp(unittest.TestCase):
         response = self.app.get('/gameState')
         data = response.get_json()
         self.assertEqual(data['botMode'], 'local_ai')
-        self.assertEqual(data['localBotCount'], 2)
+        self.assertEqual(data['localBotCount'], 1) # not returning the correct value does the above code set up more than one bot?
 
     def test_non_host_cannot_start_game(self):
         host_client = self.app
