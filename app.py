@@ -315,7 +315,7 @@ def resetGame():
     new_players = {}
     for uid in kept_users:
         if uid in players:
-            new_players[uid] = Player(uid, players[uid].is_a_bot)
+            new_players[uid] = Player(uid, players[uid].is_bot)
         else:
             # fallback if somehow missing
             new_players[uid] = Player(uid, True)
