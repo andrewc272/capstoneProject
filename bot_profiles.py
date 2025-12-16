@@ -53,4 +53,4 @@ Avoid any special characters and emojis.
     }
 }
 
-DEFAULT_LOCAL_MODEL = "studio"
+DEFAULT_LOCAL_MODEL = "lounge"
