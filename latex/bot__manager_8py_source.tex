@@ -1,0 +1,93 @@
+\doxysection{bot\+\_\+manager.\+py}
+\hypertarget{bot__manager_8py_source}{}\label{bot__manager_8py_source}\mbox{\hyperlink{bot__manager_8py}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{bot__manager_8py_source_l00001}\mbox{\hyperlink{namespacebot__manager}{00001}}\ \textcolor{keyword}{import}\ os}
+\DoxyCodeLine{\Hypertarget{bot__manager_8py_source_l00002}00002\ \textcolor{keyword}{import}\ subprocess}
+\DoxyCodeLine{\Hypertarget{bot__manager_8py_source_l00003}00003\ \textcolor{keyword}{import}\ sys}
+\DoxyCodeLine{\Hypertarget{bot__manager_8py_source_l00004}00004\ \textcolor{keyword}{import}\ threading}
+\DoxyCodeLine{\Hypertarget{bot__manager_8py_source_l00005}00005\ \textcolor{keyword}{from}\ pathlib\ \textcolor{keyword}{import}\ Path}
+\DoxyCodeLine{\Hypertarget{bot__manager_8py_source_l00006}00006\ \textcolor{keyword}{from}\ typing\ \textcolor{keyword}{import}\ Dict,\ List}
+\DoxyCodeLine{\Hypertarget{bot__manager_8py_source_l00007}00007\ }
+\DoxyCodeLine{\Hypertarget{bot__manager_8py_source_l00008}00008\ }
+\DoxyCodeLine{\Hypertarget{bot__manager_8py_source_l00009}\mbox{\hyperlink{classbot__manager_1_1_local_bot_manager}{00009}}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classbot__manager_1_1_local_bot_manager}{LocalBotManager}}:}
+\DoxyCodeLine{\Hypertarget{bot__manager_8py_source_l00010}00010\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Manages\ the\ lifecycle\ of\ locally\ hosted\ bot\ processes."{}"{}"{}}}
+\DoxyCodeLine{\Hypertarget{bot__manager_8py_source_l00011}00011\ }
+\DoxyCodeLine{\Hypertarget{bot__manager_8py_source_l00012}\mbox{\hyperlink{classbot__manager_1_1_local_bot_manager_ac9d409ace74d9e2c4d99ced5c7757905}{00012}}\ \ \ \ \ \textcolor{keyword}{def\ }\mbox{\hyperlink{classbot__manager_1_1_local_bot_manager_ac9d409ace74d9e2c4d99ced5c7757905}{\_\_init\_\_}}(self,\ base\_dir:\ Path,\ disabled:\ bool\ =\ \textcolor{keyword}{False}):}
+\DoxyCodeLine{\Hypertarget{bot__manager_8py_source_l00013}\mbox{\hyperlink{classbot__manager_1_1_local_bot_manager_a4547d0a95dee2ae35eaaf2707e13d360}{00013}}\ \ \ \ \ \ \ \ \ self.\mbox{\hyperlink{classbot__manager_1_1_local_bot_manager_a4547d0a95dee2ae35eaaf2707e13d360}{\_base\_dir}}\ =\ Path(base\_dir)}
+\DoxyCodeLine{\Hypertarget{bot__manager_8py_source_l00014}\mbox{\hyperlink{classbot__manager_1_1_local_bot_manager_acc97fcd1b2b4ff47a8520b3a3dfaab7c}{00014}}\ \ \ \ \ \ \ \ \ self.\mbox{\hyperlink{classbot__manager_1_1_local_bot_manager_acc97fcd1b2b4ff47a8520b3a3dfaab7c}{\_disabled}}\ =\ disabled}
+\DoxyCodeLine{\Hypertarget{bot__manager_8py_source_l00015}\mbox{\hyperlink{classbot__manager_1_1_local_bot_manager_a21e1f477e8a3554194b2da67aa1a12d3}{00015}}\ \ \ \ \ \ \ \ \ self.\mbox{\hyperlink{classbot__manager_1_1_local_bot_manager_a21e1f477e8a3554194b2da67aa1a12d3}{\_lock}}\ =\ threading.Lock()}
+\DoxyCodeLine{\Hypertarget{bot__manager_8py_source_l00016}\mbox{\hyperlink{classbot__manager_1_1_local_bot_manager_a2d3d81ad53a39e6cd2d66e0c43ca1512}{00016}}\ \ \ \ \ \ \ \ \ self.\mbox{\hyperlink{classbot__manager_1_1_local_bot_manager_a2d3d81ad53a39e6cd2d66e0c43ca1512}{\_processes}}:\ List[subprocess.Popen]\ =\ []}
+\DoxyCodeLine{\Hypertarget{bot__manager_8py_source_l00017}\mbox{\hyperlink{classbot__manager_1_1_local_bot_manager_a66709cd5d0fa1868e03f71a73b50545d}{00017}}\ \ \ \ \ \ \ \ \ self.\mbox{\hyperlink{classbot__manager_1_1_local_bot_manager_a66709cd5d0fa1868e03f71a73b50545d}{\_profile\_id}}:\ str\ |\ \textcolor{keywordtype}{None}\ =\ \textcolor{keywordtype}{None}}
+\DoxyCodeLine{\Hypertarget{bot__manager_8py_source_l00018}\mbox{\hyperlink{classbot__manager_1_1_local_bot_manager_a5105489d1e3083889c429a5983d657b6}{00018}}\ \ \ \ \ \ \ \ \ self.\mbox{\hyperlink{classbot__manager_1_1_local_bot_manager_a5105489d1e3083889c429a5983d657b6}{\_desired\_count}}:\ int\ =\ 0}
+\DoxyCodeLine{\Hypertarget{bot__manager_8py_source_l00019}\mbox{\hyperlink{classbot__manager_1_1_local_bot_manager_a5ef21063c9212f1387338a26c7d0a0bb}{00019}}\ \ \ \ \ \ \ \ \ self.\mbox{\hyperlink{classbot__manager_1_1_local_bot_manager_a5ef21063c9212f1387338a26c7d0a0bb}{\_server\_url}}:\ str\ |\ \textcolor{keywordtype}{None}\ =\ \textcolor{keywordtype}{None}}
+\DoxyCodeLine{\Hypertarget{bot__manager_8py_source_l00020}00020\ }
+\DoxyCodeLine{\Hypertarget{bot__manager_8py_source_l00021}\mbox{\hyperlink{classbot__manager_1_1_local_bot_manager_ade8c1e72eb2a0318a577fe6474ace3b0}{00021}}\ \ \ \ \ \textcolor{keyword}{def\ }\mbox{\hyperlink{classbot__manager_1_1_local_bot_manager_ade8c1e72eb2a0318a577fe6474ace3b0}{ensure\_state}}(self,\ profile\_id:\ str,\ count:\ int,\ server\_url:\ str):}
+\DoxyCodeLine{\Hypertarget{bot__manager_8py_source_l00022}00022\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Start\ bots\ that\ match\ the\ desired\ profile/count\ and\ stop\ old\ ones."{}"{}"{}}}
+\DoxyCodeLine{\Hypertarget{bot__manager_8py_source_l00023}00023\ \ \ \ \ \ \ \ \ count\ =\ max(0,\ int(count))}
+\DoxyCodeLine{\Hypertarget{bot__manager_8py_source_l00024}00024\ \ \ \ \ \ \ \ \ \textcolor{keyword}{with}\ self.\mbox{\hyperlink{classbot__manager_1_1_local_bot_manager_a21e1f477e8a3554194b2da67aa1a12d3}{\_lock}}:}
+\DoxyCodeLine{\Hypertarget{bot__manager_8py_source_l00025}00025\ \ \ \ \ \ \ \ \ \ \ \ \ self.\mbox{\hyperlink{classbot__manager_1_1_local_bot_manager_a5105489d1e3083889c429a5983d657b6}{\_desired\_count}}\ =\ count}
+\DoxyCodeLine{\Hypertarget{bot__manager_8py_source_l00026}00026\ \ \ \ \ \ \ \ \ \ \ \ \ self.\mbox{\hyperlink{classbot__manager_1_1_local_bot_manager_a66709cd5d0fa1868e03f71a73b50545d}{\_profile\_id}}\ =\ profile\_id}
+\DoxyCodeLine{\Hypertarget{bot__manager_8py_source_l00027}00027\ \ \ \ \ \ \ \ \ \ \ \ \ self.\mbox{\hyperlink{classbot__manager_1_1_local_bot_manager_a5ef21063c9212f1387338a26c7d0a0bb}{\_server\_url}}\ =\ server\_url}
+\DoxyCodeLine{\Hypertarget{bot__manager_8py_source_l00028}00028\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ self.\mbox{\hyperlink{classbot__manager_1_1_local_bot_manager_acc97fcd1b2b4ff47a8520b3a3dfaab7c}{\_disabled}}\ \textcolor{keywordflow}{or}\ count\ ==\ 0\ \textcolor{keywordflow}{or}\ \textcolor{keywordflow}{not}\ profile\_id:}
+\DoxyCodeLine{\Hypertarget{bot__manager_8py_source_l00029}00029\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ self.\mbox{\hyperlink{classbot__manager_1_1_local_bot_manager_add0a685a1a8a04213208c9005c078968}{\_stop\_locked}}()}
+\DoxyCodeLine{\Hypertarget{bot__manager_8py_source_l00030}00030\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}}
+\DoxyCodeLine{\Hypertarget{bot__manager_8py_source_l00031}00031\ }
+\DoxyCodeLine{\Hypertarget{bot__manager_8py_source_l00032}00032\ \ \ \ \ \ \ \ \ \ \ \ \ alive\ =\ [p\ \textcolor{keywordflow}{for}\ p\ \textcolor{keywordflow}{in}\ self.\mbox{\hyperlink{classbot__manager_1_1_local_bot_manager_a2d3d81ad53a39e6cd2d66e0c43ca1512}{\_processes}}\ \textcolor{keywordflow}{if}\ p.poll()\ \textcolor{keywordflow}{is}\ \textcolor{keywordtype}{None}]}
+\DoxyCodeLine{\Hypertarget{bot__manager_8py_source_l00033}00033\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ len(alive)\ ==\ count\ \textcolor{keywordflow}{and}\ alive:}
+\DoxyCodeLine{\Hypertarget{bot__manager_8py_source_l00034}00034\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ self.\mbox{\hyperlink{classbot__manager_1_1_local_bot_manager_a2d3d81ad53a39e6cd2d66e0c43ca1512}{\_processes}}\ =\ alive}
+\DoxyCodeLine{\Hypertarget{bot__manager_8py_source_l00035}00035\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}}
+\DoxyCodeLine{\Hypertarget{bot__manager_8py_source_l00036}00036\ }
+\DoxyCodeLine{\Hypertarget{bot__manager_8py_source_l00037}00037\ \ \ \ \ \ \ \ \ \ \ \ \ self.\mbox{\hyperlink{classbot__manager_1_1_local_bot_manager_add0a685a1a8a04213208c9005c078968}{\_stop\_locked}}()}
+\DoxyCodeLine{\Hypertarget{bot__manager_8py_source_l00038}00038\ \ \ \ \ \ \ \ \ \ \ \ \ self.\mbox{\hyperlink{classbot__manager_1_1_local_bot_manager_aa76ff282546f3c3faec81aa867a65328}{\_start\_locked}}(profile\_id,\ count,\ server\_url)}
+\DoxyCodeLine{\Hypertarget{bot__manager_8py_source_l00039}00039\ }
+\DoxyCodeLine{\Hypertarget{bot__manager_8py_source_l00040}\mbox{\hyperlink{classbot__manager_1_1_local_bot_manager_aaefbf9943f29bc3d0b37ad24a959325d}{00040}}\ \ \ \ \ \textcolor{keyword}{def\ }\mbox{\hyperlink{classbot__manager_1_1_local_bot_manager_aaefbf9943f29bc3d0b37ad24a959325d}{stop}}(self):}
+\DoxyCodeLine{\Hypertarget{bot__manager_8py_source_l00041}00041\ \ \ \ \ \ \ \ \ \textcolor{keyword}{with}\ self.\mbox{\hyperlink{classbot__manager_1_1_local_bot_manager_a21e1f477e8a3554194b2da67aa1a12d3}{\_lock}}:}
+\DoxyCodeLine{\Hypertarget{bot__manager_8py_source_l00042}00042\ \ \ \ \ \ \ \ \ \ \ \ \ self.\mbox{\hyperlink{classbot__manager_1_1_local_bot_manager_add0a685a1a8a04213208c9005c078968}{\_stop\_locked}}()}
+\DoxyCodeLine{\Hypertarget{bot__manager_8py_source_l00043}00043\ }
+\DoxyCodeLine{\Hypertarget{bot__manager_8py_source_l00044}\mbox{\hyperlink{classbot__manager_1_1_local_bot_manager_a620100d6eb748f7f7893a55be711f005}{00044}}\ \ \ \ \ \textcolor{keyword}{def\ }\mbox{\hyperlink{classbot__manager_1_1_local_bot_manager_a620100d6eb748f7f7893a55be711f005}{status}}(self)\ -\/>\ Dict[str,\ object]:}
+\DoxyCodeLine{\Hypertarget{bot__manager_8py_source_l00045}00045\ \ \ \ \ \ \ \ \ \textcolor{keyword}{with}\ self.\mbox{\hyperlink{classbot__manager_1_1_local_bot_manager_a21e1f477e8a3554194b2da67aa1a12d3}{\_lock}}:}
+\DoxyCodeLine{\Hypertarget{bot__manager_8py_source_l00046}00046\ \ \ \ \ \ \ \ \ \ \ \ \ alive\ =\ [p\ \textcolor{keywordflow}{for}\ p\ \textcolor{keywordflow}{in}\ self.\mbox{\hyperlink{classbot__manager_1_1_local_bot_manager_a2d3d81ad53a39e6cd2d66e0c43ca1512}{\_processes}}\ \textcolor{keywordflow}{if}\ p.poll()\ \textcolor{keywordflow}{is}\ \textcolor{keywordtype}{None}]}
+\DoxyCodeLine{\Hypertarget{bot__manager_8py_source_l00047}00047\ \ \ \ \ \ \ \ \ \ \ \ \ self.\mbox{\hyperlink{classbot__manager_1_1_local_bot_manager_a2d3d81ad53a39e6cd2d66e0c43ca1512}{\_processes}}\ =\ alive}
+\DoxyCodeLine{\Hypertarget{bot__manager_8py_source_l00048}00048\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \{}
+\DoxyCodeLine{\Hypertarget{bot__manager_8py_source_l00049}00049\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}running"{}}:\ len(alive),}
+\DoxyCodeLine{\Hypertarget{bot__manager_8py_source_l00050}00050\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}profile"{}}:\ self.\mbox{\hyperlink{classbot__manager_1_1_local_bot_manager_a66709cd5d0fa1868e03f71a73b50545d}{\_profile\_id}},}
+\DoxyCodeLine{\Hypertarget{bot__manager_8py_source_l00051}00051\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}desired"{}}:\ self.\mbox{\hyperlink{classbot__manager_1_1_local_bot_manager_a5105489d1e3083889c429a5983d657b6}{\_desired\_count}},}
+\DoxyCodeLine{\Hypertarget{bot__manager_8py_source_l00052}00052\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}server"{}}:\ self.\mbox{\hyperlink{classbot__manager_1_1_local_bot_manager_a5ef21063c9212f1387338a26c7d0a0bb}{\_server\_url}},}
+\DoxyCodeLine{\Hypertarget{bot__manager_8py_source_l00053}00053\ \ \ \ \ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{bot__manager_8py_source_l00054}00054\ }
+\DoxyCodeLine{\Hypertarget{bot__manager_8py_source_l00055}\mbox{\hyperlink{classbot__manager_1_1_local_bot_manager_aa76ff282546f3c3faec81aa867a65328}{00055}}\ \ \ \ \ \textcolor{keyword}{def\ }\mbox{\hyperlink{classbot__manager_1_1_local_bot_manager_aa76ff282546f3c3faec81aa867a65328}{\_start\_locked}}(self,\ profile\_id:\ str,\ count:\ int,\ server\_url:\ str):}
+\DoxyCodeLine{\Hypertarget{bot__manager_8py_source_l00056}00056\ \ \ \ \ \ \ \ \ script\ =\ self.\mbox{\hyperlink{classbot__manager_1_1_local_bot_manager_a4547d0a95dee2ae35eaaf2707e13d360}{\_base\_dir}}\ /\ \textcolor{stringliteral}{"{}Bot"{}}\ /\ \textcolor{stringliteral}{"{}local\_agent.py"{}}}
+\DoxyCodeLine{\Hypertarget{bot__manager_8py_source_l00057}00057\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ \textcolor{keywordflow}{not}\ script.exists():}
+\DoxyCodeLine{\Hypertarget{bot__manager_8py_source_l00058}00058\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}}
+\DoxyCodeLine{\Hypertarget{bot__manager_8py_source_l00059}00059\ }
+\DoxyCodeLine{\Hypertarget{bot__manager_8py_source_l00060}00060\ \ \ \ \ \ \ \ \ python\_exec\ =\ sys.executable}
+\DoxyCodeLine{\Hypertarget{bot__manager_8py_source_l00061}00061\ \ \ \ \ \ \ \ \ env\_template\ =\ os.environ.copy()}
+\DoxyCodeLine{\Hypertarget{bot__manager_8py_source_l00062}00062\ }
+\DoxyCodeLine{\Hypertarget{bot__manager_8py_source_l00063}00063\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ index\ \textcolor{keywordflow}{in}\ range(count):}
+\DoxyCodeLine{\Hypertarget{bot__manager_8py_source_l00064}00064\ \ \ \ \ \ \ \ \ \ \ \ \ env\ =\ env\_template.copy()}
+\DoxyCodeLine{\Hypertarget{bot__manager_8py_source_l00065}00065\ \ \ \ \ \ \ \ \ \ \ \ \ env[\textcolor{stringliteral}{"{}LOCAL\_AGENT\_PROFILE"{}}]\ =\ profile\_id}
+\DoxyCodeLine{\Hypertarget{bot__manager_8py_source_l00066}00066\ \ \ \ \ \ \ \ \ \ \ \ \ env[\textcolor{stringliteral}{"{}LOCAL\_AGENT\_NAME"{}}]\ =\ f\textcolor{stringliteral}{"{}LocalBot-\/\{index\ +\ 1\}"{}}}
+\DoxyCodeLine{\Hypertarget{bot__manager_8py_source_l00067}00067\ \ \ \ \ \ \ \ \ \ \ \ \ env[\textcolor{stringliteral}{"{}CAPSTONE\_SERVER\_URL"{}}]\ =\ server\_url}
+\DoxyCodeLine{\Hypertarget{bot__manager_8py_source_l00068}00068\ \ \ \ \ \ \ \ \ \ \ \ \ env[\textcolor{stringliteral}{"{}LOCAL\_AGENT\_POSITION"{}}]\ =\ str(index\ +\ 1)}
+\DoxyCodeLine{\Hypertarget{bot__manager_8py_source_l00069}00069\ \ \ \ \ \ \ \ \ \ \ \ \ command\ =\ [python\_exec,\ str(script)]}
+\DoxyCodeLine{\Hypertarget{bot__manager_8py_source_l00070}00070\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}:}
+\DoxyCodeLine{\Hypertarget{bot__manager_8py_source_l00071}00071\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ proc\ =\ subprocess.Popen(command,\ cwd=self.\mbox{\hyperlink{classbot__manager_1_1_local_bot_manager_a4547d0a95dee2ae35eaaf2707e13d360}{\_base\_dir}},\ env=env)}
+\DoxyCodeLine{\Hypertarget{bot__manager_8py_source_l00072}00072\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ self.\mbox{\hyperlink{classbot__manager_1_1_local_bot_manager_a2d3d81ad53a39e6cd2d66e0c43ca1512}{\_processes}}.append(proc)}
+\DoxyCodeLine{\Hypertarget{bot__manager_8py_source_l00073}00073\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{except}\ Exception:}
+\DoxyCodeLine{\Hypertarget{bot__manager_8py_source_l00074}00074\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ If\ spawning\ fails\ we\ ensure\ nothing\ stale\ stays\ around.}}
+\DoxyCodeLine{\Hypertarget{bot__manager_8py_source_l00075}00075\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ self.\mbox{\hyperlink{classbot__manager_1_1_local_bot_manager_add0a685a1a8a04213208c9005c078968}{\_stop\_locked}}()}
+\DoxyCodeLine{\Hypertarget{bot__manager_8py_source_l00076}00076\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break}}
+\DoxyCodeLine{\Hypertarget{bot__manager_8py_source_l00077}00077\ }
+\DoxyCodeLine{\Hypertarget{bot__manager_8py_source_l00078}\mbox{\hyperlink{classbot__manager_1_1_local_bot_manager_add0a685a1a8a04213208c9005c078968}{00078}}\ \ \ \ \ \textcolor{keyword}{def\ }\mbox{\hyperlink{classbot__manager_1_1_local_bot_manager_add0a685a1a8a04213208c9005c078968}{\_stop\_locked}}(self):}
+\DoxyCodeLine{\Hypertarget{bot__manager_8py_source_l00079}00079\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ proc\ \textcolor{keywordflow}{in}\ self.\mbox{\hyperlink{classbot__manager_1_1_local_bot_manager_a2d3d81ad53a39e6cd2d66e0c43ca1512}{\_processes}}:}
+\DoxyCodeLine{\Hypertarget{bot__manager_8py_source_l00080}00080\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ proc.poll()\ \textcolor{keywordflow}{is}\ \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{\Hypertarget{bot__manager_8py_source_l00081}00081\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}:}
+\DoxyCodeLine{\Hypertarget{bot__manager_8py_source_l00082}00082\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ proc.terminate()}
+\DoxyCodeLine{\Hypertarget{bot__manager_8py_source_l00083}00083\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ proc.wait(timeout=5)}
+\DoxyCodeLine{\Hypertarget{bot__manager_8py_source_l00084}00084\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{except}\ subprocess.TimeoutExpired:}
+\DoxyCodeLine{\Hypertarget{bot__manager_8py_source_l00085}00085\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ proc.kill()}
+\DoxyCodeLine{\Hypertarget{bot__manager_8py_source_l00086}00086\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{except}\ Exception:}
+\DoxyCodeLine{\Hypertarget{bot__manager_8py_source_l00087}00087\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ proc.kill()}
+\DoxyCodeLine{\Hypertarget{bot__manager_8py_source_l00088}00088\ \ \ \ \ \ \ \ \ self.\mbox{\hyperlink{classbot__manager_1_1_local_bot_manager_a2d3d81ad53a39e6cd2d66e0c43ca1512}{\_processes}}\ =\ []}
+
+\end{DoxyCode}

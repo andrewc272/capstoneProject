@@ -1,0 +1,350 @@
+\doxysection{app.\+py}
+\hypertarget{app_8py_source}{}\label{app_8py_source}\mbox{\hyperlink{app_8py}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00001}\mbox{\hyperlink{namespaceapp}{00001}}\ \textcolor{keyword}{import}\ atexit}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00002}00002\ \textcolor{keyword}{import}\ os}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00003}00003\ \textcolor{keyword}{import}\ uuid}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00004}00004\ \textcolor{keyword}{from}\ pathlib\ \textcolor{keyword}{import}\ Path}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00005}00005\ }
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00006}00006\ \textcolor{keyword}{from}\ flask\ \textcolor{keyword}{import}\ *}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00007}00007\ \textcolor{keyword}{from}\ dotenv\ \textcolor{keyword}{import}\ load\_dotenv}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00008}00008\ }
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00009}00009\ \textcolor{keyword}{from}\ bot\_manager\ \textcolor{keyword}{import}\ LocalBotManager}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00010}00010\ \textcolor{keyword}{from}\ bot\_profiles\ \textcolor{keyword}{import}\ DEFAULT\_LOCAL\_MODEL,\ LOCAL\_BOT\_PRESETS}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00011}00011\ }
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00012}00012\ load\_dotenv()}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00013}00013\ }
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00014}\mbox{\hyperlink{namespaceapp_a675b4ea702c13dc4b8c05f985a25b496}{00014}}\ app\ =\ Flask(\_\_name\_\_)}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00015}\mbox{\hyperlink{namespaceapp_adca7658ff5c9024a5353574d2c01cbd2}{00015}}\ app.secret\_key\ =\ os.getenv(\textcolor{stringliteral}{"{}SECRET\_KEY"{}},\ \textcolor{stringliteral}{"{}dev\_fallback\_secret\_key"{}})}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00016}00016\ }
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00017}00017\ }
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00018}\mbox{\hyperlink{classapp_1_1_player}{00018}}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classapp_1_1_player}{Player}}:}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00019}\mbox{\hyperlink{classapp_1_1_player_a92d9184a34e5f1fd5f1247e118c263d3}{00019}}\ \ \ \ \ \textcolor{keyword}{def\ }\mbox{\hyperlink{classapp_1_1_player_a92d9184a34e5f1fd5f1247e118c263d3}{\_\_init\_\_}}(self,\ user\_id,\ is\_bot=False):}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00020}\mbox{\hyperlink{classapp_1_1_player_a7a89bd7f681add286614e4fe10700f3e}{00020}}\ \ \ \ \ \ \ \ \ self.\mbox{\hyperlink{classapp_1_1_player_a7a89bd7f681add286614e4fe10700f3e}{user\_id}}\ =\ user\_id}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00021}\mbox{\hyperlink{classapp_1_1_player_a4aae817b0217bb0993ce089364d3f46b}{00021}}\ \ \ \ \ \ \ \ \ self.\mbox{\hyperlink{classapp_1_1_player_a4aae817b0217bb0993ce089364d3f46b}{votes}}\ =\ 0}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00022}\mbox{\hyperlink{classapp_1_1_player_a656f5ae5d26e85bc146bd4fa006ce2bc}{00022}}\ \ \ \ \ \ \ \ \ self.\mbox{\hyperlink{classapp_1_1_player_a656f5ae5d26e85bc146bd4fa006ce2bc}{is\_bot}}\ =\ is\_bot}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00023}00023\ }
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00024}00024\ }
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00025}\mbox{\hyperlink{namespaceapp_a3374c1e4d3655c0d9083d07a4aa904f5}{00025}}\ players\ =\ \{\}}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00026}\mbox{\hyperlink{namespaceapp_a2edf7cdb14bb61d700a66c61d6a0f819}{00026}}\ active\_users\ =\ []}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00027}00027\ }
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00028}\mbox{\hyperlink{namespaceapp_ac81176928fa40754afb18b8c90f5553c}{00028}}\ gamePhase\ =\ [\textcolor{stringliteral}{"{}intro"{}},\ \textcolor{stringliteral}{"{}lobby"{}},\ \textcolor{stringliteral}{"{}chat"{}},\ \textcolor{stringliteral}{"{}guess"{}},\ \textcolor{stringliteral}{"{}results"{}}]}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00029}\mbox{\hyperlink{namespaceapp_ab3e41f7e80def2df33ef56532015a4d0}{00029}}\ current\_phase\_index\ =\ 0}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00030}00030\ }
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00031}\mbox{\hyperlink{namespaceapp_a4539acc17e1994e492dfba0068ed310f}{00031}}\ chats\ =\ []}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00032}\mbox{\hyperlink{namespaceapp_af0d82fe96f54ba47f4f3c97ccee9edaa}{00032}}\ turn\_index\ =\ 0}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00033}\mbox{\hyperlink{namespaceapp_a6dddbac012e3d8af810deafc0ef3e566}{00033}}\ turnID\ =\ \textcolor{keywordtype}{None}}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00034}\mbox{\hyperlink{namespaceapp_ab92bc9d199051e417d22590cde52f54d}{00034}}\ votes\_submitted\ =\ 0}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00035}\mbox{\hyperlink{namespaceapp_a370f49a795baf9e1f4aabb8bafa2bb4f}{00035}}\ votes\_recorded\ =\ set()}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00036}00036\ }
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00037}\mbox{\hyperlink{namespaceapp_a4f080334280d7b85d8c5d05c89163d06}{00037}}\ host\_id\ =\ \textcolor{keywordtype}{None}}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00038}00038\ }
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00039}\mbox{\hyperlink{namespaceapp_a5a9b59adbc87c63dd2d6c879219c1c14}{00039}}\ bot\_settings\ =\ \{}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00040}00040\ \ \ \ \ \textcolor{stringliteral}{"{}mode"{}}:\ \textcolor{stringliteral}{"{}cloud\_api"{}},}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00041}00041\ \ \ \ \ \textcolor{stringliteral}{"{}local\_model"{}}:\ DEFAULT\_LOCAL\_MODEL,}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00042}00042\ \ \ \ \ \textcolor{stringliteral}{"{}local\_count"{}}:\ 1,}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00043}00043\ \}}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00044}00044\ }
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00045}\mbox{\hyperlink{namespaceapp_a0ae24c08fc5bd8e0ac46236150b9f102}{00045}}\ LOCAL\_SERVER\_URL\ =\ os.getenv(\textcolor{stringliteral}{"{}LOCAL\_BOT\_SERVER\_URL"{}},\ \textcolor{stringliteral}{"{}http://127.0.0.1:5000"{}}).rstrip(\textcolor{stringliteral}{"{}/"{}})}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00046}\mbox{\hyperlink{namespaceapp_aad37d43eae90059dc16541fd70320f0e}{00046}}\ BOT\_MANAGER\_DISABLED\ =\ os.getenv(\textcolor{stringliteral}{"{}CAPSTONE\_SKIP\_BOT\_MANAGER"{}})\ ==\ \textcolor{stringliteral}{"{}1"{}}}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00047}\mbox{\hyperlink{namespaceapp_a802b197689642ad094031cecef0a539c}{00047}}\ project\_dir\ =\ Path(\_\_file\_\_).resolve().parent}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00048}\mbox{\hyperlink{namespaceapp_a6f8bf9b8be284251548cdfe4625b4fba}{00048}}\ bot\_manager\ =\ \mbox{\hyperlink{classbot__manager_1_1_local_bot_manager}{LocalBotManager}}(project\_dir,\ disabled=BOT\_MANAGER\_DISABLED)}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00049}00049\ atexit.register(bot\_manager.stop)}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00050}00050\ }
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00051}00051\ }
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00052}\mbox{\hyperlink{namespaceapp_aa5ff1b306801d617f70d05e4c5447739}{00052}}\ \textcolor{keyword}{def\ }\mbox{\hyperlink{namespaceapp_aa5ff1b306801d617f70d05e4c5447739}{reset\_state}}():}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00053}00053\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Utility\ to\ reset\ global\ state\ (used\ by\ tests)."{}"{}"{}}}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00054}00054\ \ \ \ \ \textcolor{keyword}{global}\ players,\ active\_users,\ current\_phase\_index,\ chats,\ turn\_index,\ turnID}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00055}00055\ \ \ \ \ \textcolor{keyword}{global}\ votes\_submitted,\ votes\_recorded,\ host\_id,\ bot\_settings}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00056}00056\ }
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00057}00057\ \ \ \ \ players\ =\ \{\}}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00058}00058\ \ \ \ \ active\_users\ =\ []}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00059}00059\ \ \ \ \ current\_phase\_index\ =\ 0}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00060}00060\ \ \ \ \ chats\ =\ []}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00061}00061\ \ \ \ \ turn\_index\ =\ 0}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00062}00062\ \ \ \ \ turnID\ =\ \textcolor{keywordtype}{None}}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00063}00063\ \ \ \ \ votes\_submitted\ =\ 0}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00064}00064\ \ \ \ \ votes\_recorded\ =\ set()}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00065}00065\ \ \ \ \ host\_id\ =\ \textcolor{keywordtype}{None}}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00066}00066\ \ \ \ \ bot\_settings\ =\ \{}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00067}00067\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}mode"{}}:\ \textcolor{stringliteral}{"{}cloud\_api"{}},}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00068}00068\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}local\_model"{}}:\ DEFAULT\_LOCAL\_MODEL,}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00069}00069\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}local\_count"{}}:\ 1,}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00070}00070\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00071}00071\ \ \ \ \ bot\_manager.stop()}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00072}00072\ }
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00073}00073\ }
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00074}\mbox{\hyperlink{namespaceapp_a8fdb1aa2a10f5e222604e8b5f7083e94}{00074}}\ \textcolor{keyword}{def\ }\mbox{\hyperlink{namespaceapp_a8fdb1aa2a10f5e222604e8b5f7083e94}{serialize\_model\_options}}():}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00075}00075\ \ \ \ \ \textcolor{keywordflow}{return}\ [}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00076}00076\ \ \ \ \ \ \ \ \ \{}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00077}00077\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}id"{}}:\ preset[\textcolor{stringliteral}{"{}id"{}}],}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00078}00078\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}label"{}}:\ preset[\textcolor{stringliteral}{"{}label"{}}],}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00079}00079\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}description"{}}:\ preset[\textcolor{stringliteral}{"{}description"{}}],}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00080}00080\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}hardware"{}}:\ preset[\textcolor{stringliteral}{"{}hardware"{}}],}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00081}00081\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00082}00082\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ preset\ \textcolor{keywordflow}{in}\ LOCAL\_BOT\_PRESETS.values()}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00083}00083\ \ \ \ \ ]}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00084}00084\ }
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00085}00085\ }
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00086}\mbox{\hyperlink{namespaceapp_ad0462f2772bfd1c0031975f54631457f}{00086}}\ \textcolor{keyword}{def\ }\mbox{\hyperlink{namespaceapp_ad0462f2772bfd1c0031975f54631457f}{ensure\_host\_present}}():}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00087}00087\ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Ensure\ host\_id\ points\ to\ the\ first\ human\ player\ if\ available."{}"{}"{}}}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00088}00088\ \ \ \ \ \textcolor{keyword}{global}\ host\_id}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00089}00089\ \ \ \ \ \textcolor{keywordflow}{if}\ host\_id\ \textcolor{keywordflow}{in}\ players\ \textcolor{keywordflow}{and}\ \textcolor{keywordflow}{not}\ players[host\_id].is\_bot:}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00090}00090\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00091}00091\ \ \ \ \ host\_id\ =\ \textcolor{keywordtype}{None}}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00092}00092\ \ \ \ \ \textcolor{keywordflow}{for}\ uid\ \textcolor{keywordflow}{in}\ active\_users:}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00093}00093\ \ \ \ \ \ \ \ \ player\ =\ players.get(uid)}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00094}00094\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ player\ \textcolor{keywordflow}{and}\ \textcolor{keywordflow}{not}\ player.is\_bot:}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00095}00095\ \ \ \ \ \ \ \ \ \ \ \ \ host\_id\ =\ uid}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00096}00096\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break}}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00097}00097\ }
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00098}00098\ }
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00099}\mbox{\hyperlink{namespaceapp_a7f662e9abb1a9e3b22a668dd6684c903}{00099}}\ \textcolor{keyword}{def\ }\mbox{\hyperlink{namespaceapp_a7f662e9abb1a9e3b22a668dd6684c903}{apply\_host\_configuration}}(data):}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00100}00100\ \ \ \ \ \textcolor{keyword}{global}\ bot\_settings}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00101}00101\ \ \ \ \ \textcolor{keywordflow}{if}\ \textcolor{keywordflow}{not}\ data:}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00102}00102\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00103}00103\ }
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00104}00104\ \ \ \ \ changed\ =\ \textcolor{keyword}{False}}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00105}00105\ \ \ \ \ mode\ =\ data.get(\textcolor{stringliteral}{"{}botMode"{}})}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00106}00106\ \ \ \ \ \textcolor{keywordflow}{if}\ mode\ \textcolor{keywordflow}{in}\ \{\textcolor{stringliteral}{"{}cloud\_api"{}},\ \textcolor{stringliteral}{"{}local\_ai"{}}\}\ \textcolor{keywordflow}{and}\ bot\_settings[\textcolor{stringliteral}{"{}mode"{}}]\ !=\ mode:}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00107}00107\ \ \ \ \ \ \ \ \ bot\_settings[\textcolor{stringliteral}{"{}mode"{}}]\ =\ mode}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00108}00108\ \ \ \ \ \ \ \ \ changed\ =\ \textcolor{keyword}{True}}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00109}00109\ }
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00110}00110\ \ \ \ \ model\ =\ data.get(\textcolor{stringliteral}{"{}localModel"{}})}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00111}00111\ \ \ \ \ \textcolor{keywordflow}{if}\ model\ \textcolor{keywordflow}{in}\ LOCAL\_BOT\_PRESETS\ \textcolor{keywordflow}{and}\ bot\_settings[\textcolor{stringliteral}{"{}local\_model"{}}]\ !=\ model:}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00112}00112\ \ \ \ \ \ \ \ \ bot\_settings[\textcolor{stringliteral}{"{}local\_model"{}}]\ =\ model}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00113}00113\ \ \ \ \ \ \ \ \ changed\ =\ \textcolor{keyword}{True}}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00114}00114\ }
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00115}00115\ \ \ \ \ \textcolor{comment}{\#\ Hardcoded\ to\ 1\ bot\ for\ now\ while\ perfecting\ behavior}}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00116}00116\ \ \ \ \ bot\_settings[\textcolor{stringliteral}{"{}local\_count"{}}]\ =\ 1}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00117}00117\ }
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00118}00118\ \ \ \ \ \textcolor{keywordflow}{if}\ changed:}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00119}00119\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceapp_ac91af40e234f3bae1b7f9d35a167292a}{sync\_local\_bots}}()}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00120}00120\ }
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00121}00121\ }
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00122}\mbox{\hyperlink{namespaceapp_ac91af40e234f3bae1b7f9d35a167292a}{00122}}\ \textcolor{keyword}{def\ }\mbox{\hyperlink{namespaceapp_ac91af40e234f3bae1b7f9d35a167292a}{sync\_local\_bots}}():}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00123}00123\ \ \ \ \ \textcolor{keywordflow}{if}\ bot\_settings[\textcolor{stringliteral}{"{}mode"{}}]\ !=\ \textcolor{stringliteral}{"{}local\_ai"{}}:}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00124}00124\ \ \ \ \ \ \ \ \ bot\_manager.ensure\_state(\textcolor{stringliteral}{"{}"{}},\ 0,\ LOCAL\_SERVER\_URL)}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00125}00125\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00126}00126\ \ \ \ \ profile\_id\ =\ bot\_settings.get(\textcolor{stringliteral}{"{}local\_model"{}},\ DEFAULT\_LOCAL\_MODEL)}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00127}00127\ \ \ \ \ \textcolor{comment}{\#\ Hardcoded\ to\ 1\ bot\ while\ perfecting\ behavior}}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00128}00128\ \ \ \ \ bot\_manager.ensure\_state(profile\_id,\ 1,\ LOCAL\_SERVER\_URL)}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00129}00129\ }
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00130}00130\ }
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00131}00131\ \textcolor{preprocessor}{@app.before\_request}}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00132}\mbox{\hyperlink{namespaceapp_a6517551facf1204ec1ccafb7b11b8283}{00132}}\ \textcolor{keyword}{def\ }\mbox{\hyperlink{namespaceapp_a6517551facf1204ec1ccafb7b11b8283}{assignSessionID}}():}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00133}00133\ \ \ \ \ bot\_header\ =\ request.headers.get(\textcolor{stringliteral}{"{}X-\/Bot-\/Name"{}})}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00134}00134\ \ \ \ \ \textcolor{keywordflow}{if}\ bot\_header:}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00135}00135\ \ \ \ \ \ \ \ \ g.user\_id\ =\ bot\_header}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00136}00136\ \ \ \ \ \ \ \ \ g.is\_bot\ =\ \textcolor{keyword}{True}}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00137}00137\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00138}00138\ \ \ \ \ g.is\_bot\ =\ \textcolor{keyword}{False}}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00139}00139\ \ \ \ \ \textcolor{keywordflow}{if}\ \textcolor{stringliteral}{"{}user\_id"{}}\ \textcolor{keywordflow}{not}\ \textcolor{keywordflow}{in}\ session:}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00140}00140\ \ \ \ \ \ \ \ \ session[\textcolor{stringliteral}{"{}user\_id"{}}]\ =\ str(uuid.uuid4())}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00141}00141\ \ \ \ \ g.user\_id\ =\ session[\textcolor{stringliteral}{"{}user\_id"{}}]}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00142}00142\ }
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00143}00143\ }
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00144}00144\ \textcolor{preprocessor}{@app.route("{}/"{})}}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00145}\mbox{\hyperlink{namespaceapp_a4727fbeb35bed8ec5000ba2eb4cec4a7}{00145}}\ \textcolor{keyword}{def\ }\mbox{\hyperlink{namespaceapp_a4727fbeb35bed8ec5000ba2eb4cec4a7}{index}}():}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00146}00146\ \ \ \ \ \textcolor{keywordflow}{return}\ render\_template(\textcolor{stringliteral}{"{}index.html"{}})}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00147}00147\ }
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00148}00148\ }
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00149}00149\ \textcolor{preprocessor}{@app.route("{}/gameState"{},\ methods=["{}GET"{},\ "{}POST"{}])}}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00150}\mbox{\hyperlink{namespaceapp_a3d1af7122717db8d2e89add422e3c8f0}{00150}}\ \textcolor{keyword}{def\ }\mbox{\hyperlink{namespaceapp_a3d1af7122717db8d2e89add422e3c8f0}{gameState}}():}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00151}00151\ \ \ \ \ \textcolor{keyword}{global}\ current\_phase\_index,\ chats,\ turn\_index,\ turnID,\ votes\_submitted}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00152}00152\ }
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00153}00153\ \ \ \ \ \textcolor{keywordflow}{if}\ request.method\ ==\ \textcolor{stringliteral}{"{}GET"{}}:}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00154}00154\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ len(chats)\ >=\ 10:}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00155}00155\ \ \ \ \ \ \ \ \ \ \ \ \ chats\ =\ []}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00156}00156\ \ \ \ \ \ \ \ \ \ \ \ \ current\_phase\_index\ =\ min(current\_phase\_index\ +\ 1,\ len(gamePhase)\ -\/\ 1)}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00157}00157\ }
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00158}00158\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ active\_users:}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00159}00159\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ gamePhase[current\_phase\_index]\ ==\ \textcolor{stringliteral}{"{}chat"{}}:}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00160}00160\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ turnID\ \textcolor{keywordflow}{not}\ \textcolor{keywordflow}{in}\ active\_users:}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00161}00161\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ turn\_index\ =\ 0}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00162}00162\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ turnID\ =\ active\_users[0]}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00163}00163\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}:}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00164}00164\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ turnID\ =\ \textcolor{keywordtype}{None}}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00165}00165\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}:}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00166}00166\ \ \ \ \ \ \ \ \ \ \ \ \ turnID\ =\ \textcolor{keywordtype}{None}}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00167}00167\ }
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00168}00168\ \ \ \ \ \ \ \ \ currentPhase\ =\ gamePhase[current\_phase\_index]}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00169}00169\ \ \ \ \ \ \ \ \ player\_list\ =\ [}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00170}00170\ \ \ \ \ \ \ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}user\_id"{}}:\ p.user\_id,\ \textcolor{stringliteral}{"{}votes"{}}:\ p.votes,\ \textcolor{stringliteral}{"{}isBot"{}}:\ p.is\_bot\}}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00171}00171\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ p\ \textcolor{keywordflow}{in}\ players.values()}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00172}00172\ \ \ \ \ \ \ \ \ ]}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00173}00173\ }
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00174}00174\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ jsonify(\{}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00175}00175\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}gamePhase"{}}:\ currentPhase,}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00176}00176\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}chats"{}}:\ chats,}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00177}00177\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}myId"{}}:\ g.user\_id,}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00178}00178\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}turnID"{}}:\ turnID,}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00179}00179\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}users"{}}:\ active\_users,}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00180}00180\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}players"{}}:\ player\_list,}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00181}00181\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}hostId"{}}:\ host\_id,}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00182}00182\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}isHost"{}}:\ g.user\_id\ ==\ host\_id,}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00183}00183\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}botMode"{}}:\ bot\_settings[\textcolor{stringliteral}{"{}mode"{}}],}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00184}00184\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}localModel"{}}:\ bot\_settings[\textcolor{stringliteral}{"{}local\_model"{}}],}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00185}00185\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}localBotCount"{}}:\ bot\_settings[\textcolor{stringliteral}{"{}local\_count"{}}],}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00186}00186\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}modelOptions"{}}:\ \mbox{\hyperlink{namespaceapp_a8fdb1aa2a10f5e222604e8b5f7083e94}{serialize\_model\_options}}(),}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00187}00187\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}botStatus"{}}:\ bot\_manager.status(),}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00188}00188\ \ \ \ \ \ \ \ \ \})}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00189}00189\ }
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00190}00190\ \ \ \ \ data\ =\ request.get\_json()\ \textcolor{keywordflow}{or}\ \{\}}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00191}00191\ \ \ \ \ \textcolor{keywordflow}{if}\ \textcolor{keywordflow}{not}\ g.is\_bot\ \textcolor{keywordflow}{and}\ (host\_id\ \textcolor{keywordflow}{is}\ \textcolor{keywordtype}{None}\ \textcolor{keywordflow}{or}\ g.user\_id\ ==\ host\_id):}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00192}00192\ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespaceapp_a7f662e9abb1a9e3b22a668dd6684c903}{apply\_host\_configuration}}(data)}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00193}00193\ }
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00194}00194\ \ \ \ \ \textcolor{keywordflow}{if}\ data.get(\textcolor{stringliteral}{"{}nextPhase"{}})\ \textcolor{keywordflow}{and}\ host\_id\ \textcolor{keywordflow}{and}\ \textcolor{keywordflow}{not}\ g.is\_bot\ \textcolor{keywordflow}{and}\ g.user\_id\ !=\ host\_id:}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00195}00195\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ jsonify(status=\textcolor{stringliteral}{"{}forbidden"{}}),\ 403}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00196}00196\ }
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00197}00197\ \ \ \ \ \textcolor{keywordflow}{if}\ data.get(\textcolor{stringliteral}{"{}nextPhase"{}}):}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00198}00198\ \ \ \ \ \ \ \ \ current\_phase\_index\ =\ min(current\_phase\_index\ +\ 1,\ len(gamePhase)\ -\/\ 1)}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00199}00199\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ gamePhase[current\_phase\_index]\ ==\ \textcolor{stringliteral}{"{}chat"{}}:}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00200}00200\ \ \ \ \ \ \ \ \ \ \ \ \ turn\_index\ =\ 0}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00201}00201\ \ \ \ \ \ \ \ \ \ \ \ \ turnID\ =\ active\_users[0]\ \textcolor{keywordflow}{if}\ active\_users\ \textcolor{keywordflow}{else}\ \textcolor{keywordtype}{None}}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00202}00202\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ gamePhase[current\_phase\_index]\ ==\ \textcolor{stringliteral}{"{}guess"{}}:}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00203}00203\ \ \ \ \ \ \ \ \ \ \ \ \ votes\_submitted\ =\ 0}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00204}00204\ \ \ \ \ \ \ \ \ \ \ \ \ votes\_recorded.clear()}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00205}00205\ \ \ \ \ print(\textcolor{stringliteral}{"{}Current\ phase:"{}},\ gamePhase[current\_phase\_index])}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00206}00206\ }
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00207}00207\ \ \ \ \ \textcolor{keywordflow}{return}\ jsonify(status=\textcolor{stringliteral}{"{}ok"{}})}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00208}00208\ }
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00209}00209\ }
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00210}00210\ \textcolor{preprocessor}{@app.route("{}/addPlayer"{},\ methods=["{}GET"{}])}}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00211}\mbox{\hyperlink{namespaceapp_abea9c74167ca43fec7f1c7f762ae30d6}{00211}}\ \textcolor{keyword}{def\ }\mbox{\hyperlink{namespaceapp_abea9c74167ca43fec7f1c7f762ae30d6}{addPlayer}}():}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00212}00212\ \ \ \ \ uid\ =\ g.user\_id}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00213}00213\ }
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00214}00214\ \ \ \ \ \textcolor{comment}{\#\ Detect\ bots\ using\ the\ same\ header\ as\ before\_request}}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00215}00215\ \ \ \ \ is\_a\_bot\ =\ \textcolor{stringliteral}{"{}X-\/Bot-\/Name"{}}\ \textcolor{keywordflow}{in}\ request.headers}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00216}00216\ }
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00217}00217\ \ \ \ \ \textcolor{keywordflow}{if}\ uid\ \textcolor{keywordflow}{not}\ \textcolor{keywordflow}{in}\ active\_users\ \textcolor{keywordflow}{and}\ len(active\_users)\ <=\ 6:}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00218}00218\ \ \ \ \ \ \ \ \ active\_users.append(uid)}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00219}00219\ \ \ \ \ \textcolor{keywordflow}{if}\ uid\ \textcolor{keywordflow}{not}\ \textcolor{keywordflow}{in}\ players:}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00220}00220\ \ \ \ \ \ \ \ \ players[uid]\ =\ \mbox{\hyperlink{classapp_1_1_player}{Player}}(uid,\ is\_bot=getattr(g,\ \textcolor{stringliteral}{"{}is\_bot"{}},\ \textcolor{keyword}{False}))}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00221}00221\ \ \ \ \ \mbox{\hyperlink{namespaceapp_ad0462f2772bfd1c0031975f54631457f}{ensure\_host\_present}}()}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00222}00222\ }
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00223}00223\ \ \ \ \ \textcolor{keywordflow}{if}\ uid\ \textcolor{keywordflow}{not}\ \textcolor{keywordflow}{in}\ players\ \textcolor{keywordflow}{and}\ len(players)\ <=\ 6:}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00224}00224\ \ \ \ \ \ \ \ \ players[uid]\ =\ \mbox{\hyperlink{classapp_1_1_player}{Player}}(uid,\ is\_a\_bot)\ \ \textcolor{comment}{\#\ Pass\ true\ for\ bots}}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00225}00225\ }
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00226}00226\ \ \ \ \ \textcolor{keywordflow}{return}\ jsonify(status=\textcolor{stringliteral}{"{}ok"{}})}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00227}00227\ }
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00228}00228\ }
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00229}00229\ \textcolor{preprocessor}{@app.route("{}/removePlayer"{},\ methods=["{}POST"{}])}}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00230}\mbox{\hyperlink{namespaceapp_a3537ea7b6e50716481e475fca49c98b3}{00230}}\ \textcolor{keyword}{def\ }\mbox{\hyperlink{namespaceapp_a3537ea7b6e50716481e475fca49c98b3}{removePlayer}}():}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00231}00231\ \ \ \ \ \textcolor{keyword}{global}\ turn\_index,\ turnID}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00232}00232\ \ \ \ \ uid\ =\ g.user\_id}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00233}00233\ }
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00234}00234\ \ \ \ \ \textcolor{keywordflow}{if}\ uid\ \textcolor{keywordflow}{in}\ active\_users:}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00235}00235\ \ \ \ \ \ \ \ \ idx\ =\ active\_users.index(uid)}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00236}00236\ \ \ \ \ \ \ \ \ active\_users.remove(uid)}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00237}00237\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ uid\ \textcolor{keywordflow}{in}\ players:}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00238}00238\ \ \ \ \ \ \ \ \ \ \ \ \ del\ players[uid]}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00239}00239\ }
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00240}00240\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ \textcolor{keywordflow}{not}\ active\_users:}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00241}00241\ \ \ \ \ \ \ \ \ \ \ \ \ turn\_index\ =\ 0}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00242}00242\ \ \ \ \ \ \ \ \ \ \ \ \ turnID\ =\ \textcolor{keywordtype}{None}}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00243}00243\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}:}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00244}00244\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ idx\ <\ turn\_index:}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00245}00245\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ turn\_index\ -\/=\ 1}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00246}00246\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{elif}\ idx\ ==\ turn\_index:}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00247}00247\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ turn\_index\ =\ turn\_index\ \%\ len(active\_users)}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00248}00248\ \ \ \ \ \ \ \ \ \ \ \ \ turnID\ =\ active\_users[turn\_index]}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00249}00249\ }
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00250}00250\ \ \ \ \ \mbox{\hyperlink{namespaceapp_ad0462f2772bfd1c0031975f54631457f}{ensure\_host\_present}}()}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00251}00251\ \ \ \ \ \textcolor{keywordflow}{if}\ host\_id\ \textcolor{keywordflow}{is}\ \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00252}00252\ \ \ \ \ \ \ \ \ bot\_manager.stop()}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00253}00253\ }
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00254}00254\ \ \ \ \ \textcolor{keywordflow}{return}\ jsonify(status=\textcolor{stringliteral}{"{}ok"{}})}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00255}00255\ }
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00256}00256\ }
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00257}00257\ \textcolor{preprocessor}{@app.route("{}/message"{},\ methods=["{}POST"{}])}}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00258}\mbox{\hyperlink{namespaceapp_a751e89089b8b9142964860ad7790e0a6}{00258}}\ \textcolor{keyword}{def\ }\mbox{\hyperlink{namespaceapp_a751e89089b8b9142964860ad7790e0a6}{addMessage}}():}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00259}00259\ \ \ \ \ \textcolor{keyword}{global}\ turn\_index,\ turnID}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00260}00260\ }
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00261}00261\ \ \ \ \ user\_id\ =\ g.user\_id}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00262}00262\ \ \ \ \ \textcolor{keywordflow}{if}\ user\_id\ !=\ turnID:}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00263}00263\ \ \ \ \ \ \ \ \ chats.append((user\_id,\ \textcolor{stringliteral}{"{}Played\ out\ of\ turn"{}}))}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00264}00264\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ jsonify(status=\textcolor{stringliteral}{"{}ok"{}})}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00265}00265\ }
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00266}00266\ \ \ \ \ data\ =\ request.get\_json()}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00267}00267\ \ \ \ \ chats.append((user\_id,\ data.get(\textcolor{stringliteral}{"{}message"{}},\ \textcolor{stringliteral}{"{}"{}})))}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00268}00268\ }
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00269}00269\ \ \ \ \ \textcolor{keywordflow}{if}\ active\_users:}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00270}00270\ \ \ \ \ \ \ \ \ turn\_index\ =\ (turn\_index\ +\ 1)\ \%\ len(active\_users)}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00271}00271\ \ \ \ \ \ \ \ \ turnID\ =\ active\_users[turn\_index]}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00272}00272\ }
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00273}00273\ \ \ \ \ \textcolor{keywordflow}{return}\ jsonify(status=\textcolor{stringliteral}{"{}ok"{}})}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00274}00274\ }
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00275}00275\ }
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00276}00276\ \textcolor{preprocessor}{@app.route("{}/vote"{},\ methods=["{}POST"{}])}}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00277}\mbox{\hyperlink{namespaceapp_aec7c7a040d776c27e476e009d6df5c8a}{00277}}\ \textcolor{keyword}{def\ }\mbox{\hyperlink{namespaceapp_aec7c7a040d776c27e476e009d6df5c8a}{vote}}():}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00278}00278\ \ \ \ \ \textcolor{keyword}{global}\ current\_phase\_index,\ votes\_submitted,\ votes\_recorded}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00279}00279\ \ \ \ \ \textcolor{keywordflow}{if}\ getattr(g,\ \textcolor{stringliteral}{"{}is\_bot"{}},\ \textcolor{keyword}{False}):}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00280}00280\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ jsonify(status=\textcolor{stringliteral}{"{}ok"{}})}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00281}00281\ }
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00282}00282\ \ \ \ \ data\ =\ request.get\_json()\ \textcolor{keywordflow}{or}\ \{\}}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00283}00283\ \ \ \ \ uid\ =\ g.user\_id}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00284}00284\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00285}00285\ \ \ \ \ \textcolor{keywordflow}{if}\ uid\ \textcolor{keywordflow}{in}\ votes\_recorded:}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00286}00286\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ jsonify(status=\textcolor{stringliteral}{"{}ok"{}})}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00287}00287\ }
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00288}00288\ \ \ \ \ votes\ =\ data.get(\textcolor{stringliteral}{"{}votes"{}},\ [])}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00289}00289\ }
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00290}00290\ \ \ \ \ \textcolor{keywordflow}{for}\ vote\_payload\ \textcolor{keywordflow}{in}\ votes:}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00291}00291\ \ \ \ \ \ \ \ \ target\ =\ vote\_payload.get(\textcolor{stringliteral}{"{}target"{}})}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00292}00292\ \ \ \ \ \ \ \ \ guess\ =\ vote\_payload.get(\textcolor{stringliteral}{"{}guess"{}})}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00293}00293\ }
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00294}00294\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ increment\ votes\ for\ AI\ guesses}}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00295}00295\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ guess\ ==\ \textcolor{stringliteral}{"{}ai"{}}\ \textcolor{keywordflow}{and}\ target\ \textcolor{keywordflow}{in}\ players:}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00296}00296\ \ \ \ \ \ \ \ \ \ \ \ \ players[target].votes\ +=\ 1}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00297}00297\ }
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00298}00298\ \ \ \ \ votes\_recorded.add(uid)}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00299}00299\ \ \ \ \ votes\_submitted\ =\ len(votes\_recorded)}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00300}00300\ }
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00301}00301\ \ \ \ \ human\_players\ =\ [p\ \textcolor{keywordflow}{for}\ p\ \textcolor{keywordflow}{in}\ players.values()\ \textcolor{keywordflow}{if}\ \textcolor{keywordflow}{not}\ p.is\_bot]}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00302}00302\ \ \ \ \ \textcolor{keywordflow}{if}\ votes\_submitted\ >=\ len(human\_players)\ \textcolor{keywordflow}{and}\ human\_players:}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00303}00303\ \ \ \ \ \ \ \ \ current\_phase\_index\ =\ len(gamePhase)\ -\/\ 1}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00304}00304\ }
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00305}00305\ \ \ \ \ \textcolor{keywordflow}{return}\ jsonify(status=\textcolor{stringliteral}{"{}ok"{}})}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00306}00306\ }
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00307}00307\ \textcolor{preprocessor}{@app.route("{}/resetGame"{},\ methods=["{}POST"{}])}}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00308}\mbox{\hyperlink{namespaceapp_a4a3cda5529f69747894c2df0111adf80}{00308}}\ \textcolor{keyword}{def\ }\mbox{\hyperlink{namespaceapp_a4a3cda5529f69747894c2df0111adf80}{resetGame}}():}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00309}00309\ \ \ \ \ \textcolor{keyword}{global}\ players,\ active\_users,\ current\_phase\_index,\ chats,\ turn\_index,\ turnID,\ votes\_submitted}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00310}00310\ }
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00311}00311\ \ \ \ \ \textcolor{comment}{\#\ Keep\ only\ the\ bots}}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00312}00312\ \ \ \ \ kept\_users\ =\ active\_users[:2]}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00313}00313\ }
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00314}00314\ \ \ \ \ \textcolor{comment}{\#\ Rebuild\ players\ dict\ using\ the\ original\ bot\ flags}}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00315}00315\ \ \ \ \ new\_players\ =\ \{\}}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00316}00316\ \ \ \ \ \textcolor{keywordflow}{for}\ uid\ \textcolor{keywordflow}{in}\ kept\_users:}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00317}00317\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ uid\ \textcolor{keywordflow}{in}\ players:}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00318}00318\ \ \ \ \ \ \ \ \ \ \ \ \ new\_players[uid]\ =\ \mbox{\hyperlink{classapp_1_1_player}{Player}}(uid,\ players[uid].is\_bot)}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00319}00319\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}:}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00320}00320\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ fallback\ if\ somehow\ missing}}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00321}00321\ \ \ \ \ \ \ \ \ \ \ \ \ new\_players[uid]\ =\ \mbox{\hyperlink{classapp_1_1_player}{Player}}(uid,\ \textcolor{keyword}{True})}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00322}00322\ }
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00323}00323\ \ \ \ \ players\ =\ new\_players}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00324}00324\ }
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00325}00325\ \ \ \ \ \textcolor{comment}{\#\ Reset\ active\ users}}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00326}00326\ \ \ \ \ active\_users\ =\ kept\_users}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00327}00327\ }
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00328}00328\ \ \ \ \ \textcolor{comment}{\#\ Reset\ game\ state}}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00329}00329\ \ \ \ \ current\_phase\_index\ =\ 0\ \ \ \textcolor{comment}{\#\ back\ to\ "{}intro"{}}}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00330}00330\ \ \ \ \ chats\ =\ []}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00331}00331\ \ \ \ \ votes\_submitted\ =\ 0}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00332}00332\ \ \ \ \ turn\_index\ =\ 0}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00333}00333\ \ \ \ \ turnID\ =\ kept\_users[0]\ \textcolor{keywordflow}{if}\ kept\_users\ \textcolor{keywordflow}{else}\ \textcolor{keywordtype}{None}}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00334}00334\ }
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00335}00335\ \ \ \ \ \textcolor{keywordflow}{return}\ jsonify(status=\textcolor{stringliteral}{"{}ok"{}})}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00336}00336\ }
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00337}00337\ }
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00338}00338\ \textcolor{keywordflow}{if}\ \_\_name\_\_\ ==\ \textcolor{stringliteral}{"{}\_\_main\_\_"{}}:}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00339}\mbox{\hyperlink{namespaceapp_a7fa7c11c7474c128736b1d34b15a0d5e}{00339}}\ \ \ \ \ app.run(host=\textcolor{stringliteral}{"{}0.0.0.0"{}},\ port=5000)}
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00340}00340\ }
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00341}00341\ }
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00342}00342\ }
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00343}00343\ }
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00344}00344\ }
+\DoxyCodeLine{\Hypertarget{app_8py_source_l00345}00345\ }
+
+\end{DoxyCode}

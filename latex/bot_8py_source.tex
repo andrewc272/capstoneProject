@@ -1,0 +1,113 @@
+\doxysection{bot.\+py}
+\hypertarget{bot_8py_source}{}\label{bot_8py_source}\index{Bot/bot.py@{Bot/bot.py}}
+\mbox{\hyperlink{bot_8py}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00001}\mbox{\hyperlink{namespacebot}{00001}}\ \textcolor{keyword}{import}\ requests}
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00002}00002\ \textcolor{keyword}{import}\ time}
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00003}00003\ \textcolor{keyword}{import}\ os}
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00004}00004\ \textcolor{keyword}{from}\ dotenv\ \textcolor{keyword}{import}\ load\_dotenv}
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00005}00005\ }
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00006}\mbox{\hyperlink{classbot_1_1_bot}{00006}}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classbot_1_1_bot}{Bot}}:}
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00007}00007\ \ \ \ \ \textcolor{stringliteral}{'''This\ creates\ a\ bot\ and\ adds\ it\ to\ the\ game'''}}
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00008}\mbox{\hyperlink{classbot_1_1_bot_ade25fdd5e5a0acc843b023ebfcbad213}{00008}}\ \ \ \ \ \textcolor{keyword}{def\ }\mbox{\hyperlink{classbot_1_1_bot_ade25fdd5e5a0acc843b023ebfcbad213}{\_\_init\_\_}}(self,\ name,\ url="{}http://flask-\/app:5000\textcolor{stringliteral}{"{}):}}
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00009}\mbox{\hyperlink{classbot_1_1_bot_af747210181db61fccd9102ad29e71524}{00009}}\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ self.\mbox{\hyperlink{classbot_1_1_bot_af747210181db61fccd9102ad29e71524}{name}}\ =\ name}}
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00010}\mbox{\hyperlink{classbot_1_1_bot_a5b7c1ec43f8e7727ca6bb669c74713ef}{00010}}\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ self.\mbox{\hyperlink{classbot_1_1_bot_a5b7c1ec43f8e7727ca6bb669c74713ef}{url}}\ =\ url}}
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00011}\mbox{\hyperlink{classbot_1_1_bot_a98c8d39012ba30f9e531308bdfdac5ff}{00011}}\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ self.\mbox{\hyperlink{classbot_1_1_bot_a98c8d39012ba30f9e531308bdfdac5ff}{session}}\ =\ requests.Session()}}
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00012}00012\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ self.\mbox{\hyperlink{classbot_1_1_bot_a98c8d39012ba30f9e531308bdfdac5ff}{session}}.headers.update(\{"{}X-\/Bot-\/Name"{}}:\ self.\mbox{\hyperlink{classbot_1_1_bot_af747210181db61fccd9102ad29e71524}{name}}\})}
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00013}\mbox{\hyperlink{classbot_1_1_bot_a0668700212d8f3ba84ad82050ab1f728}{00013}}\ \ \ \ \ \ \ \ \ self.\mbox{\hyperlink{classbot_1_1_bot_a0668700212d8f3ba84ad82050ab1f728}{my\_id}}\ =\ \textcolor{keywordtype}{None}}
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00014}\mbox{\hyperlink{classbot_1_1_bot_a52c08d891533325d82098ce9d93cd123}{00014}}\ \ \ \ \ \ \ \ \ self.\mbox{\hyperlink{classbot_1_1_bot_a52c08d891533325d82098ce9d93cd123}{\_responded\_to\_chat\_len}}\ =\ -\/1\ \ \textcolor{comment}{\#\ Track\ which\ chat\ state\ we've\ responded\ to}}
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00015}00015\ }
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00016}00016\ \ \ \ \ \ \ \ \ print(f\textcolor{stringliteral}{"{}\{self.name\}\ connecting\ to\ \{url\}..."{}})}
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00017}00017\ }
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00018}00018\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ attempt\ \textcolor{keywordflow}{in}\ range(40):}
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00019}00019\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}:}
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00020}00020\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ r\ =\ self.\mbox{\hyperlink{classbot_1_1_bot_a98c8d39012ba30f9e531308bdfdac5ff}{session}}.get(f\textcolor{stringliteral}{"{}\{self.url\}/addPlayer"{}},\ timeout=3)}
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00021}00021\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ r.status\_code\ ==\ 200:}
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00022}00022\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ print(f\textcolor{stringliteral}{"{}\{self.name\}\ registered\ with\ server."{}})}
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00023}00023\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{break}}
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00024}00024\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{except}\ Exception\ \textcolor{keyword}{as}\ e:}
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00025}00025\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ print(f\textcolor{stringliteral}{"{}\{self.name\}\ waiting\ for\ Flask...\ \{e\}"{}})}
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00026}00026\ \ \ \ \ \ \ \ \ \ \ \ \ time.sleep(2)}
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00027}00027\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}:}
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00028}00028\ \ \ \ \ \ \ \ \ \ \ \ \ print(f\textcolor{stringliteral}{"{}\{self.name\}\ could\ not\ connect\ after\ many\ attempts."{}})}
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00029}00029\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}}
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00030}00030\ }
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00031}00031\ \ \ \ \ \ \ \ \ print(f\textcolor{stringliteral}{"{}\{self.name\}\ bot\ initialized."{}})}
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00032}00032\ }
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00033}\mbox{\hyperlink{classbot_1_1_bot_a8c7164e88612b91569cfc20388178c4e}{00033}}\ \ \ \ \ \textcolor{keyword}{def\ }\mbox{\hyperlink{classbot_1_1_bot_a8c7164e88612b91569cfc20388178c4e}{get\_message}}(self,\ chats=[]):}
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00034}00034\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}}}
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00035}00035\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ Override\ this\ in\ subclasses\ to\ implement\ actual\ bot\ behavior.}}
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00036}00036\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \`{}chats\`{}\ contains\ the\ full\ list\ of\ (user\_id,\ message)\ tuples.}}
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00037}00037\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ "{}"{}"{}}}
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00038}00038\ \ \ \ \ \ \ \ \ time.sleep(2)}
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00039}00039\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}Hello\ this\ is\ a\ bot"{}}}
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00040}00040\ }
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00041}\mbox{\hyperlink{classbot_1_1_bot_acb3020c9eac2ae407385faabc47b56c2}{00041}}\ \ \ \ \ \textcolor{keyword}{def\ }\mbox{\hyperlink{classbot_1_1_bot_acb3020c9eac2ae407385faabc47b56c2}{\_is\_my\_turn}}(self):}
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00042}00042\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Check\ if\ it's\ currently\ this\ bot's\ turn."{}"{}"{}}}
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00043}00043\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}:}
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00044}00044\ \ \ \ \ \ \ \ \ \ \ \ \ res\ =\ self.\mbox{\hyperlink{classbot_1_1_bot_a98c8d39012ba30f9e531308bdfdac5ff}{session}}.get(f\textcolor{stringliteral}{"{}\{self.url\}/gameState"{}},\ timeout=3)}
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00045}00045\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ res.status\_code\ ==\ 200:}
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00046}00046\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ gs\ =\ res.json()}
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00047}00047\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ (gs.get(\textcolor{stringliteral}{"{}gamePhase"{}})\ ==\ \textcolor{stringliteral}{"{}chat"{}}\ \textcolor{keywordflow}{and}}
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00048}00048\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ gs.get(\textcolor{stringliteral}{"{}turnID"{}})\ ==\ self.\mbox{\hyperlink{classbot_1_1_bot_a0668700212d8f3ba84ad82050ab1f728}{my\_id}})}
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00049}00049\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{except}\ Exception:}
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00050}00050\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{pass}}
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00051}00051\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{False}}
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00052}00052\ }
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00053}\mbox{\hyperlink{classbot_1_1_bot_abd831c380775159df1d7591adf8d4fbc}{00053}}\ \ \ \ \ \textcolor{keyword}{def\ }\mbox{\hyperlink{classbot_1_1_bot_abd831c380775159df1d7591adf8d4fbc}{run}}(self):}
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00054}00054\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ \textcolor{keyword}{True}:}
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00055}00055\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}:}
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00056}00056\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ res\ =\ self.\mbox{\hyperlink{classbot_1_1_bot_a98c8d39012ba30f9e531308bdfdac5ff}{session}}.get(f\textcolor{stringliteral}{"{}\{self.url\}/gameState"{}})}
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00057}00057\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ res.status\_code\ !=\ 200:}
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00058}00058\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ print(\textcolor{stringliteral}{"{}Could\ not\ fetch\ state"{}})}
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00059}00059\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ time.sleep(1)}
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00060}00060\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue}}
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00061}00061\ }
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00062}00062\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ gs\ =\ res.json()}
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00063}00063\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ phase\ =\ gs.get(\textcolor{stringliteral}{"{}gamePhase"{}})}
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00064}00064\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ chats\ =\ gs.get(\textcolor{stringliteral}{"{}chats"{}},\ [])}
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00065}00065\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ myID\ =\ gs.get(\textcolor{stringliteral}{"{}myId"{}})}
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00066}00066\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ turnID\ =\ gs.get(\textcolor{stringliteral}{"{}turnID"{}})}
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00067}00067\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ self.\mbox{\hyperlink{classbot_1_1_bot_a0668700212d8f3ba84ad82050ab1f728}{my\_id}}\ =\ myID}
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00068}00068\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ chat\_len\ =\ len(chats)}
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00069}00069\ }
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00070}00070\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{except}\ Exception\ \textcolor{keyword}{as}\ e:}
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00071}00071\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ print(\textcolor{stringliteral}{"{}State\ error:"{}},\ e)}
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00072}00072\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ time.sleep(2)}
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00073}00073\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue}}
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00074}00074\ }
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00075}00075\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ ONLY\ send\ if\ it's\ the\ bot's\ turn\ AND\ we\ haven't\ responded\ to\ this\ state}}
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00076}00076\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ phase\ ==\ \textcolor{stringliteral}{"{}chat"{}}\ \textcolor{keywordflow}{and}\ turnID\ ==\ myID:}
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00077}00077\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Already\ responded\ to\ this\ chat\ state?\ Skip.}}
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00078}00078\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ chat\_len\ <=\ self.\mbox{\hyperlink{classbot_1_1_bot_a52c08d891533325d82098ce9d93cd123}{\_responded\_to\_chat\_len}}:}
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00079}00079\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ time.sleep(0.5)}
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00080}00080\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue}}
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00081}00081\ }
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00082}00082\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Double-\/check\ it's\ still\ our\ turn\ before\ generating}}
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00083}00083\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ \textcolor{keywordflow}{not}\ self.\mbox{\hyperlink{classbot_1_1_bot_acb3020c9eac2ae407385faabc47b56c2}{\_is\_my\_turn}}():}
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00084}00084\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ time.sleep(0.5)}
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00085}00085\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue}}
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00086}00086\ }
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00087}00087\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ message\ =\ self.\mbox{\hyperlink{classbot_1_1_bot_a8c7164e88612b91569cfc20388178c4e}{get\_message}}(chats)}
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00088}00088\ }
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00089}00089\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ message:}
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00090}00090\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Final\ turn\ check\ right\ before\ sending}}
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00091}00091\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ \textcolor{keywordflow}{not}\ self.\mbox{\hyperlink{classbot_1_1_bot_acb3020c9eac2ae407385faabc47b56c2}{\_is\_my\_turn}}():}
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00092}00092\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ print(f\textcolor{stringliteral}{"{}\{self.name\}\ skipped\ -\/\ turn\ changed\ during\ generation"{}})}
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00093}00093\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{continue}}
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00094}00094\ }
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00095}00095\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}:}
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00096}00096\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ resp\ =\ self.\mbox{\hyperlink{classbot_1_1_bot_a98c8d39012ba30f9e531308bdfdac5ff}{session}}.post(f\textcolor{stringliteral}{"{}\{self.url\}/message"{}},\ json=\{\textcolor{stringliteral}{"{}message"{}}:\ message\})}
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00097}00097\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ resp.status\_code\ ==\ 200:}
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00098}00098\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ print(f\textcolor{stringliteral}{"{}\{self.name\}\ sent:\ \{message\}"{}})}
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00099}00099\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ self.\mbox{\hyperlink{classbot_1_1_bot_a52c08d891533325d82098ce9d93cd123}{\_responded\_to\_chat\_len}}\ =\ chat\_len}
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00100}00100\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{except}\ Exception\ \textcolor{keyword}{as}\ e:}
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00101}00101\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ print(\textcolor{stringliteral}{"{}Send\ error:"{}},\ e)}
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00102}00102\ }
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00103}00103\ \ \ \ \ \ \ \ \ \ \ \ \ time.sleep(1)}
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00104}00104\ }
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00105}00105\ }
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00106}00106\ }
+\DoxyCodeLine{\Hypertarget{bot_8py_source_l00107}00107\ }
+
+\end{DoxyCode}

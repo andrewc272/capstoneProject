@@ -1,0 +1,418 @@
+\doxysection{app Namespace Reference}
+\hypertarget{namespaceapp}{}\label{namespaceapp}\index{app@{app}}
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classapp_1_1_player}{Player}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{namespaceapp_aa5ff1b306801d617f70d05e4c5447739}{reset\+\_\+state}} ()
+\item 
+\mbox{\hyperlink{namespaceapp_a8fdb1aa2a10f5e222604e8b5f7083e94}{serialize\+\_\+model\+\_\+options}} ()
+\item 
+\mbox{\hyperlink{namespaceapp_ad0462f2772bfd1c0031975f54631457f}{ensure\+\_\+host\+\_\+present}} ()
+\item 
+\mbox{\hyperlink{namespaceapp_a7f662e9abb1a9e3b22a668dd6684c903}{apply\+\_\+host\+\_\+configuration}} (data)
+\item 
+\mbox{\hyperlink{namespaceapp_ac91af40e234f3bae1b7f9d35a167292a}{sync\+\_\+local\+\_\+bots}} ()
+\item 
+\mbox{\hyperlink{namespaceapp_a6517551facf1204ec1ccafb7b11b8283}{assign\+Session\+ID}} ()
+\item 
+\mbox{\hyperlink{namespaceapp_a4727fbeb35bed8ec5000ba2eb4cec4a7}{index}} ()
+\item 
+\mbox{\hyperlink{namespaceapp_a3d1af7122717db8d2e89add422e3c8f0}{game\+State}} ()
+\item 
+\mbox{\hyperlink{namespaceapp_abea9c74167ca43fec7f1c7f762ae30d6}{add\+Player}} ()
+\item 
+\mbox{\hyperlink{namespaceapp_a3537ea7b6e50716481e475fca49c98b3}{remove\+Player}} ()
+\item 
+\mbox{\hyperlink{namespaceapp_a751e89089b8b9142964860ad7790e0a6}{add\+Message}} ()
+\item 
+\mbox{\hyperlink{namespaceapp_aec7c7a040d776c27e476e009d6df5c8a}{vote}} ()
+\item 
+\mbox{\hyperlink{namespaceapp_a4a3cda5529f69747894c2df0111adf80}{reset\+Game}} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{namespaceapp_a675b4ea702c13dc4b8c05f985a25b496}{app}} = Flask(\+\_\+\+\_\+name\+\_\+\+\_\+)
+\item 
+\mbox{\hyperlink{namespaceapp_adca7658ff5c9024a5353574d2c01cbd2}{secret\+\_\+key}}
+\item 
+dict \mbox{\hyperlink{namespaceapp_a3374c1e4d3655c0d9083d07a4aa904f5}{players}} = \{\}
+\item 
+list \mbox{\hyperlink{namespaceapp_a2edf7cdb14bb61d700a66c61d6a0f819}{active\+\_\+users}} = \mbox{[}$\,$\mbox{]}
+\item 
+list \mbox{\hyperlink{namespaceapp_ac81176928fa40754afb18b8c90f5553c}{game\+Phase}} = \mbox{[}"{}intro"{}, "{}lobby"{}, "{}chat"{}, "{}guess"{}, "{}results"{}\mbox{]}
+\item 
+int \mbox{\hyperlink{namespaceapp_ab3e41f7e80def2df33ef56532015a4d0}{current\+\_\+phase\+\_\+index}} = 0
+\item 
+list \mbox{\hyperlink{namespaceapp_a4539acc17e1994e492dfba0068ed310f}{chats}} = \mbox{[}$\,$\mbox{]}
+\item 
+int \mbox{\hyperlink{namespaceapp_af0d82fe96f54ba47f4f3c97ccee9edaa}{turn\+\_\+index}} = 0
+\item 
+\mbox{\hyperlink{namespaceapp_a6dddbac012e3d8af810deafc0ef3e566}{turn\+ID}} = None
+\item 
+int \mbox{\hyperlink{namespaceapp_ab92bc9d199051e417d22590cde52f54d}{votes\+\_\+submitted}} = 0
+\item 
+\mbox{\hyperlink{namespaceapp_a370f49a795baf9e1f4aabb8bafa2bb4f}{votes\+\_\+recorded}} = set()
+\item 
+\mbox{\hyperlink{namespaceapp_a4f080334280d7b85d8c5d05c89163d06}{host\+\_\+id}} = None
+\item 
+dict \mbox{\hyperlink{namespaceapp_a5a9b59adbc87c63dd2d6c879219c1c14}{bot\+\_\+settings}}
+\item 
+\mbox{\hyperlink{namespaceapp_a0ae24c08fc5bd8e0ac46236150b9f102}{LOCAL\+\_\+\+SERVER\+\_\+\+URL}} = os.\+getenv("{}LOCAL\+\_\+\+BOT\+\_\+\+SERVER\+\_\+\+URL"{}, "{}http\+://127.\+0.\+0.\+1\+:5000"{}).rstrip("{}/"{})
+\item 
+str \mbox{\hyperlink{namespaceapp_aad37d43eae90059dc16541fd70320f0e}{BOT\+\_\+\+MANAGER\+\_\+\+DISABLED}} = "{}1"{}
+\item 
+\mbox{\hyperlink{namespaceapp_a802b197689642ad094031cecef0a539c}{project\+\_\+dir}} = Path(\+\_\+\+\_\+file\+\_\+\+\_\+).resolve().parent
+\item 
+\mbox{\hyperlink{namespaceapp_a6f8bf9b8be284251548cdfe4625b4fba}{bot\+\_\+manager}} = \mbox{\hyperlink{classbot__manager_1_1_local_bot_manager}{Local\+Bot\+Manager}}(\mbox{\hyperlink{namespaceapp_a802b197689642ad094031cecef0a539c}{project\+\_\+dir}}, disabled=\mbox{\hyperlink{namespaceapp_aad37d43eae90059dc16541fd70320f0e}{BOT\+\_\+\+MANAGER\+\_\+\+DISABLED}})
+\item 
+\mbox{\hyperlink{namespaceapp_a7fa7c11c7474c128736b1d34b15a0d5e}{host}}
+\item 
+\mbox{\hyperlink{namespaceapp_ae996542be63ac459a38531f7c2dd0a49}{port}}
+\end{DoxyCompactItemize}
+
+
+\label{doc-func-members}
+\Hypertarget{namespaceapp_doc-func-members}
+\doxysubsection{Function Documentation}
+\Hypertarget{namespaceapp_a751e89089b8b9142964860ad7790e0a6}\index{app@{app}!addMessage@{addMessage}}
+\index{addMessage@{addMessage}!app@{app}}
+\doxysubsubsection{\texorpdfstring{addMessage()}{addMessage()}}
+{\footnotesize\ttfamily \label{namespaceapp_a751e89089b8b9142964860ad7790e0a6} 
+app.\+add\+Message (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{app_8py_source_l00258}{258}} of file \mbox{\hyperlink{app_8py_source}{app.\+py}}.
+
+\Hypertarget{namespaceapp_abea9c74167ca43fec7f1c7f762ae30d6}\index{app@{app}!addPlayer@{addPlayer}}
+\index{addPlayer@{addPlayer}!app@{app}}
+\doxysubsubsection{\texorpdfstring{addPlayer()}{addPlayer()}}
+{\footnotesize\ttfamily \label{namespaceapp_abea9c74167ca43fec7f1c7f762ae30d6} 
+app.\+add\+Player (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{app_8py_source_l00211}{211}} of file \mbox{\hyperlink{app_8py_source}{app.\+py}}.
+
+\Hypertarget{namespaceapp_a7f662e9abb1a9e3b22a668dd6684c903}\index{app@{app}!apply\_host\_configuration@{apply\_host\_configuration}}
+\index{apply\_host\_configuration@{apply\_host\_configuration}!app@{app}}
+\doxysubsubsection{\texorpdfstring{apply\_host\_configuration()}{apply\_host\_configuration()}}
+{\footnotesize\ttfamily \label{namespaceapp_a7f662e9abb1a9e3b22a668dd6684c903} 
+app.\+apply\+\_\+host\+\_\+configuration (\begin{DoxyParamCaption}\item[{}]{data}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{app_8py_source_l00099}{99}} of file \mbox{\hyperlink{app_8py_source}{app.\+py}}.
+
+\Hypertarget{namespaceapp_a6517551facf1204ec1ccafb7b11b8283}\index{app@{app}!assignSessionID@{assignSessionID}}
+\index{assignSessionID@{assignSessionID}!app@{app}}
+\doxysubsubsection{\texorpdfstring{assignSessionID()}{assignSessionID()}}
+{\footnotesize\ttfamily \label{namespaceapp_a6517551facf1204ec1ccafb7b11b8283} 
+app.\+assign\+Session\+ID (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{app_8py_source_l00132}{132}} of file \mbox{\hyperlink{app_8py_source}{app.\+py}}.
+
+\Hypertarget{namespaceapp_ad0462f2772bfd1c0031975f54631457f}\index{app@{app}!ensure\_host\_present@{ensure\_host\_present}}
+\index{ensure\_host\_present@{ensure\_host\_present}!app@{app}}
+\doxysubsubsection{\texorpdfstring{ensure\_host\_present()}{ensure\_host\_present()}}
+{\footnotesize\ttfamily \label{namespaceapp_ad0462f2772bfd1c0031975f54631457f} 
+app.\+ensure\+\_\+host\+\_\+present (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Ensure host_id points to the first human player if available.\end{DoxyVerb}
+ 
+
+Definition at line \mbox{\hyperlink{app_8py_source_l00086}{86}} of file \mbox{\hyperlink{app_8py_source}{app.\+py}}.
+
+\Hypertarget{namespaceapp_a3d1af7122717db8d2e89add422e3c8f0}\index{app@{app}!gameState@{gameState}}
+\index{gameState@{gameState}!app@{app}}
+\doxysubsubsection{\texorpdfstring{gameState()}{gameState()}}
+{\footnotesize\ttfamily \label{namespaceapp_a3d1af7122717db8d2e89add422e3c8f0} 
+app.\+game\+State (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{app_8py_source_l00150}{150}} of file \mbox{\hyperlink{app_8py_source}{app.\+py}}.
+
+\Hypertarget{namespaceapp_a4727fbeb35bed8ec5000ba2eb4cec4a7}\index{app@{app}!index@{index}}
+\index{index@{index}!app@{app}}
+\doxysubsubsection{\texorpdfstring{index()}{index()}}
+{\footnotesize\ttfamily \label{namespaceapp_a4727fbeb35bed8ec5000ba2eb4cec4a7} 
+app.\+index (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{app_8py_source_l00145}{145}} of file \mbox{\hyperlink{app_8py_source}{app.\+py}}.
+
+\Hypertarget{namespaceapp_a3537ea7b6e50716481e475fca49c98b3}\index{app@{app}!removePlayer@{removePlayer}}
+\index{removePlayer@{removePlayer}!app@{app}}
+\doxysubsubsection{\texorpdfstring{removePlayer()}{removePlayer()}}
+{\footnotesize\ttfamily \label{namespaceapp_a3537ea7b6e50716481e475fca49c98b3} 
+app.\+remove\+Player (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{app_8py_source_l00230}{230}} of file \mbox{\hyperlink{app_8py_source}{app.\+py}}.
+
+\Hypertarget{namespaceapp_aa5ff1b306801d617f70d05e4c5447739}\index{app@{app}!reset\_state@{reset\_state}}
+\index{reset\_state@{reset\_state}!app@{app}}
+\doxysubsubsection{\texorpdfstring{reset\_state()}{reset\_state()}}
+{\footnotesize\ttfamily \label{namespaceapp_aa5ff1b306801d617f70d05e4c5447739} 
+app.\+reset\+\_\+state (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Utility to reset global state (used by tests).\end{DoxyVerb}
+ 
+
+Definition at line \mbox{\hyperlink{app_8py_source_l00052}{52}} of file \mbox{\hyperlink{app_8py_source}{app.\+py}}.
+
+\Hypertarget{namespaceapp_a4a3cda5529f69747894c2df0111adf80}\index{app@{app}!resetGame@{resetGame}}
+\index{resetGame@{resetGame}!app@{app}}
+\doxysubsubsection{\texorpdfstring{resetGame()}{resetGame()}}
+{\footnotesize\ttfamily \label{namespaceapp_a4a3cda5529f69747894c2df0111adf80} 
+app.\+reset\+Game (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{app_8py_source_l00308}{308}} of file \mbox{\hyperlink{app_8py_source}{app.\+py}}.
+
+\Hypertarget{namespaceapp_a8fdb1aa2a10f5e222604e8b5f7083e94}\index{app@{app}!serialize\_model\_options@{serialize\_model\_options}}
+\index{serialize\_model\_options@{serialize\_model\_options}!app@{app}}
+\doxysubsubsection{\texorpdfstring{serialize\_model\_options()}{serialize\_model\_options()}}
+{\footnotesize\ttfamily \label{namespaceapp_a8fdb1aa2a10f5e222604e8b5f7083e94} 
+app.\+serialize\+\_\+model\+\_\+options (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{app_8py_source_l00074}{74}} of file \mbox{\hyperlink{app_8py_source}{app.\+py}}.
+
+\Hypertarget{namespaceapp_ac91af40e234f3bae1b7f9d35a167292a}\index{app@{app}!sync\_local\_bots@{sync\_local\_bots}}
+\index{sync\_local\_bots@{sync\_local\_bots}!app@{app}}
+\doxysubsubsection{\texorpdfstring{sync\_local\_bots()}{sync\_local\_bots()}}
+{\footnotesize\ttfamily \label{namespaceapp_ac91af40e234f3bae1b7f9d35a167292a} 
+app.\+sync\+\_\+local\+\_\+bots (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{app_8py_source_l00122}{122}} of file \mbox{\hyperlink{app_8py_source}{app.\+py}}.
+
+\Hypertarget{namespaceapp_aec7c7a040d776c27e476e009d6df5c8a}\index{app@{app}!vote@{vote}}
+\index{vote@{vote}!app@{app}}
+\doxysubsubsection{\texorpdfstring{vote()}{vote()}}
+{\footnotesize\ttfamily \label{namespaceapp_aec7c7a040d776c27e476e009d6df5c8a} 
+app.\+vote (\begin{DoxyParamCaption}{}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{app_8py_source_l00277}{277}} of file \mbox{\hyperlink{app_8py_source}{app.\+py}}.
+
+
+
+\label{doc-var-members}
+\Hypertarget{namespaceapp_doc-var-members}
+\doxysubsection{Variable Documentation}
+\Hypertarget{namespaceapp_a2edf7cdb14bb61d700a66c61d6a0f819}\index{app@{app}!active\_users@{active\_users}}
+\index{active\_users@{active\_users}!app@{app}}
+\doxysubsubsection{\texorpdfstring{active\_users}{active\_users}}
+{\footnotesize\ttfamily \label{namespaceapp_a2edf7cdb14bb61d700a66c61d6a0f819} 
+list app.\+active\+\_\+users = \mbox{[}$\,$\mbox{]}}
+
+
+
+Definition at line \mbox{\hyperlink{app_8py_source_l00026}{26}} of file \mbox{\hyperlink{app_8py_source}{app.\+py}}.
+
+\Hypertarget{namespaceapp_a675b4ea702c13dc4b8c05f985a25b496}\index{app@{app}!app@{app}}
+\index{app@{app}!app@{app}}
+\doxysubsubsection{\texorpdfstring{app}{app}}
+{\footnotesize\ttfamily \label{namespaceapp_a675b4ea702c13dc4b8c05f985a25b496} 
+app.\+app = Flask(\+\_\+\+\_\+name\+\_\+\+\_\+)}
+
+
+
+Definition at line \mbox{\hyperlink{app_8py_source_l00014}{14}} of file \mbox{\hyperlink{app_8py_source}{app.\+py}}.
+
+\Hypertarget{namespaceapp_a6f8bf9b8be284251548cdfe4625b4fba}\index{app@{app}!bot\_manager@{bot\_manager}}
+\index{bot\_manager@{bot\_manager}!app@{app}}
+\doxysubsubsection{\texorpdfstring{bot\_manager}{bot\_manager}}
+{\footnotesize\ttfamily \label{namespaceapp_a6f8bf9b8be284251548cdfe4625b4fba} 
+app.\+bot\+\_\+manager = \mbox{\hyperlink{classbot__manager_1_1_local_bot_manager}{Local\+Bot\+Manager}}(\mbox{\hyperlink{namespaceapp_a802b197689642ad094031cecef0a539c}{project\+\_\+dir}}, disabled=\mbox{\hyperlink{namespaceapp_aad37d43eae90059dc16541fd70320f0e}{BOT\+\_\+\+MANAGER\+\_\+\+DISABLED}})}
+
+
+
+Definition at line \mbox{\hyperlink{app_8py_source_l00048}{48}} of file \mbox{\hyperlink{app_8py_source}{app.\+py}}.
+
+\Hypertarget{namespaceapp_aad37d43eae90059dc16541fd70320f0e}\index{app@{app}!BOT\_MANAGER\_DISABLED@{BOT\_MANAGER\_DISABLED}}
+\index{BOT\_MANAGER\_DISABLED@{BOT\_MANAGER\_DISABLED}!app@{app}}
+\doxysubsubsection{\texorpdfstring{BOT\_MANAGER\_DISABLED}{BOT\_MANAGER\_DISABLED}}
+{\footnotesize\ttfamily \label{namespaceapp_aad37d43eae90059dc16541fd70320f0e} 
+str app.\+BOT\+\_\+\+MANAGER\+\_\+\+DISABLED = "{}1"{}}
+
+
+
+Definition at line \mbox{\hyperlink{app_8py_source_l00046}{46}} of file \mbox{\hyperlink{app_8py_source}{app.\+py}}.
+
+\Hypertarget{namespaceapp_a5a9b59adbc87c63dd2d6c879219c1c14}\index{app@{app}!bot\_settings@{bot\_settings}}
+\index{bot\_settings@{bot\_settings}!app@{app}}
+\doxysubsubsection{\texorpdfstring{bot\_settings}{bot\_settings}}
+{\footnotesize\ttfamily \label{namespaceapp_a5a9b59adbc87c63dd2d6c879219c1c14} 
+dict app.\+bot\+\_\+settings}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ =\ \ \{}
+\DoxyCodeLine{00002\ \ \ \ \ \textcolor{stringliteral}{"{}mode"{}}:\ \textcolor{stringliteral}{"{}cloud\_api"{}},}
+\DoxyCodeLine{00003\ \ \ \ \ \textcolor{stringliteral}{"{}local\_model"{}}:\ DEFAULT\_LOCAL\_MODEL,}
+\DoxyCodeLine{00004\ \ \ \ \ \textcolor{stringliteral}{"{}local\_count"{}}:\ 1,}
+\DoxyCodeLine{00005\ \}}
+
+\end{DoxyCode}
+
+
+Definition at line \mbox{\hyperlink{app_8py_source_l00039}{39}} of file \mbox{\hyperlink{app_8py_source}{app.\+py}}.
+
+\Hypertarget{namespaceapp_a4539acc17e1994e492dfba0068ed310f}\index{app@{app}!chats@{chats}}
+\index{chats@{chats}!app@{app}}
+\doxysubsubsection{\texorpdfstring{chats}{chats}}
+{\footnotesize\ttfamily \label{namespaceapp_a4539acc17e1994e492dfba0068ed310f} 
+list app.\+chats = \mbox{[}$\,$\mbox{]}}
+
+
+
+Definition at line \mbox{\hyperlink{app_8py_source_l00031}{31}} of file \mbox{\hyperlink{app_8py_source}{app.\+py}}.
+
+\Hypertarget{namespaceapp_ab3e41f7e80def2df33ef56532015a4d0}\index{app@{app}!current\_phase\_index@{current\_phase\_index}}
+\index{current\_phase\_index@{current\_phase\_index}!app@{app}}
+\doxysubsubsection{\texorpdfstring{current\_phase\_index}{current\_phase\_index}}
+{\footnotesize\ttfamily \label{namespaceapp_ab3e41f7e80def2df33ef56532015a4d0} 
+int app.\+current\+\_\+phase\+\_\+index = 0}
+
+
+
+Definition at line \mbox{\hyperlink{app_8py_source_l00029}{29}} of file \mbox{\hyperlink{app_8py_source}{app.\+py}}.
+
+\Hypertarget{namespaceapp_ac81176928fa40754afb18b8c90f5553c}\index{app@{app}!gamePhase@{gamePhase}}
+\index{gamePhase@{gamePhase}!app@{app}}
+\doxysubsubsection{\texorpdfstring{gamePhase}{gamePhase}}
+{\footnotesize\ttfamily \label{namespaceapp_ac81176928fa40754afb18b8c90f5553c} 
+list app.\+game\+Phase = \mbox{[}"{}intro"{}, "{}lobby"{}, "{}chat"{}, "{}guess"{}, "{}results"{}\mbox{]}}
+
+
+
+Definition at line \mbox{\hyperlink{app_8py_source_l00028}{28}} of file \mbox{\hyperlink{app_8py_source}{app.\+py}}.
+
+\Hypertarget{namespaceapp_a7fa7c11c7474c128736b1d34b15a0d5e}\index{app@{app}!host@{host}}
+\index{host@{host}!app@{app}}
+\doxysubsubsection{\texorpdfstring{host}{host}}
+{\footnotesize\ttfamily \label{namespaceapp_a7fa7c11c7474c128736b1d34b15a0d5e} 
+app.\+host}
+
+
+
+Definition at line \mbox{\hyperlink{app_8py_source_l00339}{339}} of file \mbox{\hyperlink{app_8py_source}{app.\+py}}.
+
+\Hypertarget{namespaceapp_a4f080334280d7b85d8c5d05c89163d06}\index{app@{app}!host\_id@{host\_id}}
+\index{host\_id@{host\_id}!app@{app}}
+\doxysubsubsection{\texorpdfstring{host\_id}{host\_id}}
+{\footnotesize\ttfamily \label{namespaceapp_a4f080334280d7b85d8c5d05c89163d06} 
+app.\+host\+\_\+id = None}
+
+
+
+Definition at line \mbox{\hyperlink{app_8py_source_l00037}{37}} of file \mbox{\hyperlink{app_8py_source}{app.\+py}}.
+
+\Hypertarget{namespaceapp_a0ae24c08fc5bd8e0ac46236150b9f102}\index{app@{app}!LOCAL\_SERVER\_URL@{LOCAL\_SERVER\_URL}}
+\index{LOCAL\_SERVER\_URL@{LOCAL\_SERVER\_URL}!app@{app}}
+\doxysubsubsection{\texorpdfstring{LOCAL\_SERVER\_URL}{LOCAL\_SERVER\_URL}}
+{\footnotesize\ttfamily \label{namespaceapp_a0ae24c08fc5bd8e0ac46236150b9f102} 
+app.\+LOCAL\+\_\+\+SERVER\+\_\+\+URL = os.\+getenv("{}LOCAL\+\_\+\+BOT\+\_\+\+SERVER\+\_\+\+URL"{}, "{}http\+://127.\+0.\+0.\+1\+:5000"{}).rstrip("{}/"{})}
+
+
+
+Definition at line \mbox{\hyperlink{app_8py_source_l00045}{45}} of file \mbox{\hyperlink{app_8py_source}{app.\+py}}.
+
+\Hypertarget{namespaceapp_a3374c1e4d3655c0d9083d07a4aa904f5}\index{app@{app}!players@{players}}
+\index{players@{players}!app@{app}}
+\doxysubsubsection{\texorpdfstring{players}{players}}
+{\footnotesize\ttfamily \label{namespaceapp_a3374c1e4d3655c0d9083d07a4aa904f5} 
+dict app.\+players = \{\}}
+
+
+
+Definition at line \mbox{\hyperlink{app_8py_source_l00025}{25}} of file \mbox{\hyperlink{app_8py_source}{app.\+py}}.
+
+\Hypertarget{namespaceapp_ae996542be63ac459a38531f7c2dd0a49}\index{app@{app}!port@{port}}
+\index{port@{port}!app@{app}}
+\doxysubsubsection{\texorpdfstring{port}{port}}
+{\footnotesize\ttfamily \label{namespaceapp_ae996542be63ac459a38531f7c2dd0a49} 
+app.\+port}
+
+
+
+Definition at line \mbox{\hyperlink{app_8py_source_l00339}{339}} of file \mbox{\hyperlink{app_8py_source}{app.\+py}}.
+
+\Hypertarget{namespaceapp_a802b197689642ad094031cecef0a539c}\index{app@{app}!project\_dir@{project\_dir}}
+\index{project\_dir@{project\_dir}!app@{app}}
+\doxysubsubsection{\texorpdfstring{project\_dir}{project\_dir}}
+{\footnotesize\ttfamily \label{namespaceapp_a802b197689642ad094031cecef0a539c} 
+app.\+project\+\_\+dir = Path(\+\_\+\+\_\+file\+\_\+\+\_\+).resolve().parent}
+
+
+
+Definition at line \mbox{\hyperlink{app_8py_source_l00047}{47}} of file \mbox{\hyperlink{app_8py_source}{app.\+py}}.
+
+\Hypertarget{namespaceapp_adca7658ff5c9024a5353574d2c01cbd2}\index{app@{app}!secret\_key@{secret\_key}}
+\index{secret\_key@{secret\_key}!app@{app}}
+\doxysubsubsection{\texorpdfstring{secret\_key}{secret\_key}}
+{\footnotesize\ttfamily \label{namespaceapp_adca7658ff5c9024a5353574d2c01cbd2} 
+app.\+secret\+\_\+key}
+
+
+
+Definition at line \mbox{\hyperlink{app_8py_source_l00015}{15}} of file \mbox{\hyperlink{app_8py_source}{app.\+py}}.
+
+\Hypertarget{namespaceapp_af0d82fe96f54ba47f4f3c97ccee9edaa}\index{app@{app}!turn\_index@{turn\_index}}
+\index{turn\_index@{turn\_index}!app@{app}}
+\doxysubsubsection{\texorpdfstring{turn\_index}{turn\_index}}
+{\footnotesize\ttfamily \label{namespaceapp_af0d82fe96f54ba47f4f3c97ccee9edaa} 
+int app.\+turn\+\_\+index = 0}
+
+
+
+Definition at line \mbox{\hyperlink{app_8py_source_l00032}{32}} of file \mbox{\hyperlink{app_8py_source}{app.\+py}}.
+
+\Hypertarget{namespaceapp_a6dddbac012e3d8af810deafc0ef3e566}\index{app@{app}!turnID@{turnID}}
+\index{turnID@{turnID}!app@{app}}
+\doxysubsubsection{\texorpdfstring{turnID}{turnID}}
+{\footnotesize\ttfamily \label{namespaceapp_a6dddbac012e3d8af810deafc0ef3e566} 
+app.\+turn\+ID = None}
+
+
+
+Definition at line \mbox{\hyperlink{app_8py_source_l00033}{33}} of file \mbox{\hyperlink{app_8py_source}{app.\+py}}.
+
+\Hypertarget{namespaceapp_a370f49a795baf9e1f4aabb8bafa2bb4f}\index{app@{app}!votes\_recorded@{votes\_recorded}}
+\index{votes\_recorded@{votes\_recorded}!app@{app}}
+\doxysubsubsection{\texorpdfstring{votes\_recorded}{votes\_recorded}}
+{\footnotesize\ttfamily \label{namespaceapp_a370f49a795baf9e1f4aabb8bafa2bb4f} 
+app.\+votes\+\_\+recorded = set()}
+
+
+
+Definition at line \mbox{\hyperlink{app_8py_source_l00035}{35}} of file \mbox{\hyperlink{app_8py_source}{app.\+py}}.
+
+\Hypertarget{namespaceapp_ab92bc9d199051e417d22590cde52f54d}\index{app@{app}!votes\_submitted@{votes\_submitted}}
+\index{votes\_submitted@{votes\_submitted}!app@{app}}
+\doxysubsubsection{\texorpdfstring{votes\_submitted}{votes\_submitted}}
+{\footnotesize\ttfamily \label{namespaceapp_ab92bc9d199051e417d22590cde52f54d} 
+int app.\+votes\+\_\+submitted = 0}
+
+
+
+Definition at line \mbox{\hyperlink{app_8py_source_l00034}{34}} of file \mbox{\hyperlink{app_8py_source}{app.\+py}}.
+

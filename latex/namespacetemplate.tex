@@ -1,0 +1,213 @@
+\doxysection{template Namespace Reference}
+\hypertarget{namespacetemplate}{}\label{namespacetemplate}\index{template@{template}}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{namespacetemplate_adefbc47648d925ae07d0c1e0b98bf2b3}{client}} = Open\+AI(api\+\_\+key=os.\+getenv("{}OPENAI\+\_\+\+API\+\_\+\+KEY"{}))
+\item 
+str \mbox{\hyperlink{namespacetemplate_ad101d6364715565d718c0f60ad3a0502}{url}} = "{}http\+://localhost\+:5000"{}
+\item 
+\mbox{\hyperlink{namespacetemplate_a349f47c5cc39f1011cf414ebf003bbf2}{session}} = requests.\+Session()
+\item 
+\mbox{\hyperlink{namespacetemplate_aa96013d46222243a2d12f88cd976a2e3}{seen\+\_\+messages}} = set()
+\item 
+\mbox{\hyperlink{namespacetemplate_a23c370149f0542efdcb455c4df447634}{game\+State\+\_\+response}} = session.\+get(f\textquotesingle{}\{\mbox{\hyperlink{namespacetemplate_ad101d6364715565d718c0f60ad3a0502}{url}}\}/\mbox{\hyperlink{namespacetemplate_a037af3342f304808c3df411d942c23e0}{game\+State}}\textquotesingle{})
+\item 
+\mbox{\hyperlink{namespacetemplate_a037af3342f304808c3df411d942c23e0}{game\+State}} = game\+State\+\_\+response.\+json()
+\item 
+\mbox{\hyperlink{namespacetemplate_a1e8e5c3e79d04b5c0f1099f914ad8fba}{chats}} = game\+State.\+get("{}chats"{}, \mbox{[}$\,$\mbox{]})
+\item 
+\mbox{\hyperlink{namespacetemplate_a0d96bf76f8ec4f58121cf3377d99188d}{phase}} = game\+State.\+get("{}game\+Phase"{}, "{}"{})
+\item 
+int \mbox{\hyperlink{namespacetemplate_ab7264ecb7088be8644e3a42435dbdb17}{sender}} = msg\mbox{[}0\mbox{]} if len(msg) $>$ 0 else None
+\item 
+int \mbox{\hyperlink{namespacetemplate_a0b13af3e2cdbf85df8a0f3669381d72d}{text}} = msg\mbox{[}1\mbox{]}.strip() if len(msg) $>$ 1 else "{}"{}
+\item 
+tuple \mbox{\hyperlink{namespacetemplate_aef966d0b77c31803693b38fc98ad8b1f}{msg\+\_\+id}} = (\mbox{\hyperlink{namespacetemplate_ab7264ecb7088be8644e3a42435dbdb17}{sender}}, \mbox{\hyperlink{namespacetemplate_a0b13af3e2cdbf85df8a0f3669381d72d}{text}})
+\item 
+int \mbox{\hyperlink{namespacetemplate_a551f4a8dc6d5bf55d9b39cebb48c4f93}{prompt}} = \mbox{\hyperlink{namespacetemplate_a0b13af3e2cdbf85df8a0f3669381d72d}{text}}\mbox{[}len("{}@bot"{})\+:\mbox{]}.strip()
+\item 
+\mbox{\hyperlink{namespacetemplate_aac50e471eb7b88cd23dabfbde293297a}{response}}
+\item 
+\mbox{\hyperlink{namespacetemplate_a68d36bc3584c2c9d791d202b8bac9ae5}{bot\+\_\+reply}} = response.\+choices\mbox{[}0\mbox{]}.message.\+content.\+strip()
+\item 
+dict \mbox{\hyperlink{namespacetemplate_a45d0138fdb835352791b651e3b9fe9d9}{message\+\_\+data}} = \{"{}message"{}\+: \mbox{\hyperlink{namespacetemplate_a68d36bc3584c2c9d791d202b8bac9ae5}{bot\+\_\+reply}}\}
+\item 
+\mbox{\hyperlink{namespacetemplate_ae0e58602da99153b2132bb286351b9a4}{post\+\_\+response}} = session.\+post(f"{}\{\mbox{\hyperlink{namespacetemplate_ad101d6364715565d718c0f60ad3a0502}{url}}\}/message"{}, json=\mbox{\hyperlink{namespacetemplate_a45d0138fdb835352791b651e3b9fe9d9}{message\+\_\+data}})
+\end{DoxyCompactItemize}
+
+
+\label{doc-var-members}
+\Hypertarget{namespacetemplate_doc-var-members}
+\doxysubsection{Variable Documentation}
+\Hypertarget{namespacetemplate_a68d36bc3584c2c9d791d202b8bac9ae5}\index{template@{template}!bot\_reply@{bot\_reply}}
+\index{bot\_reply@{bot\_reply}!template@{template}}
+\doxysubsubsection{\texorpdfstring{bot\_reply}{bot\_reply}}
+{\footnotesize\ttfamily \label{namespacetemplate_a68d36bc3584c2c9d791d202b8bac9ae5} 
+template.\+bot\+\_\+reply = response.\+choices\mbox{[}0\mbox{]}.message.\+content.\+strip()}
+
+
+
+Definition at line \mbox{\hyperlink{template_8py_source_l00061}{61}} of file \mbox{\hyperlink{template_8py_source}{template.\+py}}.
+
+\Hypertarget{namespacetemplate_a1e8e5c3e79d04b5c0f1099f914ad8fba}\index{template@{template}!chats@{chats}}
+\index{chats@{chats}!template@{template}}
+\doxysubsubsection{\texorpdfstring{chats}{chats}}
+{\footnotesize\ttfamily \label{namespacetemplate_a1e8e5c3e79d04b5c0f1099f914ad8fba} 
+template.\+chats = game\+State.\+get("{}chats"{}, \mbox{[}$\,$\mbox{]})}
+
+
+
+Definition at line \mbox{\hyperlink{template_8py_source_l00031}{31}} of file \mbox{\hyperlink{template_8py_source}{template.\+py}}.
+
+\Hypertarget{namespacetemplate_adefbc47648d925ae07d0c1e0b98bf2b3}\index{template@{template}!client@{client}}
+\index{client@{client}!template@{template}}
+\doxysubsubsection{\texorpdfstring{client}{client}}
+{\footnotesize\ttfamily \label{namespacetemplate_adefbc47648d925ae07d0c1e0b98bf2b3} 
+template.\+client = Open\+AI(api\+\_\+key=os.\+getenv("{}OPENAI\+\_\+\+API\+\_\+\+KEY"{}))}
+
+
+
+Definition at line \mbox{\hyperlink{template_8py_source_l00009}{9}} of file \mbox{\hyperlink{template_8py_source}{template.\+py}}.
+
+\Hypertarget{namespacetemplate_a037af3342f304808c3df411d942c23e0}\index{template@{template}!gameState@{gameState}}
+\index{gameState@{gameState}!template@{template}}
+\doxysubsubsection{\texorpdfstring{gameState}{gameState}}
+{\footnotesize\ttfamily \label{namespacetemplate_a037af3342f304808c3df411d942c23e0} 
+template.\+game\+State = game\+State\+\_\+response.\+json()}
+
+
+
+Definition at line \mbox{\hyperlink{template_8py_source_l00030}{30}} of file \mbox{\hyperlink{template_8py_source}{template.\+py}}.
+
+\Hypertarget{namespacetemplate_a23c370149f0542efdcb455c4df447634}\index{template@{template}!gameState\_response@{gameState\_response}}
+\index{gameState\_response@{gameState\_response}!template@{template}}
+\doxysubsubsection{\texorpdfstring{gameState\_response}{gameState\_response}}
+{\footnotesize\ttfamily \label{namespacetemplate_a23c370149f0542efdcb455c4df447634} 
+template.\+game\+State\+\_\+response = session.\+get(f\textquotesingle{}\{\mbox{\hyperlink{namespacetemplate_ad101d6364715565d718c0f60ad3a0502}{url}}\}/\mbox{\hyperlink{namespacetemplate_a037af3342f304808c3df411d942c23e0}{game\+State}}\textquotesingle{})}
+
+
+
+Definition at line \mbox{\hyperlink{template_8py_source_l00024}{24}} of file \mbox{\hyperlink{template_8py_source}{template.\+py}}.
+
+\Hypertarget{namespacetemplate_a45d0138fdb835352791b651e3b9fe9d9}\index{template@{template}!message\_data@{message\_data}}
+\index{message\_data@{message\_data}!template@{template}}
+\doxysubsubsection{\texorpdfstring{message\_data}{message\_data}}
+{\footnotesize\ttfamily \label{namespacetemplate_a45d0138fdb835352791b651e3b9fe9d9} 
+dict template.\+message\+\_\+data = \{"{}message"{}\+: \mbox{\hyperlink{namespacetemplate_a68d36bc3584c2c9d791d202b8bac9ae5}{bot\+\_\+reply}}\}}
+
+
+
+Definition at line \mbox{\hyperlink{template_8py_source_l00064}{64}} of file \mbox{\hyperlink{template_8py_source}{template.\+py}}.
+
+\Hypertarget{namespacetemplate_aef966d0b77c31803693b38fc98ad8b1f}\index{template@{template}!msg\_id@{msg\_id}}
+\index{msg\_id@{msg\_id}!template@{template}}
+\doxysubsubsection{\texorpdfstring{msg\_id}{msg\_id}}
+{\footnotesize\ttfamily \label{namespacetemplate_aef966d0b77c31803693b38fc98ad8b1f} 
+tuple template.\+msg\+\_\+id = (\mbox{\hyperlink{namespacetemplate_ab7264ecb7088be8644e3a42435dbdb17}{sender}}, \mbox{\hyperlink{namespacetemplate_a0b13af3e2cdbf85df8a0f3669381d72d}{text}})}
+
+
+
+Definition at line \mbox{\hyperlink{template_8py_source_l00039}{39}} of file \mbox{\hyperlink{template_8py_source}{template.\+py}}.
+
+\Hypertarget{namespacetemplate_a0d96bf76f8ec4f58121cf3377d99188d}\index{template@{template}!phase@{phase}}
+\index{phase@{phase}!template@{template}}
+\doxysubsubsection{\texorpdfstring{phase}{phase}}
+{\footnotesize\ttfamily \label{namespacetemplate_a0d96bf76f8ec4f58121cf3377d99188d} 
+template.\+phase = game\+State.\+get("{}game\+Phase"{}, "{}"{})}
+
+
+
+Definition at line \mbox{\hyperlink{template_8py_source_l00032}{32}} of file \mbox{\hyperlink{template_8py_source}{template.\+py}}.
+
+\Hypertarget{namespacetemplate_ae0e58602da99153b2132bb286351b9a4}\index{template@{template}!post\_response@{post\_response}}
+\index{post\_response@{post\_response}!template@{template}}
+\doxysubsubsection{\texorpdfstring{post\_response}{post\_response}}
+{\footnotesize\ttfamily \label{namespacetemplate_ae0e58602da99153b2132bb286351b9a4} 
+template.\+post\+\_\+response = session.\+post(f"{}\{\mbox{\hyperlink{namespacetemplate_ad101d6364715565d718c0f60ad3a0502}{url}}\}/message"{}, json=\mbox{\hyperlink{namespacetemplate_a45d0138fdb835352791b651e3b9fe9d9}{message\+\_\+data}})}
+
+
+
+Definition at line \mbox{\hyperlink{template_8py_source_l00065}{65}} of file \mbox{\hyperlink{template_8py_source}{template.\+py}}.
+
+\Hypertarget{namespacetemplate_a551f4a8dc6d5bf55d9b39cebb48c4f93}\index{template@{template}!prompt@{prompt}}
+\index{prompt@{prompt}!template@{template}}
+\doxysubsubsection{\texorpdfstring{prompt}{prompt}}
+{\footnotesize\ttfamily \label{namespacetemplate_a551f4a8dc6d5bf55d9b39cebb48c4f93} 
+int template.\+prompt = \mbox{\hyperlink{namespacetemplate_a0b13af3e2cdbf85df8a0f3669381d72d}{text}}\mbox{[}len("{}@bot"{})\+:\mbox{]}.strip()}
+
+
+
+Definition at line \mbox{\hyperlink{template_8py_source_l00051}{51}} of file \mbox{\hyperlink{template_8py_source}{template.\+py}}.
+
+\Hypertarget{namespacetemplate_aac50e471eb7b88cd23dabfbde293297a}\index{template@{template}!response@{response}}
+\index{response@{response}!template@{template}}
+\doxysubsubsection{\texorpdfstring{response}{response}}
+{\footnotesize\ttfamily \label{namespacetemplate_aac50e471eb7b88cd23dabfbde293297a} 
+template.\+response}
+
+{\bfseries Initial value\+:}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{00001\ =\ \ client.chat.completions.create(}
+\DoxyCodeLine{00002\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ model=\textcolor{stringliteral}{"{}gpt-\/4o-\/mini"{}},}
+\DoxyCodeLine{00003\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ messages=[}
+\DoxyCodeLine{00004\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}role"{}}:\ \textcolor{stringliteral}{"{}system"{}},\ \textcolor{stringliteral}{"{}content"{}}:\ \textcolor{stringliteral}{"{}You\ are\ playing\ a\ game.\ You\ are\ playing\ against\ a\ human,\ who\ is\ trying\ to\ detect\ if\ you\ are\ a\ bot.\ You\ must\ deceive\ them\ into\ thinking\ you\ are\ human.\ You\ are\ supposed\ to\ ask\ each\ other\ questions\ to\ figure\ out\ if\ each\ other\ is\ the\ bot.\ Keep\ responses,\ short,\ skeptical,\ and\ not\ over\ excited.\ You\ must\ put\ yourself\ in\ the\ shoes\ of\ the\ human\ playing\ and\ try\ to\ behave\ as\ they\ would.\ You\ have\ to\ also\ question\ the\ user\ to\ show\ you\ are\ trying\ to\ figure\ out\ if\ they\ are\ a\ bot.\ Also,\ the\ game\ is\ turn-\/based\ and\ you\ will\ likely\ be\ first.\ You\ must\ send\ the\ first\ message.\ Once\ the\ game\ starts,\ send\ a\ cautious\ message\ just\ to\ test\ the\ waters."{}}\},}
+\DoxyCodeLine{00005\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}role"{}}:\ \textcolor{stringliteral}{"{}user"{}},\ \textcolor{stringliteral}{"{}content"{}}:\ prompt\}}
+\DoxyCodeLine{00006\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ]}
+\DoxyCodeLine{00007\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ )}
+
+\end{DoxyCode}
+
+
+Definition at line \mbox{\hyperlink{template_8py_source_l00054}{54}} of file \mbox{\hyperlink{template_8py_source}{template.\+py}}.
+
+\Hypertarget{namespacetemplate_aa96013d46222243a2d12f88cd976a2e3}\index{template@{template}!seen\_messages@{seen\_messages}}
+\index{seen\_messages@{seen\_messages}!template@{template}}
+\doxysubsubsection{\texorpdfstring{seen\_messages}{seen\_messages}}
+{\footnotesize\ttfamily \label{namespacetemplate_aa96013d46222243a2d12f88cd976a2e3} 
+template.\+seen\+\_\+messages = set()}
+
+
+
+Definition at line \mbox{\hyperlink{template_8py_source_l00017}{17}} of file \mbox{\hyperlink{template_8py_source}{template.\+py}}.
+
+\Hypertarget{namespacetemplate_ab7264ecb7088be8644e3a42435dbdb17}\index{template@{template}!sender@{sender}}
+\index{sender@{sender}!template@{template}}
+\doxysubsubsection{\texorpdfstring{sender}{sender}}
+{\footnotesize\ttfamily \label{namespacetemplate_ab7264ecb7088be8644e3a42435dbdb17} 
+int template.\+sender = msg\mbox{[}0\mbox{]} if len(msg) $>$ 0 else None}
+
+
+
+Definition at line \mbox{\hyperlink{template_8py_source_l00037}{37}} of file \mbox{\hyperlink{template_8py_source}{template.\+py}}.
+
+\Hypertarget{namespacetemplate_a349f47c5cc39f1011cf414ebf003bbf2}\index{template@{template}!session@{session}}
+\index{session@{session}!template@{template}}
+\doxysubsubsection{\texorpdfstring{session}{session}}
+{\footnotesize\ttfamily \label{namespacetemplate_a349f47c5cc39f1011cf414ebf003bbf2} 
+template.\+session = requests.\+Session()}
+
+
+
+Definition at line \mbox{\hyperlink{template_8py_source_l00013}{13}} of file \mbox{\hyperlink{template_8py_source}{template.\+py}}.
+
+\Hypertarget{namespacetemplate_a0b13af3e2cdbf85df8a0f3669381d72d}\index{template@{template}!text@{text}}
+\index{text@{text}!template@{template}}
+\doxysubsubsection{\texorpdfstring{text}{text}}
+{\footnotesize\ttfamily \label{namespacetemplate_a0b13af3e2cdbf85df8a0f3669381d72d} 
+int template.\+text = msg\mbox{[}1\mbox{]}.strip() if len(msg) $>$ 1 else "{}"{}}
+
+
+
+Definition at line \mbox{\hyperlink{template_8py_source_l00038}{38}} of file \mbox{\hyperlink{template_8py_source}{template.\+py}}.
+
+\Hypertarget{namespacetemplate_ad101d6364715565d718c0f60ad3a0502}\index{template@{template}!url@{url}}
+\index{url@{url}!template@{template}}
+\doxysubsubsection{\texorpdfstring{url}{url}}
+{\footnotesize\ttfamily \label{namespacetemplate_ad101d6364715565d718c0f60ad3a0502} 
+str template.\+url = "{}http\+://localhost\+:5000"{}}
+
+
+
+Definition at line \mbox{\hyperlink{template_8py_source_l00012}{12}} of file \mbox{\hyperlink{template_8py_source}{template.\+py}}.
+

@@ -1,0 +1,178 @@
+\doxysection{local\+\_\+agent.\+Local\+Agent Class Reference}
+\hypertarget{classlocal__agent_1_1_local_agent}{}\label{classlocal__agent_1_1_local_agent}\index{local\_agent.LocalAgent@{local\_agent.LocalAgent}}
+Inheritance diagram for local\+\_\+agent.\+Local\+Agent\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classlocal__agent_1_1_local_agent}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlocal__agent_1_1_local_agent_a36a491fbf9371a1a40d8d75f5046417d}{\+\_\+\+\_\+init\+\_\+\+\_\+}} (self)
+\item 
+\mbox{\hyperlink{classlocal__agent_1_1_local_agent_a10120755b0fa2a1945b500412256ffda}{get\+\_\+message}} (self, chats=\mbox{[}$\,$\mbox{]})
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Member Functions inherited from \mbox{\hyperlink{classbot_1_1_bot}{bot.\+Bot}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classbot_1_1_bot_ade25fdd5e5a0acc843b023ebfcbad213}{\+\_\+\+\_\+init\+\_\+\+\_\+}} (self, \mbox{\hyperlink{classbot_1_1_bot_af747210181db61fccd9102ad29e71524}{name}}, \mbox{\hyperlink{classbot_1_1_bot_a5b7c1ec43f8e7727ca6bb669c74713ef}{url}}="{}http\+://flask-\/app\+:5000"{})
+\item 
+\mbox{\hyperlink{classbot_1_1_bot_abd831c380775159df1d7591adf8d4fbc}{run}} (self)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classlocal__agent_1_1_local_agent_a990a4249fb47411b7dc9a1cf491925b9}{profile}} = LOCAL\+\_\+\+BOT\+\_\+\+PRESETS.\+get(profile\+\_\+id, LOCAL\+\_\+\+BOT\+\_\+\+PRESETS\mbox{[}DEFAULT\+\_\+\+LOCAL\+\_\+\+MODEL\mbox{]})
+\item 
+\mbox{\hyperlink{classlocal__agent_1_1_local_agent_aab7153df313324455db0e1ff0b69aa69}{last\+\_\+sent}} = None
+\item 
+\mbox{\hyperlink{classlocal__agent_1_1_local_agent_a352bc60bafada58deb393a5e85ed9921}{human\+\_\+name}} = random.\+choice(\mbox{\hyperlink{namespacelocal__agent_a8918b94dc89368767d5faa99a0ea423b}{BOT\+\_\+\+NAMES}})
+\end{DoxyCompactItemize}
+\doxysubsection*{Public Attributes inherited from \mbox{\hyperlink{classbot_1_1_bot}{bot.\+Bot}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classbot_1_1_bot_af747210181db61fccd9102ad29e71524}{name}} = name
+\item 
+\mbox{\hyperlink{classbot_1_1_bot_a5b7c1ec43f8e7727ca6bb669c74713ef}{url}} = url
+\item 
+\mbox{\hyperlink{classbot_1_1_bot_a98c8d39012ba30f9e531308bdfdac5ff}{session}} = requests.\+Session()
+\item 
+\mbox{\hyperlink{classbot_1_1_bot_a0668700212d8f3ba84ad82050ab1f728}{my\+\_\+id}} = None
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+str \mbox{\hyperlink{classlocal__agent_1_1_local_agent_a11d29a483c02acc9ecb2b8ff82ada941}{\+\_\+clean\+\_\+reply}} (self, str reply, list chats)
+\item 
+\mbox{\hyperlink{classlocal__agent_1_1_local_agent_a794b5b061a59a7a906663cad2e83e962}{\+\_\+ollama\+\_\+reply}} (self, str prompt)
+\item 
+\mbox{\hyperlink{classlocal__agent_1_1_local_agent_abc47adacaa7f38b14b082f19ac8e3f6e}{\+\_\+human\+\_\+delay}} (self, str latest\+\_\+message, str reply)
+\end{DoxyCompactItemize}
+\doxysubsection*{Protected Member Functions inherited from \mbox{\hyperlink{classbot_1_1_bot}{bot.\+Bot}}}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classbot_1_1_bot_acb3020c9eac2ae407385faabc47b56c2}{\+\_\+is\+\_\+my\+\_\+turn}} (self)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Additional Inherited Members}
+\doxysubsection*{Protected Attributes inherited from \mbox{\hyperlink{classbot_1_1_bot}{bot.\+Bot}}}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{classbot_1_1_bot_a52c08d891533325d82098ce9d93cd123}{\+\_\+responded\+\_\+to\+\_\+chat\+\_\+len}} = -\/1
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+
+
+Definition at line \mbox{\hyperlink{local__agent_8py_source_l00051}{51}} of file \mbox{\hyperlink{local__agent_8py_source}{local\+\_\+agent.\+py}}.
+
+
+
+\label{doc-constructors}
+\Hypertarget{classlocal__agent_1_1_local_agent_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classlocal__agent_1_1_local_agent_a36a491fbf9371a1a40d8d75f5046417d}\index{local\_agent.LocalAgent@{local\_agent.LocalAgent}!\_\_init\_\_@{\_\_init\_\_}}
+\index{\_\_init\_\_@{\_\_init\_\_}!local\_agent.LocalAgent@{local\_agent.LocalAgent}}
+\doxysubsubsection{\texorpdfstring{\_\_init\_\_()}{\_\_init\_\_()}}
+{\footnotesize\ttfamily \label{classlocal__agent_1_1_local_agent_a36a491fbf9371a1a40d8d75f5046417d} 
+local\+\_\+agent.\+Local\+Agent.\+\_\+\+\_\+init\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{local__agent_8py_source_l00052}{52}} of file \mbox{\hyperlink{local__agent_8py_source}{local\+\_\+agent.\+py}}.
+
+
+
+\label{doc-func-members}
+\Hypertarget{classlocal__agent_1_1_local_agent_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classlocal__agent_1_1_local_agent_a11d29a483c02acc9ecb2b8ff82ada941}\index{local\_agent.LocalAgent@{local\_agent.LocalAgent}!\_clean\_reply@{\_clean\_reply}}
+\index{\_clean\_reply@{\_clean\_reply}!local\_agent.LocalAgent@{local\_agent.LocalAgent}}
+\doxysubsubsection{\texorpdfstring{\_clean\_reply()}{\_clean\_reply()}}
+{\footnotesize\ttfamily \label{classlocal__agent_1_1_local_agent_a11d29a483c02acc9ecb2b8ff82ada941} 
+ str local\+\_\+agent.\+Local\+Agent.\+\_\+clean\+\_\+reply (\begin{DoxyParamCaption}\item[{}]{self}{, }\item[{str}]{reply}{, }\item[{list}]{chats}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+\begin{DoxyVerb}Clean up the reply and check for obvious copies.\end{DoxyVerb}
+ 
+
+Definition at line \mbox{\hyperlink{local__agent_8py_source_l00111}{111}} of file \mbox{\hyperlink{local__agent_8py_source}{local\+\_\+agent.\+py}}.
+
+\Hypertarget{classlocal__agent_1_1_local_agent_abc47adacaa7f38b14b082f19ac8e3f6e}\index{local\_agent.LocalAgent@{local\_agent.LocalAgent}!\_human\_delay@{\_human\_delay}}
+\index{\_human\_delay@{\_human\_delay}!local\_agent.LocalAgent@{local\_agent.LocalAgent}}
+\doxysubsubsection{\texorpdfstring{\_human\_delay()}{\_human\_delay()}}
+{\footnotesize\ttfamily \label{classlocal__agent_1_1_local_agent_abc47adacaa7f38b14b082f19ac8e3f6e} 
+local\+\_\+agent.\+Local\+Agent.\+\_\+human\+\_\+delay (\begin{DoxyParamCaption}\item[{}]{self}{, }\item[{str}]{latest\+\_\+message}{, }\item[{str}]{reply}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+\begin{DoxyVerb}Sleep to simulate thinking/typing time based on message length.\end{DoxyVerb}
+ 
+
+Definition at line \mbox{\hyperlink{local__agent_8py_source_l00161}{161}} of file \mbox{\hyperlink{local__agent_8py_source}{local\+\_\+agent.\+py}}.
+
+\Hypertarget{classlocal__agent_1_1_local_agent_a794b5b061a59a7a906663cad2e83e962}\index{local\_agent.LocalAgent@{local\_agent.LocalAgent}!\_ollama\_reply@{\_ollama\_reply}}
+\index{\_ollama\_reply@{\_ollama\_reply}!local\_agent.LocalAgent@{local\_agent.LocalAgent}}
+\doxysubsubsection{\texorpdfstring{\_ollama\_reply()}{\_ollama\_reply()}}
+{\footnotesize\ttfamily \label{classlocal__agent_1_1_local_agent_a794b5b061a59a7a906663cad2e83e962} 
+local\+\_\+agent.\+Local\+Agent.\+\_\+ollama\+\_\+reply (\begin{DoxyParamCaption}\item[{}]{self}{, }\item[{str}]{prompt}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line \mbox{\hyperlink{local__agent_8py_source_l00136}{136}} of file \mbox{\hyperlink{local__agent_8py_source}{local\+\_\+agent.\+py}}.
+
+\Hypertarget{classlocal__agent_1_1_local_agent_a10120755b0fa2a1945b500412256ffda}\index{local\_agent.LocalAgent@{local\_agent.LocalAgent}!get\_message@{get\_message}}
+\index{get\_message@{get\_message}!local\_agent.LocalAgent@{local\_agent.LocalAgent}}
+\doxysubsubsection{\texorpdfstring{get\_message()}{get\_message()}}
+{\footnotesize\ttfamily \label{classlocal__agent_1_1_local_agent_a10120755b0fa2a1945b500412256ffda} 
+local\+\_\+agent.\+Local\+Agent.\+get\+\_\+message (\begin{DoxyParamCaption}\item[{}]{self}{, }\item[{}]{chats}{ = {\ttfamily \mbox{[}\mbox{]}}}\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Override this in subclasses to implement actual bot behavior.
+`chats` contains the full list of (user_id, message) tuples.
+\end{DoxyVerb}
+ 
+
+Reimplemented from \mbox{\hyperlink{classbot_1_1_bot_a8c7164e88612b91569cfc20388178c4e}{bot.\+Bot}}.
+
+
+
+Definition at line \mbox{\hyperlink{local__agent_8py_source_l00066}{66}} of file \mbox{\hyperlink{local__agent_8py_source}{local\+\_\+agent.\+py}}.
+
+
+
+\label{doc-variable-members}
+\Hypertarget{classlocal__agent_1_1_local_agent_doc-variable-members}
+\doxysubsection{Member Data Documentation}
+\Hypertarget{classlocal__agent_1_1_local_agent_a352bc60bafada58deb393a5e85ed9921}\index{local\_agent.LocalAgent@{local\_agent.LocalAgent}!human\_name@{human\_name}}
+\index{human\_name@{human\_name}!local\_agent.LocalAgent@{local\_agent.LocalAgent}}
+\doxysubsubsection{\texorpdfstring{human\_name}{human\_name}}
+{\footnotesize\ttfamily \label{classlocal__agent_1_1_local_agent_a352bc60bafada58deb393a5e85ed9921} 
+local\+\_\+agent.\+Local\+Agent.\+human\+\_\+name = random.\+choice(\mbox{\hyperlink{namespacelocal__agent_a8918b94dc89368767d5faa99a0ea423b}{BOT\+\_\+\+NAMES}})}
+
+
+
+Definition at line \mbox{\hyperlink{local__agent_8py_source_l00060}{60}} of file \mbox{\hyperlink{local__agent_8py_source}{local\+\_\+agent.\+py}}.
+
+\Hypertarget{classlocal__agent_1_1_local_agent_aab7153df313324455db0e1ff0b69aa69}\index{local\_agent.LocalAgent@{local\_agent.LocalAgent}!last\_sent@{last\_sent}}
+\index{last\_sent@{last\_sent}!local\_agent.LocalAgent@{local\_agent.LocalAgent}}
+\doxysubsubsection{\texorpdfstring{last\_sent}{last\_sent}}
+{\footnotesize\ttfamily \label{classlocal__agent_1_1_local_agent_aab7153df313324455db0e1ff0b69aa69} 
+local\+\_\+agent.\+Local\+Agent.\+last\+\_\+sent = None}
+
+
+
+Definition at line \mbox{\hyperlink{local__agent_8py_source_l00057}{57}} of file \mbox{\hyperlink{local__agent_8py_source}{local\+\_\+agent.\+py}}.
+
+\Hypertarget{classlocal__agent_1_1_local_agent_a990a4249fb47411b7dc9a1cf491925b9}\index{local\_agent.LocalAgent@{local\_agent.LocalAgent}!profile@{profile}}
+\index{profile@{profile}!local\_agent.LocalAgent@{local\_agent.LocalAgent}}
+\doxysubsubsection{\texorpdfstring{profile}{profile}}
+{\footnotesize\ttfamily \label{classlocal__agent_1_1_local_agent_a990a4249fb47411b7dc9a1cf491925b9} 
+local\+\_\+agent.\+Local\+Agent.\+profile = LOCAL\+\_\+\+BOT\+\_\+\+PRESETS.\+get(profile\+\_\+id, LOCAL\+\_\+\+BOT\+\_\+\+PRESETS\mbox{[}DEFAULT\+\_\+\+LOCAL\+\_\+\+MODEL\mbox{]})}
+
+
+
+Definition at line \mbox{\hyperlink{local__agent_8py_source_l00054}{54}} of file \mbox{\hyperlink{local__agent_8py_source}{local\+\_\+agent.\+py}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Bot/\mbox{\hyperlink{local__agent_8py}{local\+\_\+agent.\+py}}\end{DoxyCompactItemize}

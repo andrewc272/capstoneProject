@@ -1,0 +1,183 @@
+\doxysection{open\+AIBot.\+Open\+AIBot Class Reference}
+\hypertarget{classopen_a_i_bot_1_1_open_a_i_bot}{}\label{classopen_a_i_bot_1_1_open_a_i_bot}\index{openAIBot.OpenAIBot@{openAIBot.OpenAIBot}}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classopen_a_i_bot_1_1_open_a_i_bot_a122a818d0b59483464d2796459107301}{\+\_\+\+\_\+init\+\_\+\+\_\+}} (self, \mbox{\hyperlink{classopen_a_i_bot_1_1_open_a_i_bot_acfdaf7fd6911b89d1220b284e4f4cb59}{url}}, \mbox{\hyperlink{classopen_a_i_bot_1_1_open_a_i_bot_a9197803c9a7625b19026f7aa0bbda096}{name}}="{}Open\+AI Bot"{})
+\item 
+\mbox{\hyperlink{classopen_a_i_bot_1_1_open_a_i_bot_a4122bd6b4c064bf7f59a25d302c1a6d9}{register}} (self)
+\item 
+\mbox{\hyperlink{classopen_a_i_bot_1_1_open_a_i_bot_aa0f5f384b9296bbaf103f9b7ccf965b8}{get\+\_\+message}} (self, chats)
+\item 
+\mbox{\hyperlink{classopen_a_i_bot_1_1_open_a_i_bot_adb789134b4ba46689e2a4f4616540f4c}{play}} (self)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classopen_a_i_bot_1_1_open_a_i_bot_acfdaf7fd6911b89d1220b284e4f4cb59}{url}} = url.\+rstrip("{}/"{})
+\item 
+\mbox{\hyperlink{classopen_a_i_bot_1_1_open_a_i_bot_a9197803c9a7625b19026f7aa0bbda096}{name}} = name
+\item 
+\mbox{\hyperlink{classopen_a_i_bot_1_1_open_a_i_bot_a9f9ca7851d105a6a5e1907ab3e48fb57}{session}} = requests.\+Session()
+\item 
+\mbox{\hyperlink{classopen_a_i_bot_1_1_open_a_i_bot_a2c77de64b45e1183b01390e6e014565a}{my\+ID}} = None
+\item 
+bool \mbox{\hyperlink{classopen_a_i_bot_1_1_open_a_i_bot_aeb7ddd3d5bb4b0e13cf2146585a301ab}{added}} = False
+\item 
+\mbox{\hyperlink{classopen_a_i_bot_1_1_open_a_i_bot_aeeee9e534cd9e5e1fcbae5541a9f47ca}{client}} = Open\+AI(api\+\_\+key=os.\+getenv("{}OPENAI\+\_\+\+API\+\_\+\+KEY"{}))
+\item 
+str \mbox{\hyperlink{classopen_a_i_bot_1_1_open_a_i_bot_ad6eacc7b7e0a6894762626e4d1ba5685}{unique\+\_\+id}} = "{}bot-\/"{} + uuid.\+uuid4().hex
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classopen_a_i_bot_1_1_open_a_i_bot_a9af20ef5157a947ce8011f5bedb741f3}{\+\_\+headers}} (self)
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+
+
+Definition at line \mbox{\hyperlink{open_a_i_bot_8py_source_l00011}{11}} of file \mbox{\hyperlink{open_a_i_bot_8py_source}{open\+AIBot.\+py}}.
+
+
+
+\label{doc-constructors}
+\Hypertarget{classopen_a_i_bot_1_1_open_a_i_bot_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classopen_a_i_bot_1_1_open_a_i_bot_a122a818d0b59483464d2796459107301}\index{openAIBot.OpenAIBot@{openAIBot.OpenAIBot}!\_\_init\_\_@{\_\_init\_\_}}
+\index{\_\_init\_\_@{\_\_init\_\_}!openAIBot.OpenAIBot@{openAIBot.OpenAIBot}}
+\doxysubsubsection{\texorpdfstring{\_\_init\_\_()}{\_\_init\_\_()}}
+{\footnotesize\ttfamily \label{classopen_a_i_bot_1_1_open_a_i_bot_a122a818d0b59483464d2796459107301} 
+open\+AIBot.\+Open\+AIBot.\+\_\+\+\_\+init\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self}{, }\item[{}]{url}{, }\item[{}]{name}{ = {\ttfamily "{}OpenAI~Bot"{}}}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{open_a_i_bot_8py_source_l00012}{12}} of file \mbox{\hyperlink{open_a_i_bot_8py_source}{open\+AIBot.\+py}}.
+
+
+
+\label{doc-func-members}
+\Hypertarget{classopen_a_i_bot_1_1_open_a_i_bot_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classopen_a_i_bot_1_1_open_a_i_bot_a9af20ef5157a947ce8011f5bedb741f3}\index{openAIBot.OpenAIBot@{openAIBot.OpenAIBot}!\_headers@{\_headers}}
+\index{\_headers@{\_headers}!openAIBot.OpenAIBot@{openAIBot.OpenAIBot}}
+\doxysubsubsection{\texorpdfstring{\_headers()}{\_headers()}}
+{\footnotesize\ttfamily \label{classopen_a_i_bot_1_1_open_a_i_bot_a9af20ef5157a947ce8011f5bedb741f3} 
+open\+AIBot.\+Open\+AIBot.\+\_\+headers (\begin{DoxyParamCaption}\item[{}]{self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line \mbox{\hyperlink{open_a_i_bot_8py_source_l00023}{23}} of file \mbox{\hyperlink{open_a_i_bot_8py_source}{open\+AIBot.\+py}}.
+
+\Hypertarget{classopen_a_i_bot_1_1_open_a_i_bot_aa0f5f384b9296bbaf103f9b7ccf965b8}\index{openAIBot.OpenAIBot@{openAIBot.OpenAIBot}!get\_message@{get\_message}}
+\index{get\_message@{get\_message}!openAIBot.OpenAIBot@{openAIBot.OpenAIBot}}
+\doxysubsubsection{\texorpdfstring{get\_message()}{get\_message()}}
+{\footnotesize\ttfamily \label{classopen_a_i_bot_1_1_open_a_i_bot_aa0f5f384b9296bbaf103f9b7ccf965b8} 
+open\+AIBot.\+Open\+AIBot.\+get\+\_\+message (\begin{DoxyParamCaption}\item[{}]{self}{, }\item[{}]{chats}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{open_a_i_bot_8py_source_l00038}{38}} of file \mbox{\hyperlink{open_a_i_bot_8py_source}{open\+AIBot.\+py}}.
+
+\Hypertarget{classopen_a_i_bot_1_1_open_a_i_bot_adb789134b4ba46689e2a4f4616540f4c}\index{openAIBot.OpenAIBot@{openAIBot.OpenAIBot}!play@{play}}
+\index{play@{play}!openAIBot.OpenAIBot@{openAIBot.OpenAIBot}}
+\doxysubsubsection{\texorpdfstring{play()}{play()}}
+{\footnotesize\ttfamily \label{classopen_a_i_bot_1_1_open_a_i_bot_adb789134b4ba46689e2a4f4616540f4c} 
+open\+AIBot.\+Open\+AIBot.\+play (\begin{DoxyParamCaption}\item[{}]{self}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{open_a_i_bot_8py_source_l00074}{74}} of file \mbox{\hyperlink{open_a_i_bot_8py_source}{open\+AIBot.\+py}}.
+
+\Hypertarget{classopen_a_i_bot_1_1_open_a_i_bot_a4122bd6b4c064bf7f59a25d302c1a6d9}\index{openAIBot.OpenAIBot@{openAIBot.OpenAIBot}!register@{register}}
+\index{register@{register}!openAIBot.OpenAIBot@{openAIBot.OpenAIBot}}
+\doxysubsubsection{\texorpdfstring{register()}{register()}}
+{\footnotesize\ttfamily \label{classopen_a_i_bot_1_1_open_a_i_bot_a4122bd6b4c064bf7f59a25d302c1a6d9} 
+open\+AIBot.\+Open\+AIBot.\+register (\begin{DoxyParamCaption}\item[{}]{self}{}\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Register the bot and get its ID.\end{DoxyVerb}
+ 
+
+Definition at line \mbox{\hyperlink{open_a_i_bot_8py_source_l00026}{26}} of file \mbox{\hyperlink{open_a_i_bot_8py_source}{open\+AIBot.\+py}}.
+
+
+
+\label{doc-variable-members}
+\Hypertarget{classopen_a_i_bot_1_1_open_a_i_bot_doc-variable-members}
+\doxysubsection{Member Data Documentation}
+\Hypertarget{classopen_a_i_bot_1_1_open_a_i_bot_aeb7ddd3d5bb4b0e13cf2146585a301ab}\index{openAIBot.OpenAIBot@{openAIBot.OpenAIBot}!added@{added}}
+\index{added@{added}!openAIBot.OpenAIBot@{openAIBot.OpenAIBot}}
+\doxysubsubsection{\texorpdfstring{added}{added}}
+{\footnotesize\ttfamily \label{classopen_a_i_bot_1_1_open_a_i_bot_aeb7ddd3d5bb4b0e13cf2146585a301ab} 
+bool open\+AIBot.\+Open\+AIBot.\+added = False}
+
+
+
+Definition at line \mbox{\hyperlink{open_a_i_bot_8py_source_l00018}{18}} of file \mbox{\hyperlink{open_a_i_bot_8py_source}{open\+AIBot.\+py}}.
+
+\Hypertarget{classopen_a_i_bot_1_1_open_a_i_bot_aeeee9e534cd9e5e1fcbae5541a9f47ca}\index{openAIBot.OpenAIBot@{openAIBot.OpenAIBot}!client@{client}}
+\index{client@{client}!openAIBot.OpenAIBot@{openAIBot.OpenAIBot}}
+\doxysubsubsection{\texorpdfstring{client}{client}}
+{\footnotesize\ttfamily \label{classopen_a_i_bot_1_1_open_a_i_bot_aeeee9e534cd9e5e1fcbae5541a9f47ca} 
+open\+AIBot.\+Open\+AIBot.\+client = Open\+AI(api\+\_\+key=os.\+getenv("{}OPENAI\+\_\+\+API\+\_\+\+KEY"{}))}
+
+
+
+Definition at line \mbox{\hyperlink{open_a_i_bot_8py_source_l00019}{19}} of file \mbox{\hyperlink{open_a_i_bot_8py_source}{open\+AIBot.\+py}}.
+
+\Hypertarget{classopen_a_i_bot_1_1_open_a_i_bot_a2c77de64b45e1183b01390e6e014565a}\index{openAIBot.OpenAIBot@{openAIBot.OpenAIBot}!myID@{myID}}
+\index{myID@{myID}!openAIBot.OpenAIBot@{openAIBot.OpenAIBot}}
+\doxysubsubsection{\texorpdfstring{myID}{myID}}
+{\footnotesize\ttfamily \label{classopen_a_i_bot_1_1_open_a_i_bot_a2c77de64b45e1183b01390e6e014565a} 
+open\+AIBot.\+Open\+AIBot.\+my\+ID = None}
+
+
+
+Definition at line \mbox{\hyperlink{open_a_i_bot_8py_source_l00017}{17}} of file \mbox{\hyperlink{open_a_i_bot_8py_source}{open\+AIBot.\+py}}.
+
+\Hypertarget{classopen_a_i_bot_1_1_open_a_i_bot_a9197803c9a7625b19026f7aa0bbda096}\index{openAIBot.OpenAIBot@{openAIBot.OpenAIBot}!name@{name}}
+\index{name@{name}!openAIBot.OpenAIBot@{openAIBot.OpenAIBot}}
+\doxysubsubsection{\texorpdfstring{name}{name}}
+{\footnotesize\ttfamily \label{classopen_a_i_bot_1_1_open_a_i_bot_a9197803c9a7625b19026f7aa0bbda096} 
+open\+AIBot.\+Open\+AIBot.\+name = name}
+
+
+
+Definition at line \mbox{\hyperlink{open_a_i_bot_8py_source_l00014}{14}} of file \mbox{\hyperlink{open_a_i_bot_8py_source}{open\+AIBot.\+py}}.
+
+\Hypertarget{classopen_a_i_bot_1_1_open_a_i_bot_a9f9ca7851d105a6a5e1907ab3e48fb57}\index{openAIBot.OpenAIBot@{openAIBot.OpenAIBot}!session@{session}}
+\index{session@{session}!openAIBot.OpenAIBot@{openAIBot.OpenAIBot}}
+\doxysubsubsection{\texorpdfstring{session}{session}}
+{\footnotesize\ttfamily \label{classopen_a_i_bot_1_1_open_a_i_bot_a9f9ca7851d105a6a5e1907ab3e48fb57} 
+open\+AIBot.\+Open\+AIBot.\+session = requests.\+Session()}
+
+
+
+Definition at line \mbox{\hyperlink{open_a_i_bot_8py_source_l00015}{15}} of file \mbox{\hyperlink{open_a_i_bot_8py_source}{open\+AIBot.\+py}}.
+
+\Hypertarget{classopen_a_i_bot_1_1_open_a_i_bot_ad6eacc7b7e0a6894762626e4d1ba5685}\index{openAIBot.OpenAIBot@{openAIBot.OpenAIBot}!unique\_id@{unique\_id}}
+\index{unique\_id@{unique\_id}!openAIBot.OpenAIBot@{openAIBot.OpenAIBot}}
+\doxysubsubsection{\texorpdfstring{unique\_id}{unique\_id}}
+{\footnotesize\ttfamily \label{classopen_a_i_bot_1_1_open_a_i_bot_ad6eacc7b7e0a6894762626e4d1ba5685} 
+str open\+AIBot.\+Open\+AIBot.\+unique\+\_\+id = "{}bot-\/"{} + uuid.\+uuid4().hex}
+
+
+
+Definition at line \mbox{\hyperlink{open_a_i_bot_8py_source_l00021}{21}} of file \mbox{\hyperlink{open_a_i_bot_8py_source}{open\+AIBot.\+py}}.
+
+\Hypertarget{classopen_a_i_bot_1_1_open_a_i_bot_acfdaf7fd6911b89d1220b284e4f4cb59}\index{openAIBot.OpenAIBot@{openAIBot.OpenAIBot}!url@{url}}
+\index{url@{url}!openAIBot.OpenAIBot@{openAIBot.OpenAIBot}}
+\doxysubsubsection{\texorpdfstring{url}{url}}
+{\footnotesize\ttfamily \label{classopen_a_i_bot_1_1_open_a_i_bot_acfdaf7fd6911b89d1220b284e4f4cb59} 
+open\+AIBot.\+Open\+AIBot.\+url = url.\+rstrip("{}/"{})}
+
+
+
+Definition at line \mbox{\hyperlink{open_a_i_bot_8py_source_l00013}{13}} of file \mbox{\hyperlink{open_a_i_bot_8py_source}{open\+AIBot.\+py}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Bot/\mbox{\hyperlink{open_a_i_bot_8py}{open\+AIBot.\+py}}\end{DoxyCompactItemize}

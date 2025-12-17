@@ -1,0 +1,164 @@
+\doxysection{bot.\+Bot Class Reference}
+\hypertarget{classbot_1_1_bot}{}\label{classbot_1_1_bot}\index{bot.Bot@{bot.Bot}}
+Inheritance diagram for bot.\+Bot\+:\begin{figure}[H]
+\begin{center}
+\leavevmode
+\includegraphics[height=2.000000cm]{classbot_1_1_bot}
+\end{center}
+\end{figure}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classbot_1_1_bot_ade25fdd5e5a0acc843b023ebfcbad213}{\+\_\+\+\_\+init\+\_\+\+\_\+}} (self, \mbox{\hyperlink{classbot_1_1_bot_af747210181db61fccd9102ad29e71524}{name}}, \mbox{\hyperlink{classbot_1_1_bot_a5b7c1ec43f8e7727ca6bb669c74713ef}{url}}="{}http\+://flask-\/app\+:5000"{})
+\item 
+\mbox{\hyperlink{classbot_1_1_bot_a8c7164e88612b91569cfc20388178c4e}{get\+\_\+message}} (self, chats=\mbox{[}$\,$\mbox{]})
+\item 
+\mbox{\hyperlink{classbot_1_1_bot_abd831c380775159df1d7591adf8d4fbc}{run}} (self)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Public Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classbot_1_1_bot_af747210181db61fccd9102ad29e71524}{name}} = name
+\item 
+\mbox{\hyperlink{classbot_1_1_bot_a5b7c1ec43f8e7727ca6bb669c74713ef}{url}} = url
+\item 
+\mbox{\hyperlink{classbot_1_1_bot_a98c8d39012ba30f9e531308bdfdac5ff}{session}} = requests.\+Session()
+\item 
+\mbox{\hyperlink{classbot_1_1_bot_a0668700212d8f3ba84ad82050ab1f728}{my\+\_\+id}} = None
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classbot_1_1_bot_acb3020c9eac2ae407385faabc47b56c2}{\+\_\+is\+\_\+my\+\_\+turn}} (self)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+int \mbox{\hyperlink{classbot_1_1_bot_a52c08d891533325d82098ce9d93cd123}{\+\_\+responded\+\_\+to\+\_\+chat\+\_\+len}} = -\/1
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\begin{DoxyVerb}This creates a bot and adds it to the game\end{DoxyVerb}
+ 
+
+Definition at line \mbox{\hyperlink{bot_8py_source_l00006}{6}} of file \mbox{\hyperlink{bot_8py_source}{bot.\+py}}.
+
+
+
+\label{doc-constructors}
+\Hypertarget{classbot_1_1_bot_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classbot_1_1_bot_ade25fdd5e5a0acc843b023ebfcbad213}\index{bot.Bot@{bot.Bot}!\_\_init\_\_@{\_\_init\_\_}}
+\index{\_\_init\_\_@{\_\_init\_\_}!bot.Bot@{bot.Bot}}
+\doxysubsubsection{\texorpdfstring{\_\_init\_\_()}{\_\_init\_\_()}}
+{\footnotesize\ttfamily \label{classbot_1_1_bot_ade25fdd5e5a0acc843b023ebfcbad213} 
+bot.\+Bot.\+\_\+\+\_\+init\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self}{, }\item[{}]{name}{, }\item[{}]{url}{ = {\ttfamily "{}http\+://flask-\/app\+:5000"{}}}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{bot_8py_source_l00008}{8}} of file \mbox{\hyperlink{bot_8py_source}{bot.\+py}}.
+
+
+
+\label{doc-func-members}
+\Hypertarget{classbot_1_1_bot_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classbot_1_1_bot_acb3020c9eac2ae407385faabc47b56c2}\index{bot.Bot@{bot.Bot}!\_is\_my\_turn@{\_is\_my\_turn}}
+\index{\_is\_my\_turn@{\_is\_my\_turn}!bot.Bot@{bot.Bot}}
+\doxysubsubsection{\texorpdfstring{\_is\_my\_turn()}{\_is\_my\_turn()}}
+{\footnotesize\ttfamily \label{classbot_1_1_bot_acb3020c9eac2ae407385faabc47b56c2} 
+bot.\+Bot.\+\_\+is\+\_\+my\+\_\+turn (\begin{DoxyParamCaption}\item[{}]{self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+\begin{DoxyVerb}Check if it's currently this bot's turn.\end{DoxyVerb}
+ 
+
+Definition at line \mbox{\hyperlink{bot_8py_source_l00041}{41}} of file \mbox{\hyperlink{bot_8py_source}{bot.\+py}}.
+
+\Hypertarget{classbot_1_1_bot_a8c7164e88612b91569cfc20388178c4e}\index{bot.Bot@{bot.Bot}!get\_message@{get\_message}}
+\index{get\_message@{get\_message}!bot.Bot@{bot.Bot}}
+\doxysubsubsection{\texorpdfstring{get\_message()}{get\_message()}}
+{\footnotesize\ttfamily \label{classbot_1_1_bot_a8c7164e88612b91569cfc20388178c4e} 
+bot.\+Bot.\+get\+\_\+message (\begin{DoxyParamCaption}\item[{}]{self}{, }\item[{}]{chats}{ = {\ttfamily \mbox{[}\mbox{]}}}\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Override this in subclasses to implement actual bot behavior.
+`chats` contains the full list of (user_id, message) tuples.
+\end{DoxyVerb}
+ 
+
+Reimplemented in \mbox{\hyperlink{classcli_player_1_1cli_client_a1908789d050ae421e32b3a7b1ea4c1b8}{cli\+Player.\+cli\+Client}}, and \mbox{\hyperlink{classlocal__agent_1_1_local_agent_a10120755b0fa2a1945b500412256ffda}{local\+\_\+agent.\+Local\+Agent}}.
+
+
+
+Definition at line \mbox{\hyperlink{bot_8py_source_l00033}{33}} of file \mbox{\hyperlink{bot_8py_source}{bot.\+py}}.
+
+\Hypertarget{classbot_1_1_bot_abd831c380775159df1d7591adf8d4fbc}\index{bot.Bot@{bot.Bot}!run@{run}}
+\index{run@{run}!bot.Bot@{bot.Bot}}
+\doxysubsubsection{\texorpdfstring{run()}{run()}}
+{\footnotesize\ttfamily \label{classbot_1_1_bot_abd831c380775159df1d7591adf8d4fbc} 
+bot.\+Bot.\+run (\begin{DoxyParamCaption}\item[{}]{self}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{bot_8py_source_l00053}{53}} of file \mbox{\hyperlink{bot_8py_source}{bot.\+py}}.
+
+
+
+\label{doc-variable-members}
+\Hypertarget{classbot_1_1_bot_doc-variable-members}
+\doxysubsection{Member Data Documentation}
+\Hypertarget{classbot_1_1_bot_a52c08d891533325d82098ce9d93cd123}\index{bot.Bot@{bot.Bot}!\_responded\_to\_chat\_len@{\_responded\_to\_chat\_len}}
+\index{\_responded\_to\_chat\_len@{\_responded\_to\_chat\_len}!bot.Bot@{bot.Bot}}
+\doxysubsubsection{\texorpdfstring{\_responded\_to\_chat\_len}{\_responded\_to\_chat\_len}}
+{\footnotesize\ttfamily \label{classbot_1_1_bot_a52c08d891533325d82098ce9d93cd123} 
+int bot.\+Bot.\+\_\+responded\+\_\+to\+\_\+chat\+\_\+len = -\/1\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line \mbox{\hyperlink{bot_8py_source_l00014}{14}} of file \mbox{\hyperlink{bot_8py_source}{bot.\+py}}.
+
+\Hypertarget{classbot_1_1_bot_a0668700212d8f3ba84ad82050ab1f728}\index{bot.Bot@{bot.Bot}!my\_id@{my\_id}}
+\index{my\_id@{my\_id}!bot.Bot@{bot.Bot}}
+\doxysubsubsection{\texorpdfstring{my\_id}{my\_id}}
+{\footnotesize\ttfamily \label{classbot_1_1_bot_a0668700212d8f3ba84ad82050ab1f728} 
+bot.\+Bot.\+my\+\_\+id = None}
+
+
+
+Definition at line \mbox{\hyperlink{bot_8py_source_l00013}{13}} of file \mbox{\hyperlink{bot_8py_source}{bot.\+py}}.
+
+\Hypertarget{classbot_1_1_bot_af747210181db61fccd9102ad29e71524}\index{bot.Bot@{bot.Bot}!name@{name}}
+\index{name@{name}!bot.Bot@{bot.Bot}}
+\doxysubsubsection{\texorpdfstring{name}{name}}
+{\footnotesize\ttfamily \label{classbot_1_1_bot_af747210181db61fccd9102ad29e71524} 
+bot.\+Bot.\+name = name}
+
+
+
+Definition at line \mbox{\hyperlink{bot_8py_source_l00009}{9}} of file \mbox{\hyperlink{bot_8py_source}{bot.\+py}}.
+
+\Hypertarget{classbot_1_1_bot_a98c8d39012ba30f9e531308bdfdac5ff}\index{bot.Bot@{bot.Bot}!session@{session}}
+\index{session@{session}!bot.Bot@{bot.Bot}}
+\doxysubsubsection{\texorpdfstring{session}{session}}
+{\footnotesize\ttfamily \label{classbot_1_1_bot_a98c8d39012ba30f9e531308bdfdac5ff} 
+bot.\+Bot.\+session = requests.\+Session()}
+
+
+
+Definition at line \mbox{\hyperlink{bot_8py_source_l00011}{11}} of file \mbox{\hyperlink{bot_8py_source}{bot.\+py}}.
+
+\Hypertarget{classbot_1_1_bot_a5b7c1ec43f8e7727ca6bb669c74713ef}\index{bot.Bot@{bot.Bot}!url@{url}}
+\index{url@{url}!bot.Bot@{bot.Bot}}
+\doxysubsubsection{\texorpdfstring{url}{url}}
+{\footnotesize\ttfamily \label{classbot_1_1_bot_a5b7c1ec43f8e7727ca6bb669c74713ef} 
+bot.\+Bot.\+url = url}
+
+
+
+Definition at line \mbox{\hyperlink{bot_8py_source_l00010}{10}} of file \mbox{\hyperlink{bot_8py_source}{bot.\+py}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+Bot/\mbox{\hyperlink{bot_8py}{bot.\+py}}\end{DoxyCompactItemize}

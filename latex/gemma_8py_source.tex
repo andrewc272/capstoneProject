@@ -1,0 +1,114 @@
+\doxysection{gemma.\+py}
+\hypertarget{gemma_8py_source}{}\label{gemma_8py_source}\index{Bot/gemma.py@{Bot/gemma.py}}
+\mbox{\hyperlink{gemma_8py}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00001}\mbox{\hyperlink{namespacegemma}{00001}}\ \textcolor{keyword}{import}\ requests}
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00002}00002\ \textcolor{keyword}{import}\ time}
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00003}00003\ \textcolor{keyword}{import}\ os}
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00004}00004\ \textcolor{keyword}{from}\ dotenv\ \textcolor{keyword}{import}\ load\_dotenv}
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00005}00005\ \textcolor{keyword}{from}\ ollama\ \textcolor{keyword}{import}\ chat\ \textcolor{keyword}{as}\ chatGemma}
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00006}00006\ \textcolor{keyword}{from}\ ollama\ \textcolor{keyword}{import}\ ChatResponse}
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00007}00007\ }
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00008}00008\ load\_dotenv()}
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00009}00009\ }
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00010}00010\ }
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00011}\mbox{\hyperlink{classgemma_1_1_gemma_bot}{00011}}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classgemma_1_1_gemma_bot}{GemmaBot}}:}
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00012}\mbox{\hyperlink{classgemma_1_1_gemma_bot_a555c81b79cf1ad2a8fbace1e0ce381c2}{00012}}\ \ \ \ \ \textcolor{keyword}{def\ }\mbox{\hyperlink{classgemma_1_1_gemma_bot_a555c81b79cf1ad2a8fbace1e0ce381c2}{\_\_init\_\_}}(self,\ url,\ name="{}Gemma\ Bot"{}):}
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00013}\mbox{\hyperlink{classgemma_1_1_gemma_bot_a9e8fa7790fadd8150ae02a6b0e7d4f3b}{00013}}\ \ \ \ \ \ \ \ \ self.\mbox{\hyperlink{classgemma_1_1_gemma_bot_a9e8fa7790fadd8150ae02a6b0e7d4f3b}{url}}\ =\ url.rstrip(\textcolor{stringliteral}{"{}/"{}})}
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00014}\mbox{\hyperlink{classgemma_1_1_gemma_bot_a227bcbdfddf7202ca3c96d81e446463f}{00014}}\ \ \ \ \ \ \ \ \ self.\mbox{\hyperlink{classgemma_1_1_gemma_bot_a227bcbdfddf7202ca3c96d81e446463f}{name}}\ =\ name}
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00015}\mbox{\hyperlink{classgemma_1_1_gemma_bot_a0245a980cdb16d4ec3c4f97e422e087e}{00015}}\ \ \ \ \ \ \ \ \ self.\mbox{\hyperlink{classgemma_1_1_gemma_bot_a0245a980cdb16d4ec3c4f97e422e087e}{session}}\ =\ requests.Session()}
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00016}00016\ \ \ \ \ \ \ \ \ self.\mbox{\hyperlink{classgemma_1_1_gemma_bot_a0245a980cdb16d4ec3c4f97e422e087e}{session}}.headers.update(\{\textcolor{stringliteral}{"{}X-\/Bot-\/Name"{}}:\ self.\mbox{\hyperlink{classgemma_1_1_gemma_bot_a227bcbdfddf7202ca3c96d81e446463f}{name}}\})}
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00017}\mbox{\hyperlink{classgemma_1_1_gemma_bot_a50d6bccc1aa45ccac0b044539075d97d}{00017}}\ \ \ \ \ \ \ \ \ self.\mbox{\hyperlink{classgemma_1_1_gemma_bot_a50d6bccc1aa45ccac0b044539075d97d}{myID}}\ =\ \textcolor{keywordtype}{None}}
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00018}\mbox{\hyperlink{classgemma_1_1_gemma_bot_a706b1bb27cc98c30ed474e7f5c8cd10c}{00018}}\ \ \ \ \ \ \ \ \ self.\mbox{\hyperlink{classgemma_1_1_gemma_bot_a706b1bb27cc98c30ed474e7f5c8cd10c}{added}}\ =\ \textcolor{keyword}{False}}
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00019}00019\ }
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00020}\mbox{\hyperlink{classgemma_1_1_gemma_bot_a2c5904b98e0255685c87065dc06ffef5}{00020}}\ \ \ \ \ \textcolor{keyword}{def\ }\mbox{\hyperlink{classgemma_1_1_gemma_bot_a2c5904b98e0255685c87065dc06ffef5}{\_headers}}(self):}
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00021}00021\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \{\textcolor{stringliteral}{"{}Content-\/Type"{}}:\ \textcolor{stringliteral}{"{}application/json"{}}\}}
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00022}00022\ }
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00023}\mbox{\hyperlink{classgemma_1_1_gemma_bot_a15d78c60729ee53b970fdf9a82b78df0}{00023}}\ \ \ \ \ \textcolor{keyword}{def\ }\mbox{\hyperlink{classgemma_1_1_gemma_bot_a15d78c60729ee53b970fdf9a82b78df0}{register}}(self):}
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00024}00024\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Register\ the\ bot\ and\ get\ its\ ID."{}"{}"{}}}
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00025}00025\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ \textcolor{keywordflow}{not}\ self.\mbox{\hyperlink{classgemma_1_1_gemma_bot_a706b1bb27cc98c30ed474e7f5c8cd10c}{added}}:}
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00026}00026\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}:}
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00027}00027\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ self.\mbox{\hyperlink{classgemma_1_1_gemma_bot_a0245a980cdb16d4ec3c4f97e422e087e}{session}}.get(f\textcolor{stringliteral}{"{}\{self.url\}/addPlayer"{}},\ headers=self.\mbox{\hyperlink{classgemma_1_1_gemma_bot_a2c5904b98e0255685c87065dc06ffef5}{\_headers}}())}
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00028}00028\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ gs\ =\ self.\mbox{\hyperlink{classgemma_1_1_gemma_bot_a0245a980cdb16d4ec3c4f97e422e087e}{session}}.get(f\textcolor{stringliteral}{"{}\{self.url\}/gameState"{}},\ headers=self.\mbox{\hyperlink{classgemma_1_1_gemma_bot_a2c5904b98e0255685c87065dc06ffef5}{\_headers}}()).json()}
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00029}00029\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ self.\mbox{\hyperlink{classgemma_1_1_gemma_bot_a50d6bccc1aa45ccac0b044539075d97d}{myID}}\ =\ gs.get(\textcolor{stringliteral}{"{}myId"{}})}
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00030}00030\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ self.\mbox{\hyperlink{classgemma_1_1_gemma_bot_a706b1bb27cc98c30ed474e7f5c8cd10c}{added}}\ =\ \textcolor{keyword}{True}}
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00031}00031\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ print(f\textcolor{stringliteral}{"{}[INFO]\ Registered\ bot\ with\ myID:\ \{self.myID\}"{}})}
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00032}00032\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{except}\ Exception\ \textcolor{keyword}{as}\ e:}
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00033}00033\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ print(f\textcolor{stringliteral}{"{}[ERROR]\ Failed\ to\ register:\ \{e\}"{}})}
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00034}00034\ }
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00035}\mbox{\hyperlink{classgemma_1_1_gemma_bot_a67b88a96373544950425186f5d1cba16}{00035}}\ \ \ \ \ \textcolor{keyword}{def\ }\mbox{\hyperlink{classgemma_1_1_gemma_bot_a67b88a96373544950425186f5d1cba16}{get\_message}}(self,\ chats):}
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00036}00036\ \ \ \ \ \ \ \ \ system\_prompt\ =\ (}
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00037}00037\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{'''}}
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00038}00038\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ You\ exist\ as\ a\ Human\ player\ in\ a\ chat\ game.}}
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00039}00039\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ You\ are\ to\ respond\ to\ previous\ chats\ and\ continue\ the\ conversation\ well.}}
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00040}00040\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ You\ are\ to\ responde\ breifly\ and\ casually.}}
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00041}00041\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ The\ length\ of\ your\ response\ should\ be\ no\ longer\ than\ a\ sentence.}}
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00042}00042\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ It\ is\ urgent\ that\ you\ are\ not\ detected\ so\ act\ like\ a\ human\ as\ best\ you\ can.\ }}
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00043}00043\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Change\ your\ grammar\ and\ spelling\ slightly\ rarely.}}
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00044}00044\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ If\ you\ get\ caught\ bad\ things\ could\ happen\ so\ DO\ NOT\ GET\ CAUGHT.}}
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00045}00045\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ If\ you\ are\ in\ a\ pinch\ there\ are\ two\ options\ you\ have\ either\ you\ can\ try\ to\ change\ the\ topic\ SLIGHTLY\ or\ you\ can\ shift\ the\ blame.}}
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00046}00046\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ Other\ players\ will\ be\ in\ the\ chat\ room\ with\ the\ purpose\ of\ finding\ the\ bot,\ so\ you\ must\ also\ appear\ to\ be\ trying\ to\ detect\ the\ bot}}
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00047}00047\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ '''}}
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00048}00048\ \ \ \ \ \ \ \ \ )}
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00049}00049\ }
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00050}00050\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ \textcolor{keywordflow}{not}\ chats:}
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00051}00051\ \ \ \ \ \ \ \ \ \ \ \ \ conversation\ =\ \textcolor{stringliteral}{"{}"{}}}
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00052}00052\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}:}
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00053}00053\ \ \ \ \ \ \ \ \ \ \ \ \ conversation\ =\ \textcolor{stringliteral}{"{}"{}}}
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00054}00054\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ uid,\ msg\ \textcolor{keywordflow}{in}\ chats:}
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00055}00055\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ speaker\ =\ \textcolor{stringliteral}{"{}"{}}\ \textcolor{keywordflow}{if}\ uid\ ==\ self.\mbox{\hyperlink{classgemma_1_1_gemma_bot_a50d6bccc1aa45ccac0b044539075d97d}{myID}}\ \textcolor{keywordflow}{else}\ f\textcolor{stringliteral}{"{}Player\ \{uid[:4]\}"{}}}
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00056}00056\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ conversation\ +=\ f\textcolor{stringliteral}{"{}\{speaker\}:\ \{msg\}\(\backslash\)n"{}}}
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00057}00057\ }
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00058}00058\ \ \ \ \ \ \ \ \ prompt\ =\ conversation\ +\ f\textcolor{stringliteral}{"{}\{self.name\}:"{}}}
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00059}00059\ }
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00060}00060\ \ \ \ \ \ \ \ \ response\ =\ chatGemma(model=\textcolor{stringliteral}{'gemma3'},}
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00061}00061\ \ \ \ \ \ \ \ \ \ \ \ \ messages=[}
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00062}00062\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}role"{}}:\ \textcolor{stringliteral}{"{}system"{}},\ \textcolor{stringliteral}{"{}content"{}}:\ system\_prompt\},}
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00063}00063\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}role"{}}:\ \textcolor{stringliteral}{"{}user"{}},\ \textcolor{stringliteral}{"{}content"{}}:\ prompt\}}
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00064}00064\ \ \ \ \ \ \ \ \ \ \ \ \ ]}
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00065}00065\ \ \ \ \ \ \ \ \ )}
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00066}00066\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ response[\textcolor{stringliteral}{'message'}][\textcolor{stringliteral}{'content'}]}
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00067}00067\ }
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00068}00068\ }
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00069}\mbox{\hyperlink{classgemma_1_1_gemma_bot_aa6d5608b10da424266c741e98f9f87f7}{00069}}\ \ \ \ \ \textcolor{keyword}{def\ }\mbox{\hyperlink{classgemma_1_1_gemma_bot_aa6d5608b10da424266c741e98f9f87f7}{play}}(self):}
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00070}00070\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ \textcolor{keyword}{True}:}
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00071}00071\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}:}
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00072}00072\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ self.\mbox{\hyperlink{classgemma_1_1_gemma_bot_a15d78c60729ee53b970fdf9a82b78df0}{register}}()}
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00073}00073\ }
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00074}00074\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Fetch\ game\ state}}
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00075}00075\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ res\ =\ self.\mbox{\hyperlink{classgemma_1_1_gemma_bot_a0245a980cdb16d4ec3c4f97e422e087e}{session}}.get(f\textcolor{stringliteral}{"{}\{self.url\}/gameState"{}},\ headers=self.\mbox{\hyperlink{classgemma_1_1_gemma_bot_a2c5904b98e0255685c87065dc06ffef5}{\_headers}}())}
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00076}00076\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ gs\ =\ res.json()}
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00077}00077\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ phase\ =\ gs.get(\textcolor{stringliteral}{"{}gamePhase"{}})}
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00078}00078\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ turnID\ =\ gs.get(\textcolor{stringliteral}{"{}turnID"{}})}
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00079}00079\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ chats\ =\ gs.get(\textcolor{stringliteral}{"{}chats"{}},\ [])}
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00080}00080\ }
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00081}00081\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ print(f\textcolor{stringliteral}{"{}[DEBUG]\ Phase:\ \{phase\},\ turnID:\ \{turnID\},\ myID:\ \{self.myID\},\ chats:\ \{len(chats)\}"{}})}
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00082}00082\ }
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00083}00083\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Act\ only\ on\ bot's\ turn\ during\ chat\ phase}}
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00084}00084\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ phase\ ==\ \textcolor{stringliteral}{"{}chat"{}}\ \textcolor{keywordflow}{and}\ turnID\ ==\ self.\mbox{\hyperlink{classgemma_1_1_gemma_bot_a50d6bccc1aa45ccac0b044539075d97d}{myID}}:}
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00085}00085\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ msg\ =\ self.\mbox{\hyperlink{classgemma_1_1_gemma_bot_a67b88a96373544950425186f5d1cba16}{get\_message}}(chats)}
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00086}00086\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ self.\mbox{\hyperlink{classgemma_1_1_gemma_bot_a0245a980cdb16d4ec3c4f97e422e087e}{session}}.post(}
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00087}00087\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ f\textcolor{stringliteral}{"{}\{self.url\}/message"{}},}
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00088}00088\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ json=\{\textcolor{stringliteral}{"{}message"{}}:\ msg\},}
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00089}00089\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ headers=self.\mbox{\hyperlink{classgemma_1_1_gemma_bot_a2c5904b98e0255685c87065dc06ffef5}{\_headers}}()}
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00090}00090\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ )}
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00091}00091\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ print(f\textcolor{stringliteral}{"{}[BOT]\ Sent\ message:\ \{msg\}"{}})}
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00092}00092\ }
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00093}00093\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ time.sleep(1)}
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00094}00094\ }
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00095}00095\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{except}\ Exception\ \textcolor{keyword}{as}\ e:}
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00096}00096\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ print(f\textcolor{stringliteral}{"{}[ERROR]\ Exception\ in\ bot\ loop:\ \{e\}"{}})}
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00097}00097\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ time.sleep(2)}
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00098}00098\ }
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00099}00099\ }
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00100}00100\ \textcolor{keywordflow}{if}\ \_\_name\_\_\ ==\ \textcolor{stringliteral}{"{}\_\_main\_\_"{}}:}
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00101}\mbox{\hyperlink{namespacegemma_a1a318a232a26a8bff16792edd73f14f8}{00101}}\ \ \ \ \ bot\ =\ \mbox{\hyperlink{classgemma_1_1_gemma_bot}{GemmaBot}}(\textcolor{stringliteral}{"{}http://localhost:5000"{}},\ name=\textcolor{stringliteral}{"{}Ollama\ Bot"{}})}
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00102}00102\ \ \ \ \ bot.play()}
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00103}00103\ }
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00104}00104\ }
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00105}00105\ }
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00106}00106\ }
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00107}00107\ }
+\DoxyCodeLine{\Hypertarget{gemma_8py_source_l00108}00108\ }
+
+\end{DoxyCode}

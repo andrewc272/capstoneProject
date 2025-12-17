@@ -1,0 +1,26 @@
+var searchData=
+[
+  ['template_0',['template',['../namespacetemplate.html',1,'']]],
+  ['template_2epy_1',['template.py',['../template_8py.html',1,'']]],
+  ['test_2',['What is the turing test?',['../md__r_e_a_d_m_e.html#autotoc_md4',1,'']]],
+  ['test_5fapp_3',['test_app',['../namespacetest__app.html',1,'']]],
+  ['test_5fapp_2epy_4',['test_app.py',['../test__app_8py.html',1,'']]],
+  ['test_5ffalse_5',['test_false',['../classtest__app_1_1_test_unittest.html#ab7af1eaf0043caedaca4f7e1d176b0e1',1,'test_app::TestUnittest']]],
+  ['test_5fgamestate_6',['test_gameState',['../classtest__app_1_1_test_app.html#aeb3c386d7058b2ca93b406938d3c8d54',1,'test_app::TestApp']]],
+  ['test_5fhost_5fconfigures_5flocal_5fmode_7',['test_host_configures_local_mode',['../classtest__app_1_1_test_app.html#ac51e518b2fdec31abd439a3c93721b22',1,'test_app::TestApp']]],
+  ['test_5findex_8',['test_index',['../classtest__app_1_1_test_app.html#a0e2c504818daf06ed1792d8ad987052f',1,'test_app::TestApp']]],
+  ['test_5fnon_5fhost_5fcannot_5fstart_5fgame_9',['test_non_host_cannot_start_game',['../classtest__app_1_1_test_app.html#ab42a8b4f16b425c69c9b23d73125fb6a',1,'test_app::TestApp']]],
+  ['test_5ftrue_10',['test_true',['../classtest__app_1_1_test_unittest.html#a17476843961cf035394a840947eeed94',1,'test_app::TestUnittest']]],
+  ['testapp_11',['TestApp',['../classtest__app_1_1_test_app.html',1,'test_app']]],
+  ['testing_20dev_20tips_12',['Testing + dev tips',['../md__r_e_a_d_m_e.html#autotoc_md19',1,'']]],
+  ['testunittest_13',['TestUnittest',['../classtest__app_1_1_test_unittest.html',1,'test_app']]],
+  ['text_14',['text',['../namespacetemplate.html#a0b13af3e2cdbf85df8a0f3669381d72d',1,'template']]],
+  ['the_20turing_20test_15',['What is the turing test?',['../md__r_e_a_d_m_e.html#autotoc_md4',1,'']]],
+  ['timeline_16',['Timeline',['../md__r_e_a_d_m_e.html#autotoc_md9',1,'']]],
+  ['tips_17',['Testing + dev tips',['../md__r_e_a_d_m_e.html#autotoc_md19',1,'']]],
+  ['to_20use_18',['How to use',['../md__r_e_a_d_m_e.html#autotoc_md14',1,'']]],
+  ['trim_5fhistory_19',['trim_history',['../namespacelocal__agent.html#a8e8a422cca44752c926ece51bd118d0c',1,'local_agent']]],
+  ['turing_20test_20',['What is the turing test?',['../md__r_e_a_d_m_e.html#autotoc_md4',1,'']]],
+  ['turn_5findex_21',['turn_index',['../namespaceapp.html#af0d82fe96f54ba47f4f3c97ccee9edaa',1,'app']]],
+  ['turnid_22',['turnID',['../namespaceapp.html#a6dddbac012e3d8af810deafc0ef3e566',1,'app']]]
+];

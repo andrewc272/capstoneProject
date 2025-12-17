@@ -1,0 +1,181 @@
+\doxysection{local\+\_\+agent.\+py}
+\hypertarget{local__agent_8py_source}{}\label{local__agent_8py_source}\index{Bot/local\_agent.py@{Bot/local\_agent.py}}
+\mbox{\hyperlink{local__agent_8py}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00001}\mbox{\hyperlink{namespacelocal__agent}{00001}}\ \textcolor{keyword}{import}\ os}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00002}00002\ \textcolor{keyword}{import}\ random}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00003}00003\ \textcolor{keyword}{import}\ re}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00004}00004\ \textcolor{keyword}{import}\ textwrap}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00005}00005\ \textcolor{keyword}{import}\ time}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00006}00006\ \textcolor{keyword}{from}\ typing\ \textcolor{keyword}{import}\ List}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00007}00007\ }
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00008}00008\ \textcolor{keyword}{import}\ requests}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00009}00009\ }
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00010}00010\ \textcolor{keyword}{import}\ sys}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00011}00011\ \textcolor{keyword}{from}\ pathlib\ \textcolor{keyword}{import}\ Path}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00012}00012\ }
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00013}\mbox{\hyperlink{namespacelocal__agent_a7fc5221ac910234d57fd5b7cbcf60346}{00013}}\ CURRENT\_DIR\ =\ Path(\_\_file\_\_).resolve().parent}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00014}\mbox{\hyperlink{namespacelocal__agent_a88902bc0dcbbdf5de8c02abc07c4286f}{00014}}\ PROJECT\_ROOT\ =\ CURRENT\_DIR.parent}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00015}00015\ \textcolor{keywordflow}{if}\ str(PROJECT\_ROOT)\ \textcolor{keywordflow}{not}\ \textcolor{keywordflow}{in}\ sys.path:}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00016}00016\ \ \ \ \ sys.path.insert(0,\ str(PROJECT\_ROOT))}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00017}00017\ }
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00018}00018\ \textcolor{keyword}{from}\ bot\ \textcolor{keyword}{import}\ Bot}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00019}00019\ \textcolor{keyword}{from}\ bot\_profiles\ \textcolor{keyword}{import}\ DEFAULT\_LOCAL\_MODEL,\ LOCAL\_BOT\_PRESETS}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00020}00020\ }
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00021}00021\ }
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00022}\mbox{\hyperlink{namespacelocal__agent_a3caf070dca26217ebe877d21036598ec}{00022}}\ OLLAMA\_URL\ =\ os.getenv(\textcolor{stringliteral}{"{}OLLAMA\_URL"{}},\ \textcolor{stringliteral}{"{}http://127.0.0.1:11434"{}})}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00023}00023\ }
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00024}00024\ \textcolor{comment}{\#\ Human\ names\ the\ bot\ can\ use\ when\ asked}}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00025}\mbox{\hyperlink{namespacelocal__agent_a8918b94dc89368767d5faa99a0ea423b}{00025}}\ BOT\_NAMES\ =\ [\textcolor{stringliteral}{"{}Jordan"{}},\ \textcolor{stringliteral}{"{}Riley"{}},\ \textcolor{stringliteral}{"{}Casey"{}},\ \textcolor{stringliteral}{"{}Morgan"{}},\ \textcolor{stringliteral}{"{}Taylor"{}},\ \textcolor{stringliteral}{"{}Jamie"{}},\ \textcolor{stringliteral}{"{}Quinn"{}},\ \textcolor{stringliteral}{"{}Avery"{}}]}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00026}00026\ }
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00027}00027\ }
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00028}00028\ }
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00029}\mbox{\hyperlink{namespacelocal__agent_a8e8a422cca44752c926ece51bd118d0c}{00029}}\ \textcolor{keyword}{def\ }\mbox{\hyperlink{namespacelocal__agent_a8e8a422cca44752c926ece51bd118d0c}{trim\_history}}(chats:\ List[list],\ keep\_last:\ int\ =\ 10):}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00030}00030\ \ \ \ \ \textcolor{keywordflow}{if}\ keep\_last\ <=\ 0:}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00031}00031\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ chats}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00032}00032\ \ \ \ \ \textcolor{keywordflow}{return}\ chats[-\/keep\_last:]}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00033}00033\ }
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00034}00034\ }
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00035}\mbox{\hyperlink{namespacelocal__agent_af71acde5d35285b28d43d7977177869e}{00035}}\ \textcolor{keyword}{def\ }\mbox{\hyperlink{namespacelocal__agent_af71acde5d35285b28d43d7977177869e}{render\_history}}(chats,\ my\_id):}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00036}00036\ \ \ \ \ lines\ =\ []}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00037}00037\ \ \ \ \ \textcolor{keywordflow}{for}\ uid,\ message\ \textcolor{keywordflow}{in}\ chats:}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00038}00038\ \ \ \ \ \ \ \ \ speaker\ =\ \textcolor{stringliteral}{"{}You"{}}\ \textcolor{keywordflow}{if}\ uid\ ==\ my\_id\ \textcolor{keywordflow}{else}\ f\textcolor{stringliteral}{"{}Player-\/\{uid[:4]\}"{}}}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00039}00039\ \ \ \ \ \ \ \ \ text\ =\ message\ \textcolor{keywordflow}{or}\ \textcolor{stringliteral}{"{}"{}}}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00040}00040\ \ \ \ \ \ \ \ \ lines.append(f\textcolor{stringliteral}{"{}\{speaker\}:\ \{text\}"{}})}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00041}00041\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}\(\backslash\)n"{}}.join(lines)}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00042}00042\ }
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00043}00043\ }
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00044}\mbox{\hyperlink{namespacelocal__agent_a7f8eeee74aa9e3158d8fd410af68dce2}{00044}}\ \textcolor{keyword}{def\ }\mbox{\hyperlink{namespacelocal__agent_a7f8eeee74aa9e3158d8fd410af68dce2}{latest\_non\_self\_message}}(chats,\ my\_id):}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00045}00045\ \ \ \ \ \textcolor{keywordflow}{for}\ uid,\ message\ \textcolor{keywordflow}{in}\ reversed(chats):}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00046}00046\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ uid\ !=\ my\_id:}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00047}00047\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ message\ \textcolor{keywordflow}{or}\ \textcolor{stringliteral}{"{}"{}}}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00048}00048\ \ \ \ \ \textcolor{keywordflow}{return}\ chats[-\/1][1]\ \textcolor{keywordflow}{if}\ chats\ \textcolor{keywordflow}{else}\ \textcolor{stringliteral}{"{}"{}}}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00049}00049\ }
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00050}00050\ }
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00051}\mbox{\hyperlink{classlocal__agent_1_1_local_agent}{00051}}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classlocal__agent_1_1_local_agent}{LocalAgent}}(\mbox{\hyperlink{classbot_1_1_bot}{Bot}}):}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00052}\mbox{\hyperlink{classlocal__agent_1_1_local_agent_a36a491fbf9371a1a40d8d75f5046417d}{00052}}\ \ \ \ \ \textcolor{keyword}{def\ }\mbox{\hyperlink{classlocal__agent_1_1_local_agent_a36a491fbf9371a1a40d8d75f5046417d}{\_\_init\_\_}}(self):}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00053}00053\ \ \ \ \ \ \ \ \ profile\_id\ =\ os.getenv(\textcolor{stringliteral}{"{}LOCAL\_AGENT\_PROFILE"{}},\ DEFAULT\_LOCAL\_MODEL)}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00054}\mbox{\hyperlink{classlocal__agent_1_1_local_agent_a990a4249fb47411b7dc9a1cf491925b9}{00054}}\ \ \ \ \ \ \ \ \ self.\mbox{\hyperlink{classlocal__agent_1_1_local_agent_a990a4249fb47411b7dc9a1cf491925b9}{profile}}\ =\ LOCAL\_BOT\_PRESETS.get(profile\_id,\ LOCAL\_BOT\_PRESETS[DEFAULT\_LOCAL\_MODEL])}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00055}00055\ \ \ \ \ \ \ \ \ name\ =\ os.getenv(\textcolor{stringliteral}{"{}LOCAL\_AGENT\_NAME"{}},\ f\textcolor{stringliteral}{"{}local-\/\{profile\_id\}"{}})}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00056}00056\ \ \ \ \ \ \ \ \ server\_url\ =\ os.getenv(\textcolor{stringliteral}{"{}CAPSTONE\_SERVER\_URL"{}},\ \textcolor{stringliteral}{"{}http://127.0.0.1:5000"{}})}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00057}\mbox{\hyperlink{classlocal__agent_1_1_local_agent_aab7153df313324455db0e1ff0b69aa69}{00057}}\ \ \ \ \ \ \ \ \ self.\mbox{\hyperlink{classlocal__agent_1_1_local_agent_aab7153df313324455db0e1ff0b69aa69}{last\_sent}}\ =\ \textcolor{keywordtype}{None}}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00058}00058\ }
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00059}00059\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Pick\ a\ human\ name\ for\ this\ bot\ to\ use\ in\ conversation}}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00060}\mbox{\hyperlink{classlocal__agent_1_1_local_agent_a352bc60bafada58deb393a5e85ed9921}{00060}}\ \ \ \ \ \ \ \ \ self.\mbox{\hyperlink{classlocal__agent_1_1_local_agent_a352bc60bafada58deb393a5e85ed9921}{human\_name}}\ =\ random.choice(BOT\_NAMES)}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00061}00061\ }
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00062}00062\ \ \ \ \ \ \ \ \ print(f\textcolor{stringliteral}{"{}[LocalAgent]\ \{name\}\ using\ preset\ '\{self.profile['id']\}'\ -\/>\ model\ '\{self.profile['model']\}'"{}})}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00063}00063\ \ \ \ \ \ \ \ \ print(f\textcolor{stringliteral}{"{}[LocalAgent]\ Human\ name:\ \{self.human\_name\}"{}})}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00064}00064\ \ \ \ \ \ \ \ \ super().\mbox{\hyperlink{classlocal__agent_1_1_local_agent_a36a491fbf9371a1a40d8d75f5046417d}{\_\_init\_\_}}(name=name,\ url=server\_url)}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00065}00065\ }
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00066}\mbox{\hyperlink{classlocal__agent_1_1_local_agent_a10120755b0fa2a1945b500412256ffda}{00066}}\ \ \ \ \ \textcolor{keyword}{def\ }\mbox{\hyperlink{classlocal__agent_1_1_local_agent_a10120755b0fa2a1945b500412256ffda}{get\_message}}(self,\ chats=[]):}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00067}00067\ \ \ \ \ \ \ \ \ chats\ =\ chats\ \textcolor{keywordflow}{or}\ []}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00068}00068\ \ \ \ \ \ \ \ \ trimmed\ =\ \mbox{\hyperlink{namespacelocal__agent_a8e8a422cca44752c926ece51bd118d0c}{trim\_history}}(chats,\ self.\mbox{\hyperlink{classlocal__agent_1_1_local_agent_a990a4249fb47411b7dc9a1cf491925b9}{profile}}[\textcolor{stringliteral}{"{}context\_window"{}}])}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00069}00069\ \ \ \ \ \ \ \ \ history\ =\ \mbox{\hyperlink{namespacelocal__agent_af71acde5d35285b28d43d7977177869e}{render\_history}}(trimmed,\ self.\mbox{\hyperlink{classbot_1_1_bot_a0668700212d8f3ba84ad82050ab1f728}{my\_id}})}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00070}00070\ \ \ \ \ \ \ \ \ latest\ =\ \mbox{\hyperlink{namespacelocal__agent_a7f8eeee74aa9e3158d8fd410af68dce2}{latest\_non\_self\_message}}(trimmed,\ self.\mbox{\hyperlink{classbot_1_1_bot_a0668700212d8f3ba84ad82050ab1f728}{my\_id}})}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00071}00071\ }
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00072}00072\ \ \ \ \ \ \ \ \ latest\_lower\ =\ (latest\ \textcolor{keywordflow}{or}\ \textcolor{stringliteral}{"{}"{}}).lower().strip()}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00073}00073\ \ \ \ \ \ \ \ \ is\_name\_question\ =\ any(x\ \textcolor{keywordflow}{in}\ latest\_lower\ \textcolor{keywordflow}{for}\ x\ \textcolor{keywordflow}{in}\ [}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00074}00074\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}your\ name"{}},\ \textcolor{stringliteral}{"{}what's\ your\ name"{}},\ \textcolor{stringliteral}{"{}whats\ your\ name"{}},\ \textcolor{stringliteral}{"{}who\ are\ you"{}}}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00075}00075\ \ \ \ \ \ \ \ \ ])}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00076}00076\ }
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00077}00077\ \ \ \ \ \ \ \ \ guidance\ =\ [}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00078}00078\ \ \ \ \ \ \ \ \ \ \ \ \ f\textcolor{stringliteral}{"{}You\ are\ \{self.human\_name\},\ a\ believable\ college\ student\ hanging\ out\ in\ a\ group\ chat."{}},}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00079}00079\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}Keep\ the\ tone\ natural\ and\ varied\ –\ some\ replies\ can\ be\ short,\ others\ can\ be\ a\ couple\ sentences."{}},}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00080}00080\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}React\ to\ the\ actual\ conversation\ instead\ of\ repeating\ generic\ filler."{}},}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00081}00081\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}It\ is\ fine\ to\ show\ opinions,\ humor,\ or\ mild\ emotion\ if\ the\ moment\ calls\ for\ it."{}}}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00082}00082\ \ \ \ \ \ \ \ \ ]}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00083}00083\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ is\_name\_question:}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00084}00084\ \ \ \ \ \ \ \ \ \ \ \ \ guidance.append(f\textcolor{stringliteral}{"{}Someone\ asked\ your\ name.\ Casually\ tell\ them\ you're\ \{self.human\_name\}."{}})}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00085}00085\ }
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00086}00086\ \ \ \ \ \ \ \ \ prompt\ =\ textwrap.dedent(}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00087}00087\ \ \ \ \ \ \ \ \ \ \ \ \ f\textcolor{stringliteral}{"{}"{}"{}}}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00088}00088\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ \{"{}\ "{}.join(guidance)\}}}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00089}00089\ \textcolor{stringliteral}{}}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00090}00090\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ Group\ chat\ log\ (most\ recent\ last):}}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00091}00091\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ \{history\}}}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00092}00092\ \textcolor{stringliteral}{}}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00093}00093\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ Last\ message\ you\ saw:\ "{}\{latest\}"{}}}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00094}00094\ \textcolor{stringliteral}{}}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00095}00095\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ Reply\ as\ \{self.human\_name\}.\ If\ you\ answer\ a\ question,\ provide\ enough\ detail\ to\ sound\ human.}}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00096}00096\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ End\ with\ just\ the\ text\ you\ would\ send.}}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00097}00097\ \textcolor{stringliteral}{\ \ \ \ \ \ \ \ \ \ \ \ "{}"{}"{}}}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00098}00098\ \ \ \ \ \ \ \ \ ).strip()}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00099}00099\ }
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00100}00100\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ self.\mbox{\hyperlink{classlocal__agent_1_1_local_agent_a990a4249fb47411b7dc9a1cf491925b9}{profile}}[\textcolor{stringliteral}{"{}engine"{}}]\ ==\ \textcolor{stringliteral}{"{}ollama"{}}:}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00101}00101\ \ \ \ \ \ \ \ \ \ \ \ \ reply\ =\ self.\mbox{\hyperlink{classlocal__agent_1_1_local_agent_a794b5b061a59a7a906663cad2e83e962}{\_ollama\_reply}}(prompt)}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00102}00102\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ reply:}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00103}00103\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ reply\ =\ self.\mbox{\hyperlink{classlocal__agent_1_1_local_agent_a11d29a483c02acc9ecb2b8ff82ada941}{\_clean\_reply}}(reply,\ chats)}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00104}00104\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ reply\ \textcolor{keywordflow}{and}\ reply\ !=\ self.\mbox{\hyperlink{classlocal__agent_1_1_local_agent_aab7153df313324455db0e1ff0b69aa69}{last\_sent}}:}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00105}00105\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ self.\mbox{\hyperlink{classlocal__agent_1_1_local_agent_abc47adacaa7f38b14b082f19ac8e3f6e}{\_human\_delay}}(latest,\ reply)}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00106}00106\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ self.\mbox{\hyperlink{classlocal__agent_1_1_local_agent_aab7153df313324455db0e1ff0b69aa69}{last\_sent}}\ =\ reply}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00107}00107\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ reply}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00108}00108\ }
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00109}00109\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keywordtype}{None}}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00110}00110\ }
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00111}\mbox{\hyperlink{classlocal__agent_1_1_local_agent_a11d29a483c02acc9ecb2b8ff82ada941}{00111}}\ \ \ \ \ \textcolor{keyword}{def\ }\mbox{\hyperlink{classlocal__agent_1_1_local_agent_a11d29a483c02acc9ecb2b8ff82ada941}{\_clean\_reply}}(self,\ reply:\ str,\ chats:\ list)\ -\/>\ str:}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00112}00112\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Clean\ up\ the\ reply\ and\ check\ for\ obvious\ copies."{}"{}"{}}}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00113}00113\ \ \ \ \ \ \ \ \ reply\ =\ reply.strip().strip(\textcolor{stringliteral}{'"{}'}).strip(\textcolor{stringliteral}{"{}'"{}})}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00114}00114\ }
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00115}00115\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Remove\ "{}Player-\/XXXX:"{}\ or\ "{}You:"{}\ prefixes\ the\ bot\ might\ copy\ from\ history\ format}}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00116}00116\ \ \ \ \ \ \ \ \ reply\ =\ re.sub(\textcolor{stringliteral}{r'\string^(Player-\/[a-\/zA-\/Z0-\/9]+|You)\(\backslash\)s*:\(\backslash\)s*'},\ \textcolor{stringliteral}{''},\ reply,\ flags=re.IGNORECASE)}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00117}00117\ }
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00118}00118\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Remove\ name\ prefixes\ like\ "{}Jordan:"{}\ if\ bot\ includes\ its\ own\ name}}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00119}00119\ \ \ \ \ \ \ \ \ reply\ =\ re.sub(\textcolor{stringliteral}{r'\string^[A-\/Z][a-\/z]+\(\backslash\)s*:\(\backslash\)s*'},\ \textcolor{stringliteral}{''},\ reply)}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00120}00120\ }
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00121}00121\ \ \ \ \ \ \ \ \ reply\ =\ reply.strip()}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00122}00122\ }
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00123}00123\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Remove\ common\ AI-\/ish\ prefixes}}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00124}00124\ \ \ \ \ \ \ \ \ prefixes\_to\_remove\ =\ [}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00125}00125\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}Sure!"{}},\ \textcolor{stringliteral}{"{}Of\ course!"{}},\ \textcolor{stringliteral}{"{}Hey\ there!"{}},\ \textcolor{stringliteral}{"{}Well,"{}},\ \textcolor{stringliteral}{"{}So,"{}},\ \textcolor{stringliteral}{"{}I\ think"{}},}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00126}00126\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}As\ a"{}},\ \textcolor{stringliteral}{"{}I'm\ just"{}},\ \textcolor{stringliteral}{"{}Actually,"{}},\ \textcolor{stringliteral}{"{}Honestly,"{}}}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00127}00127\ \ \ \ \ \ \ \ \ ]}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00128}00128\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ prefix\ \textcolor{keywordflow}{in}\ prefixes\_to\_remove:}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00129}00129\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ reply.startswith(prefix):}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00130}00130\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ reply\ =\ reply[len(prefix):].strip()}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00131}00131\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ reply\ \textcolor{keywordflow}{and}\ reply[0].islower():}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00132}00132\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ reply\ =\ reply[0].upper()\ +\ reply[1:]}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00133}00133\ }
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00134}00134\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ reply\ \textcolor{keywordflow}{if}\ reply\ \textcolor{keywordflow}{else}\ \textcolor{keywordtype}{None}}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00135}00135\ }
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00136}\mbox{\hyperlink{classlocal__agent_1_1_local_agent_a794b5b061a59a7a906663cad2e83e962}{00136}}\ \ \ \ \ \textcolor{keyword}{def\ }\mbox{\hyperlink{classlocal__agent_1_1_local_agent_a794b5b061a59a7a906663cad2e83e962}{\_ollama\_reply}}(self,\ prompt:\ str):}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00137}00137\ \ \ \ \ \ \ \ \ payload\ =\ \{}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00138}00138\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}model"{}}:\ self.\mbox{\hyperlink{classlocal__agent_1_1_local_agent_a990a4249fb47411b7dc9a1cf491925b9}{profile}}[\textcolor{stringliteral}{"{}model"{}}],}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00139}00139\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}messages"{}}:\ [}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00140}00140\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}role"{}}:\ \textcolor{stringliteral}{"{}system"{}},\ \textcolor{stringliteral}{"{}content"{}}:\ self.\mbox{\hyperlink{classlocal__agent_1_1_local_agent_a990a4249fb47411b7dc9a1cf491925b9}{profile}}[\textcolor{stringliteral}{"{}prompt"{}}]\},}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00141}00141\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}role"{}}:\ \textcolor{stringliteral}{"{}user"{}},\ \textcolor{stringliteral}{"{}content"{}}:\ prompt\},}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00142}00142\ \ \ \ \ \ \ \ \ \ \ \ \ ],}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00143}00143\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}options"{}}:\ \{}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00144}00144\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}temperature"{}}:\ self.\mbox{\hyperlink{classlocal__agent_1_1_local_agent_a990a4249fb47411b7dc9a1cf491925b9}{profile}}[\textcolor{stringliteral}{"{}temperature"{}}],}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00145}00145\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}num\_predict"{}}:\ self.\mbox{\hyperlink{classlocal__agent_1_1_local_agent_a990a4249fb47411b7dc9a1cf491925b9}{profile}}[\textcolor{stringliteral}{"{}max\_tokens"{}}],}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00146}00146\ \ \ \ \ \ \ \ \ \ \ \ \ \},}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00147}00147\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}stream"{}}:\ \textcolor{keyword}{False},}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00148}00148\ \ \ \ \ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00149}00149\ }
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00150}00150\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}:}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00151}00151\ \ \ \ \ \ \ \ \ \ \ \ \ response\ =\ requests.post(f\textcolor{stringliteral}{"{}\{OLLAMA\_URL\}/api/chat"{}},\ json=payload,\ timeout=30)}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00152}00152\ \ \ \ \ \ \ \ \ \ \ \ \ response.raise\_for\_status()}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00153}00153\ \ \ \ \ \ \ \ \ \ \ \ \ data\ =\ response.json()}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00154}00154\ \ \ \ \ \ \ \ \ \ \ \ \ message\ =\ data.get(\textcolor{stringliteral}{"{}message"{}},\ \{\}).get(\textcolor{stringliteral}{"{}content"{}})}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00155}00155\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ message:}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00156}00156\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ message.strip()}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00157}00157\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{except}\ Exception:}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00158}00158\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keywordtype}{None}}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00159}00159\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keywordtype}{None}}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00160}00160\ }
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00161}\mbox{\hyperlink{classlocal__agent_1_1_local_agent_abc47adacaa7f38b14b082f19ac8e3f6e}{00161}}\ \ \ \ \ \textcolor{keyword}{def\ }\mbox{\hyperlink{classlocal__agent_1_1_local_agent_abc47adacaa7f38b14b082f19ac8e3f6e}{\_human\_delay}}(self,\ latest\_message:\ str,\ reply:\ str):}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00162}00162\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Sleep\ to\ simulate\ thinking/typing\ time\ based\ on\ message\ length."{}"{}"{}}}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00163}00163\ \ \ \ \ \ \ \ \ latest\_len\ =\ len(latest\_message\ \textcolor{keywordflow}{or}\ \textcolor{stringliteral}{"{}"{}})}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00164}00164\ \ \ \ \ \ \ \ \ reply\_len\ =\ len(reply\ \textcolor{keywordflow}{or}\ \textcolor{stringliteral}{"{}"{}})}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00165}00165\ \ \ \ \ \ \ \ \ think\_time\ =\ 0.6\ +\ (latest\_len\ /\ 80.0)}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00166}00166\ \ \ \ \ \ \ \ \ type\_speed\ =\ random.uniform(12,\ 20)\ \ \textcolor{comment}{\#\ characters\ per\ second}}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00167}00167\ \ \ \ \ \ \ \ \ type\_time\ =\ reply\_len\ /\ type\_speed}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00168}00168\ \ \ \ \ \ \ \ \ jitter\ =\ random.uniform(0.5,\ 1.4)}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00169}00169\ \ \ \ \ \ \ \ \ delay\ =\ (think\_time\ +\ type\_time)\ *\ jitter}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00170}00170\ \ \ \ \ \ \ \ \ delay\ =\ max(0.8,\ min(delay,\ 6.0))}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00171}00171\ \ \ \ \ \ \ \ \ time.sleep(delay)}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00172}00172\ }
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00173}00173\ \textcolor{keywordflow}{if}\ \_\_name\_\_\ ==\ \textcolor{stringliteral}{"{}\_\_main\_\_"{}}:}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00174}\mbox{\hyperlink{namespacelocal__agent_a04c3d5eb93bed9558015d05867cbd497}{00174}}\ \ \ \ \ agent\ =\ \mbox{\hyperlink{classlocal__agent_1_1_local_agent}{LocalAgent}}()}
+\DoxyCodeLine{\Hypertarget{local__agent_8py_source_l00175}00175\ \ \ \ \ agent.run()}
+
+\end{DoxyCode}

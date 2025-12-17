@@ -1,0 +1,67 @@
+\doxysection{test\+\_\+app.\+py}
+\hypertarget{test__app_8py_source}{}\label{test__app_8py_source}\mbox{\hyperlink{test__app_8py}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{test__app_8py_source_l00001}\mbox{\hyperlink{namespacetest__app}{00001}}\ \textcolor{keyword}{import}\ os}
+\DoxyCodeLine{\Hypertarget{test__app_8py_source_l00002}00002\ \textcolor{keyword}{import}\ unittest}
+\DoxyCodeLine{\Hypertarget{test__app_8py_source_l00003}00003\ }
+\DoxyCodeLine{\Hypertarget{test__app_8py_source_l00004}00004\ os.environ[\textcolor{stringliteral}{"{}CAPSTONE\_SKIP\_BOT\_MANAGER"{}}]\ =\ \textcolor{stringliteral}{"{}1"{}}}
+\DoxyCodeLine{\Hypertarget{test__app_8py_source_l00005}00005\ }
+\DoxyCodeLine{\Hypertarget{test__app_8py_source_l00006}00006\ \textcolor{keyword}{from}\ app\ \textcolor{keyword}{import}\ app,\ reset\_state\ \ \textcolor{comment}{\#\ noqa:\ E402}}
+\DoxyCodeLine{\Hypertarget{test__app_8py_source_l00007}00007\ \textcolor{keyword}{from}\ Bot.bot\ \textcolor{keyword}{import}\ Bot}
+\DoxyCodeLine{\Hypertarget{test__app_8py_source_l00008}00008\ }
+\DoxyCodeLine{\Hypertarget{test__app_8py_source_l00009}\mbox{\hyperlink{classtest__app_1_1_test_unittest}{00009}}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classtest__app_1_1_test_unittest}{TestUnittest}}(unittest.TestCase):}
+\DoxyCodeLine{\Hypertarget{test__app_8py_source_l00010}\mbox{\hyperlink{classtest__app_1_1_test_unittest_a17476843961cf035394a840947eeed94}{00010}}\ \ \ \ \ \textcolor{keyword}{def\ }\mbox{\hyperlink{classtest__app_1_1_test_unittest_a17476843961cf035394a840947eeed94}{test\_true}}(self):}
+\DoxyCodeLine{\Hypertarget{test__app_8py_source_l00011}00011\ \ \ \ \ \ \ \ \ self.assertTrue(\textcolor{keyword}{True})}
+\DoxyCodeLine{\Hypertarget{test__app_8py_source_l00012}00012\ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{test__app_8py_source_l00013}\mbox{\hyperlink{classtest__app_1_1_test_unittest_ab7af1eaf0043caedaca4f7e1d176b0e1}{00013}}\ \ \ \ \ \textcolor{keyword}{def\ }\mbox{\hyperlink{classtest__app_1_1_test_unittest_ab7af1eaf0043caedaca4f7e1d176b0e1}{test\_false}}(self):}
+\DoxyCodeLine{\Hypertarget{test__app_8py_source_l00014}00014\ \ \ \ \ \ \ \ \ self.assertFalse(\textcolor{keyword}{False})}
+\DoxyCodeLine{\Hypertarget{test__app_8py_source_l00015}00015\ }
+\DoxyCodeLine{\Hypertarget{test__app_8py_source_l00016}\mbox{\hyperlink{classtest__app_1_1_test_app}{00016}}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classtest__app_1_1_test_app}{TestApp}}(unittest.TestCase):}
+\DoxyCodeLine{\Hypertarget{test__app_8py_source_l00017}\mbox{\hyperlink{classtest__app_1_1_test_app_a8e042c0a6424cc090170895324d46765}{00017}}\ \ \ \ \ \textcolor{keyword}{def\ }\mbox{\hyperlink{classtest__app_1_1_test_app_a8e042c0a6424cc090170895324d46765}{setUp}}(self):}
+\DoxyCodeLine{\Hypertarget{test__app_8py_source_l00018}00018\ \ \ \ \ \ \ \ \ reset\_state()}
+\DoxyCodeLine{\Hypertarget{test__app_8py_source_l00019}\mbox{\hyperlink{classtest__app_1_1_test_app_a8a89d17fc33e81fe5911e0329a8181b7}{00019}}\ \ \ \ \ \ \ \ \ self.\mbox{\hyperlink{classtest__app_1_1_test_app_a8a89d17fc33e81fe5911e0329a8181b7}{app}}\ =\ app.test\_client()}
+\DoxyCodeLine{\Hypertarget{test__app_8py_source_l00020}00020\ \ \ \ \ \ \ \ \ self.\mbox{\hyperlink{classtest__app_1_1_test_app_a8a89d17fc33e81fe5911e0329a8181b7}{app}}.testing\ =\ \textcolor{keyword}{True}}
+\DoxyCodeLine{\Hypertarget{test__app_8py_source_l00021}00021\ }
+\DoxyCodeLine{\Hypertarget{test__app_8py_source_l00022}\mbox{\hyperlink{classtest__app_1_1_test_app_a0e2c504818daf06ed1792d8ad987052f}{00022}}\ \ \ \ \ \textcolor{keyword}{def\ }\mbox{\hyperlink{classtest__app_1_1_test_app_a0e2c504818daf06ed1792d8ad987052f}{test\_index}}(self):}
+\DoxyCodeLine{\Hypertarget{test__app_8py_source_l00023}00023\ \ \ \ \ \ \ \ \ response\ =\ self.\mbox{\hyperlink{classtest__app_1_1_test_app_a8a89d17fc33e81fe5911e0329a8181b7}{app}}.get(\textcolor{stringliteral}{'/'})}
+\DoxyCodeLine{\Hypertarget{test__app_8py_source_l00024}00024\ \ \ \ \ \ \ \ \ self.assertEqual(response.status\_code,\ 200)}
+\DoxyCodeLine{\Hypertarget{test__app_8py_source_l00025}00025\ \ \ \ \ \ \ \ \ self.assertIn(b\textcolor{stringliteral}{'<html'},\ response.data)}
+\DoxyCodeLine{\Hypertarget{test__app_8py_source_l00026}00026\ }
+\DoxyCodeLine{\Hypertarget{test__app_8py_source_l00027}\mbox{\hyperlink{classtest__app_1_1_test_app_aeb3c386d7058b2ca93b406938d3c8d54}{00027}}\ \ \ \ \ \textcolor{keyword}{def\ }\mbox{\hyperlink{classtest__app_1_1_test_app_aeb3c386d7058b2ca93b406938d3c8d54}{test\_gameState}}(self):}
+\DoxyCodeLine{\Hypertarget{test__app_8py_source_l00028}00028\ \ \ \ \ \ \ \ \ }
+\DoxyCodeLine{\Hypertarget{test__app_8py_source_l00029}00029\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Test\ initial\ state}}
+\DoxyCodeLine{\Hypertarget{test__app_8py_source_l00030}00030\ \ \ \ \ \ \ \ \ response\ =\ self.\mbox{\hyperlink{classtest__app_1_1_test_app_a8a89d17fc33e81fe5911e0329a8181b7}{app}}.get(\textcolor{stringliteral}{'/gameState'})}
+\DoxyCodeLine{\Hypertarget{test__app_8py_source_l00031}00031\ \ \ \ \ \ \ \ \ data\ =\ response.get\_json()}
+\DoxyCodeLine{\Hypertarget{test__app_8py_source_l00032}00032\ \ \ \ \ \ \ \ \ self.assertEqual(response.status\_code,\ 200)}
+\DoxyCodeLine{\Hypertarget{test__app_8py_source_l00033}00033\ \ \ \ \ \ \ \ \ self.assertIn(\textcolor{stringliteral}{'gamePhase'},\ data)}
+\DoxyCodeLine{\Hypertarget{test__app_8py_source_l00034}00034\ \ \ \ \ \ \ \ \ self.assertEqual(data[\textcolor{stringliteral}{'gamePhase'}],\ \textcolor{stringliteral}{'intro'})}
+\DoxyCodeLine{\Hypertarget{test__app_8py_source_l00035}00035\ \ \ \ \ \ \ \ \ self.assertIn(\textcolor{stringliteral}{'hostId'},\ data)}
+\DoxyCodeLine{\Hypertarget{test__app_8py_source_l00036}00036\ \ \ \ \ \ \ \ \ self.assertEqual(data[\textcolor{stringliteral}{'botMode'}],\ \textcolor{stringliteral}{'cloud\_api'})}
+\DoxyCodeLine{\Hypertarget{test__app_8py_source_l00037}00037\ }
+\DoxyCodeLine{\Hypertarget{test__app_8py_source_l00038}00038\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Test\ moving\ to\ the\ next\ page}}
+\DoxyCodeLine{\Hypertarget{test__app_8py_source_l00039}00039\ \ \ \ \ \ \ \ \ self.\mbox{\hyperlink{classtest__app_1_1_test_app_a8a89d17fc33e81fe5911e0329a8181b7}{app}}.post(\textcolor{stringliteral}{'/gameState'},\ json=\{\textcolor{stringliteral}{'nextPhase'}:\ \textcolor{keyword}{True}\})}
+\DoxyCodeLine{\Hypertarget{test__app_8py_source_l00040}00040\ \ \ \ \ \ \ \ \ response\ =\ self.\mbox{\hyperlink{classtest__app_1_1_test_app_a8a89d17fc33e81fe5911e0329a8181b7}{app}}.get(\textcolor{stringliteral}{'/gameState'})}
+\DoxyCodeLine{\Hypertarget{test__app_8py_source_l00041}00041\ \ \ \ \ \ \ \ \ data\ =\ response.get\_json()}
+\DoxyCodeLine{\Hypertarget{test__app_8py_source_l00042}00042\ \ \ \ \ \ \ \ \ self.assertEqual(response.status\_code,\ 200)}
+\DoxyCodeLine{\Hypertarget{test__app_8py_source_l00043}00043\ \ \ \ \ \ \ \ \ self.assertIn(\textcolor{stringliteral}{'gamePhase'},\ data)}
+\DoxyCodeLine{\Hypertarget{test__app_8py_source_l00044}00044\ \ \ \ \ \ \ \ \ self.assertEqual(data[\textcolor{stringliteral}{'gamePhase'}],\ \textcolor{stringliteral}{'lobby'})}
+\DoxyCodeLine{\Hypertarget{test__app_8py_source_l00045}00045\ }
+\DoxyCodeLine{\Hypertarget{test__app_8py_source_l00046}\mbox{\hyperlink{classtest__app_1_1_test_app_ac51e518b2fdec31abd439a3c93721b22}{00046}}\ \ \ \ \ \textcolor{keyword}{def\ }\mbox{\hyperlink{classtest__app_1_1_test_app_ac51e518b2fdec31abd439a3c93721b22}{test\_host\_configures\_local\_mode}}(self):}
+\DoxyCodeLine{\Hypertarget{test__app_8py_source_l00047}00047\ \ \ \ \ \ \ \ \ self.\mbox{\hyperlink{classtest__app_1_1_test_app_a8a89d17fc33e81fe5911e0329a8181b7}{app}}.get(\textcolor{stringliteral}{'/addPlayer'})}
+\DoxyCodeLine{\Hypertarget{test__app_8py_source_l00048}00048\ \ \ \ \ \ \ \ \ payload\ =\ \{\textcolor{stringliteral}{"{}botMode"{}}:\ \textcolor{stringliteral}{"{}local\_ai"{}},\ \textcolor{stringliteral}{"{}localModel"{}}:\ \textcolor{stringliteral}{"{}pocket"{}},\ \textcolor{stringliteral}{"{}localBotCount"{}}:\ 2\}}
+\DoxyCodeLine{\Hypertarget{test__app_8py_source_l00049}00049\ \ \ \ \ \ \ \ \ self.\mbox{\hyperlink{classtest__app_1_1_test_app_a8a89d17fc33e81fe5911e0329a8181b7}{app}}.post(\textcolor{stringliteral}{'/gameState'},\ json=payload)}
+\DoxyCodeLine{\Hypertarget{test__app_8py_source_l00050}00050\ \ \ \ \ \ \ \ \ response\ =\ self.\mbox{\hyperlink{classtest__app_1_1_test_app_a8a89d17fc33e81fe5911e0329a8181b7}{app}}.get(\textcolor{stringliteral}{'/gameState'})}
+\DoxyCodeLine{\Hypertarget{test__app_8py_source_l00051}00051\ \ \ \ \ \ \ \ \ data\ =\ response.get\_json()}
+\DoxyCodeLine{\Hypertarget{test__app_8py_source_l00052}00052\ \ \ \ \ \ \ \ \ self.assertEqual(data[\textcolor{stringliteral}{'botMode'}],\ \textcolor{stringliteral}{'local\_ai'})}
+\DoxyCodeLine{\Hypertarget{test__app_8py_source_l00053}00053\ \ \ \ \ \ \ \ \ self.assertEqual(data[\textcolor{stringliteral}{'localBotCount'}],\ 1)\ \textcolor{comment}{\#\ not\ returning\ the\ correct\ value\ does\ the\ above\ code\ set\ up\ more\ than\ one\ bot?}}
+\DoxyCodeLine{\Hypertarget{test__app_8py_source_l00054}00054\ }
+\DoxyCodeLine{\Hypertarget{test__app_8py_source_l00055}\mbox{\hyperlink{classtest__app_1_1_test_app_ab42a8b4f16b425c69c9b23d73125fb6a}{00055}}\ \ \ \ \ \textcolor{keyword}{def\ }\mbox{\hyperlink{classtest__app_1_1_test_app_ab42a8b4f16b425c69c9b23d73125fb6a}{test\_non\_host\_cannot\_start\_game}}(self):}
+\DoxyCodeLine{\Hypertarget{test__app_8py_source_l00056}00056\ \ \ \ \ \ \ \ \ host\_client\ =\ self.\mbox{\hyperlink{classtest__app_1_1_test_app_a8a89d17fc33e81fe5911e0329a8181b7}{app}}}
+\DoxyCodeLine{\Hypertarget{test__app_8py_source_l00057}00057\ \ \ \ \ \ \ \ \ host\_client.get(\textcolor{stringliteral}{'/addPlayer'})}
+\DoxyCodeLine{\Hypertarget{test__app_8py_source_l00058}00058\ \ \ \ \ \ \ \ \ other\_client\ =\ app.test\_client()}
+\DoxyCodeLine{\Hypertarget{test__app_8py_source_l00059}00059\ \ \ \ \ \ \ \ \ other\_client.get(\textcolor{stringliteral}{'/addPlayer'})}
+\DoxyCodeLine{\Hypertarget{test__app_8py_source_l00060}00060\ \ \ \ \ \ \ \ \ resp\ =\ other\_client.post(\textcolor{stringliteral}{'/gameState'},\ json=\{\textcolor{stringliteral}{'nextPhase'}:\ \textcolor{keyword}{True}\})}
+\DoxyCodeLine{\Hypertarget{test__app_8py_source_l00061}00061\ \ \ \ \ \ \ \ \ self.assertEqual(resp.status\_code,\ 403)}
+\DoxyCodeLine{\Hypertarget{test__app_8py_source_l00062}00062\ \ \ \ \ \ \ \ \ }
+
+\end{DoxyCode}

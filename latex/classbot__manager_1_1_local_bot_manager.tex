@@ -1,0 +1,196 @@
+\doxysection{bot\+\_\+manager.\+Local\+Bot\+Manager Class Reference}
+\hypertarget{classbot__manager_1_1_local_bot_manager}{}\label{classbot__manager_1_1_local_bot_manager}\index{bot\_manager.LocalBotManager@{bot\_manager.LocalBotManager}}
+\doxysubsubsection*{Public Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classbot__manager_1_1_local_bot_manager_ac9d409ace74d9e2c4d99ced5c7757905}{\+\_\+\+\_\+init\+\_\+\+\_\+}} (self, Path base\+\_\+dir, bool disabled=False)
+\item 
+\mbox{\hyperlink{classbot__manager_1_1_local_bot_manager_ade8c1e72eb2a0318a577fe6474ace3b0}{ensure\+\_\+state}} (self, str profile\+\_\+id, int count, str server\+\_\+url)
+\item 
+\mbox{\hyperlink{classbot__manager_1_1_local_bot_manager_aaefbf9943f29bc3d0b37ad24a959325d}{stop}} (self)
+\item 
+Dict\mbox{[}str, object\mbox{]} \mbox{\hyperlink{classbot__manager_1_1_local_bot_manager_a620100d6eb748f7f7893a55be711f005}{status}} (self)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Member Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classbot__manager_1_1_local_bot_manager_aa76ff282546f3c3faec81aa867a65328}{\+\_\+start\+\_\+locked}} (self, str profile\+\_\+id, int count, str server\+\_\+url)
+\item 
+\mbox{\hyperlink{classbot__manager_1_1_local_bot_manager_add0a685a1a8a04213208c9005c078968}{\+\_\+stop\+\_\+locked}} (self)
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Protected Attributes}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{classbot__manager_1_1_local_bot_manager_a4547d0a95dee2ae35eaaf2707e13d360}{\+\_\+base\+\_\+dir}} = Path(base\+\_\+dir)
+\item 
+\mbox{\hyperlink{classbot__manager_1_1_local_bot_manager_acc97fcd1b2b4ff47a8520b3a3dfaab7c}{\+\_\+disabled}} = disabled
+\item 
+\mbox{\hyperlink{classbot__manager_1_1_local_bot_manager_a21e1f477e8a3554194b2da67aa1a12d3}{\+\_\+lock}} = threading.\+Lock()
+\item 
+list \mbox{\hyperlink{classbot__manager_1_1_local_bot_manager_a2d3d81ad53a39e6cd2d66e0c43ca1512}{\+\_\+processes}} = \mbox{[}$\,$\mbox{]}
+\item 
+str\texorpdfstring{$\vert$}{|}None \mbox{\hyperlink{classbot__manager_1_1_local_bot_manager_a66709cd5d0fa1868e03f71a73b50545d}{\+\_\+profile\+\_\+id}} = None
+\item 
+int \mbox{\hyperlink{classbot__manager_1_1_local_bot_manager_a5105489d1e3083889c429a5983d657b6}{\+\_\+desired\+\_\+count}} = 0
+\item 
+str\texorpdfstring{$\vert$}{|}None \mbox{\hyperlink{classbot__manager_1_1_local_bot_manager_a5ef21063c9212f1387338a26c7d0a0bb}{\+\_\+server\+\_\+url}} = None
+\end{DoxyCompactItemize}
+
+
+\doxysubsection{Detailed Description}
+\begin{DoxyVerb}Manages the lifecycle of locally hosted bot processes.\end{DoxyVerb}
+ 
+
+Definition at line \mbox{\hyperlink{bot__manager_8py_source_l00009}{9}} of file \mbox{\hyperlink{bot__manager_8py_source}{bot\+\_\+manager.\+py}}.
+
+
+
+\label{doc-constructors}
+\Hypertarget{classbot__manager_1_1_local_bot_manager_doc-constructors}
+\doxysubsection{Constructor \& Destructor Documentation}
+\Hypertarget{classbot__manager_1_1_local_bot_manager_ac9d409ace74d9e2c4d99ced5c7757905}\index{bot\_manager.LocalBotManager@{bot\_manager.LocalBotManager}!\_\_init\_\_@{\_\_init\_\_}}
+\index{\_\_init\_\_@{\_\_init\_\_}!bot\_manager.LocalBotManager@{bot\_manager.LocalBotManager}}
+\doxysubsubsection{\texorpdfstring{\_\_init\_\_()}{\_\_init\_\_()}}
+{\footnotesize\ttfamily \label{classbot__manager_1_1_local_bot_manager_ac9d409ace74d9e2c4d99ced5c7757905} 
+bot\+\_\+manager.\+Local\+Bot\+Manager.\+\_\+\+\_\+init\+\_\+\+\_\+ (\begin{DoxyParamCaption}\item[{}]{self}{, }\item[{Path}]{base\+\_\+dir}{, }\item[{bool }]{disabled}{ = {\ttfamily False}}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{bot__manager_8py_source_l00012}{12}} of file \mbox{\hyperlink{bot__manager_8py_source}{bot\+\_\+manager.\+py}}.
+
+
+
+\label{doc-func-members}
+\Hypertarget{classbot__manager_1_1_local_bot_manager_doc-func-members}
+\doxysubsection{Member Function Documentation}
+\Hypertarget{classbot__manager_1_1_local_bot_manager_aa76ff282546f3c3faec81aa867a65328}\index{bot\_manager.LocalBotManager@{bot\_manager.LocalBotManager}!\_start\_locked@{\_start\_locked}}
+\index{\_start\_locked@{\_start\_locked}!bot\_manager.LocalBotManager@{bot\_manager.LocalBotManager}}
+\doxysubsubsection{\texorpdfstring{\_start\_locked()}{\_start\_locked()}}
+{\footnotesize\ttfamily \label{classbot__manager_1_1_local_bot_manager_aa76ff282546f3c3faec81aa867a65328} 
+bot\+\_\+manager.\+Local\+Bot\+Manager.\+\_\+start\+\_\+locked (\begin{DoxyParamCaption}\item[{}]{self}{, }\item[{str}]{profile\+\_\+id}{, }\item[{int}]{count}{, }\item[{str}]{server\+\_\+url}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line \mbox{\hyperlink{bot__manager_8py_source_l00055}{55}} of file \mbox{\hyperlink{bot__manager_8py_source}{bot\+\_\+manager.\+py}}.
+
+\Hypertarget{classbot__manager_1_1_local_bot_manager_add0a685a1a8a04213208c9005c078968}\index{bot\_manager.LocalBotManager@{bot\_manager.LocalBotManager}!\_stop\_locked@{\_stop\_locked}}
+\index{\_stop\_locked@{\_stop\_locked}!bot\_manager.LocalBotManager@{bot\_manager.LocalBotManager}}
+\doxysubsubsection{\texorpdfstring{\_stop\_locked()}{\_stop\_locked()}}
+{\footnotesize\ttfamily \label{classbot__manager_1_1_local_bot_manager_add0a685a1a8a04213208c9005c078968} 
+bot\+\_\+manager.\+Local\+Bot\+Manager.\+\_\+stop\+\_\+locked (\begin{DoxyParamCaption}\item[{}]{self}{}\end{DoxyParamCaption})\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line \mbox{\hyperlink{bot__manager_8py_source_l00078}{78}} of file \mbox{\hyperlink{bot__manager_8py_source}{bot\+\_\+manager.\+py}}.
+
+\Hypertarget{classbot__manager_1_1_local_bot_manager_ade8c1e72eb2a0318a577fe6474ace3b0}\index{bot\_manager.LocalBotManager@{bot\_manager.LocalBotManager}!ensure\_state@{ensure\_state}}
+\index{ensure\_state@{ensure\_state}!bot\_manager.LocalBotManager@{bot\_manager.LocalBotManager}}
+\doxysubsubsection{\texorpdfstring{ensure\_state()}{ensure\_state()}}
+{\footnotesize\ttfamily \label{classbot__manager_1_1_local_bot_manager_ade8c1e72eb2a0318a577fe6474ace3b0} 
+bot\+\_\+manager.\+Local\+Bot\+Manager.\+ensure\+\_\+state (\begin{DoxyParamCaption}\item[{}]{self}{, }\item[{str}]{profile\+\_\+id}{, }\item[{int}]{count}{, }\item[{str}]{server\+\_\+url}{}\end{DoxyParamCaption})}
+
+\begin{DoxyVerb}Start bots that match the desired profile/count and stop old ones.\end{DoxyVerb}
+ 
+
+Definition at line \mbox{\hyperlink{bot__manager_8py_source_l00021}{21}} of file \mbox{\hyperlink{bot__manager_8py_source}{bot\+\_\+manager.\+py}}.
+
+\Hypertarget{classbot__manager_1_1_local_bot_manager_a620100d6eb748f7f7893a55be711f005}\index{bot\_manager.LocalBotManager@{bot\_manager.LocalBotManager}!status@{status}}
+\index{status@{status}!bot\_manager.LocalBotManager@{bot\_manager.LocalBotManager}}
+\doxysubsubsection{\texorpdfstring{status()}{status()}}
+{\footnotesize\ttfamily \label{classbot__manager_1_1_local_bot_manager_a620100d6eb748f7f7893a55be711f005} 
+ Dict\mbox{[}str, object\mbox{]} bot\+\_\+manager.\+Local\+Bot\+Manager.\+status (\begin{DoxyParamCaption}\item[{}]{self}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{bot__manager_8py_source_l00044}{44}} of file \mbox{\hyperlink{bot__manager_8py_source}{bot\+\_\+manager.\+py}}.
+
+\Hypertarget{classbot__manager_1_1_local_bot_manager_aaefbf9943f29bc3d0b37ad24a959325d}\index{bot\_manager.LocalBotManager@{bot\_manager.LocalBotManager}!stop@{stop}}
+\index{stop@{stop}!bot\_manager.LocalBotManager@{bot\_manager.LocalBotManager}}
+\doxysubsubsection{\texorpdfstring{stop()}{stop()}}
+{\footnotesize\ttfamily \label{classbot__manager_1_1_local_bot_manager_aaefbf9943f29bc3d0b37ad24a959325d} 
+bot\+\_\+manager.\+Local\+Bot\+Manager.\+stop (\begin{DoxyParamCaption}\item[{}]{self}{}\end{DoxyParamCaption})}
+
+
+
+Definition at line \mbox{\hyperlink{bot__manager_8py_source_l00040}{40}} of file \mbox{\hyperlink{bot__manager_8py_source}{bot\+\_\+manager.\+py}}.
+
+
+
+\label{doc-variable-members}
+\Hypertarget{classbot__manager_1_1_local_bot_manager_doc-variable-members}
+\doxysubsection{Member Data Documentation}
+\Hypertarget{classbot__manager_1_1_local_bot_manager_a4547d0a95dee2ae35eaaf2707e13d360}\index{bot\_manager.LocalBotManager@{bot\_manager.LocalBotManager}!\_base\_dir@{\_base\_dir}}
+\index{\_base\_dir@{\_base\_dir}!bot\_manager.LocalBotManager@{bot\_manager.LocalBotManager}}
+\doxysubsubsection{\texorpdfstring{\_base\_dir}{\_base\_dir}}
+{\footnotesize\ttfamily \label{classbot__manager_1_1_local_bot_manager_a4547d0a95dee2ae35eaaf2707e13d360} 
+bot\+\_\+manager.\+Local\+Bot\+Manager.\+\_\+base\+\_\+dir = Path(base\+\_\+dir)\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line \mbox{\hyperlink{bot__manager_8py_source_l00013}{13}} of file \mbox{\hyperlink{bot__manager_8py_source}{bot\+\_\+manager.\+py}}.
+
+\Hypertarget{classbot__manager_1_1_local_bot_manager_a5105489d1e3083889c429a5983d657b6}\index{bot\_manager.LocalBotManager@{bot\_manager.LocalBotManager}!\_desired\_count@{\_desired\_count}}
+\index{\_desired\_count@{\_desired\_count}!bot\_manager.LocalBotManager@{bot\_manager.LocalBotManager}}
+\doxysubsubsection{\texorpdfstring{\_desired\_count}{\_desired\_count}}
+{\footnotesize\ttfamily \label{classbot__manager_1_1_local_bot_manager_a5105489d1e3083889c429a5983d657b6} 
+bot\+\_\+manager.\+Local\+Bot\+Manager.\+\_\+desired\+\_\+count = 0\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line \mbox{\hyperlink{bot__manager_8py_source_l00018}{18}} of file \mbox{\hyperlink{bot__manager_8py_source}{bot\+\_\+manager.\+py}}.
+
+\Hypertarget{classbot__manager_1_1_local_bot_manager_acc97fcd1b2b4ff47a8520b3a3dfaab7c}\index{bot\_manager.LocalBotManager@{bot\_manager.LocalBotManager}!\_disabled@{\_disabled}}
+\index{\_disabled@{\_disabled}!bot\_manager.LocalBotManager@{bot\_manager.LocalBotManager}}
+\doxysubsubsection{\texorpdfstring{\_disabled}{\_disabled}}
+{\footnotesize\ttfamily \label{classbot__manager_1_1_local_bot_manager_acc97fcd1b2b4ff47a8520b3a3dfaab7c} 
+bot\+\_\+manager.\+Local\+Bot\+Manager.\+\_\+disabled = disabled\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line \mbox{\hyperlink{bot__manager_8py_source_l00014}{14}} of file \mbox{\hyperlink{bot__manager_8py_source}{bot\+\_\+manager.\+py}}.
+
+\Hypertarget{classbot__manager_1_1_local_bot_manager_a21e1f477e8a3554194b2da67aa1a12d3}\index{bot\_manager.LocalBotManager@{bot\_manager.LocalBotManager}!\_lock@{\_lock}}
+\index{\_lock@{\_lock}!bot\_manager.LocalBotManager@{bot\_manager.LocalBotManager}}
+\doxysubsubsection{\texorpdfstring{\_lock}{\_lock}}
+{\footnotesize\ttfamily \label{classbot__manager_1_1_local_bot_manager_a21e1f477e8a3554194b2da67aa1a12d3} 
+bot\+\_\+manager.\+Local\+Bot\+Manager.\+\_\+lock = threading.\+Lock()\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line \mbox{\hyperlink{bot__manager_8py_source_l00015}{15}} of file \mbox{\hyperlink{bot__manager_8py_source}{bot\+\_\+manager.\+py}}.
+
+\Hypertarget{classbot__manager_1_1_local_bot_manager_a2d3d81ad53a39e6cd2d66e0c43ca1512}\index{bot\_manager.LocalBotManager@{bot\_manager.LocalBotManager}!\_processes@{\_processes}}
+\index{\_processes@{\_processes}!bot\_manager.LocalBotManager@{bot\_manager.LocalBotManager}}
+\doxysubsubsection{\texorpdfstring{\_processes}{\_processes}}
+{\footnotesize\ttfamily \label{classbot__manager_1_1_local_bot_manager_a2d3d81ad53a39e6cd2d66e0c43ca1512} 
+list bot\+\_\+manager.\+Local\+Bot\+Manager.\+\_\+processes = \mbox{[}$\,$\mbox{]}\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line \mbox{\hyperlink{bot__manager_8py_source_l00016}{16}} of file \mbox{\hyperlink{bot__manager_8py_source}{bot\+\_\+manager.\+py}}.
+
+\Hypertarget{classbot__manager_1_1_local_bot_manager_a66709cd5d0fa1868e03f71a73b50545d}\index{bot\_manager.LocalBotManager@{bot\_manager.LocalBotManager}!\_profile\_id@{\_profile\_id}}
+\index{\_profile\_id@{\_profile\_id}!bot\_manager.LocalBotManager@{bot\_manager.LocalBotManager}}
+\doxysubsubsection{\texorpdfstring{\_profile\_id}{\_profile\_id}}
+{\footnotesize\ttfamily \label{classbot__manager_1_1_local_bot_manager_a66709cd5d0fa1868e03f71a73b50545d} 
+bot\+\_\+manager.\+Local\+Bot\+Manager.\+\_\+profile\+\_\+id = None\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line \mbox{\hyperlink{bot__manager_8py_source_l00017}{17}} of file \mbox{\hyperlink{bot__manager_8py_source}{bot\+\_\+manager.\+py}}.
+
+\Hypertarget{classbot__manager_1_1_local_bot_manager_a5ef21063c9212f1387338a26c7d0a0bb}\index{bot\_manager.LocalBotManager@{bot\_manager.LocalBotManager}!\_server\_url@{\_server\_url}}
+\index{\_server\_url@{\_server\_url}!bot\_manager.LocalBotManager@{bot\_manager.LocalBotManager}}
+\doxysubsubsection{\texorpdfstring{\_server\_url}{\_server\_url}}
+{\footnotesize\ttfamily \label{classbot__manager_1_1_local_bot_manager_a5ef21063c9212f1387338a26c7d0a0bb} 
+bot\+\_\+manager.\+Local\+Bot\+Manager.\+\_\+server\+\_\+url = None\hspace{0.3cm}{\ttfamily [protected]}}
+
+
+
+Definition at line \mbox{\hyperlink{bot__manager_8py_source_l00019}{19}} of file \mbox{\hyperlink{bot__manager_8py_source}{bot\+\_\+manager.\+py}}.
+
+
+
+The documentation for this class was generated from the following file\+:\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{bot__manager_8py}{bot\+\_\+manager.\+py}}\end{DoxyCompactItemize}

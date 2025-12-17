@@ -1,0 +1,118 @@
+\doxysection{open\+AIBot.\+py}
+\hypertarget{open_a_i_bot_8py_source}{}\label{open_a_i_bot_8py_source}\index{Bot/openAIBot.py@{Bot/openAIBot.py}}
+\mbox{\hyperlink{open_a_i_bot_8py}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00001}\mbox{\hyperlink{namespaceopen_a_i_bot}{00001}}\ \textcolor{keyword}{import}\ uuid}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00002}00002\ \textcolor{keyword}{import}\ requests}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00003}00003\ \textcolor{keyword}{import}\ time}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00004}00004\ \textcolor{keyword}{import}\ os}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00005}00005\ \textcolor{keyword}{from}\ openai\ \textcolor{keyword}{import}\ OpenAI}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00006}00006\ \textcolor{keyword}{from}\ dotenv\ \textcolor{keyword}{import}\ load\_dotenv}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00007}00007\ }
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00008}00008\ load\_dotenv()}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00009}00009\ }
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00010}00010\ }
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00011}\mbox{\hyperlink{classopen_a_i_bot_1_1_open_a_i_bot}{00011}}\ \textcolor{keyword}{class\ }\mbox{\hyperlink{classopen_a_i_bot_1_1_open_a_i_bot}{OpenAIBot}}:}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00012}\mbox{\hyperlink{classopen_a_i_bot_1_1_open_a_i_bot_a122a818d0b59483464d2796459107301}{00012}}\ \ \ \ \ \textcolor{keyword}{def\ }\mbox{\hyperlink{classopen_a_i_bot_1_1_open_a_i_bot_a122a818d0b59483464d2796459107301}{\_\_init\_\_}}(self,\ url,\ name="{}OpenAI\ Bot"{}):}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00013}\mbox{\hyperlink{classopen_a_i_bot_1_1_open_a_i_bot_acfdaf7fd6911b89d1220b284e4f4cb59}{00013}}\ \ \ \ \ \ \ \ \ self.\mbox{\hyperlink{classopen_a_i_bot_1_1_open_a_i_bot_acfdaf7fd6911b89d1220b284e4f4cb59}{url}}\ =\ url.rstrip(\textcolor{stringliteral}{"{}/"{}})}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00014}\mbox{\hyperlink{classopen_a_i_bot_1_1_open_a_i_bot_a9197803c9a7625b19026f7aa0bbda096}{00014}}\ \ \ \ \ \ \ \ \ self.\mbox{\hyperlink{classopen_a_i_bot_1_1_open_a_i_bot_a9197803c9a7625b19026f7aa0bbda096}{name}}\ =\ name}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00015}\mbox{\hyperlink{classopen_a_i_bot_1_1_open_a_i_bot_a9f9ca7851d105a6a5e1907ab3e48fb57}{00015}}\ \ \ \ \ \ \ \ \ self.\mbox{\hyperlink{classopen_a_i_bot_1_1_open_a_i_bot_a9f9ca7851d105a6a5e1907ab3e48fb57}{session}}\ =\ requests.Session()}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00016}00016\ \ \ \ \ \ \ \ \ self.\mbox{\hyperlink{classopen_a_i_bot_1_1_open_a_i_bot_a9f9ca7851d105a6a5e1907ab3e48fb57}{session}}.headers.update(\{\textcolor{stringliteral}{"{}X-\/Bot-\/Name"{}}:\ self.\mbox{\hyperlink{classopen_a_i_bot_1_1_open_a_i_bot_a9197803c9a7625b19026f7aa0bbda096}{name}}\})}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00017}\mbox{\hyperlink{classopen_a_i_bot_1_1_open_a_i_bot_a2c77de64b45e1183b01390e6e014565a}{00017}}\ \ \ \ \ \ \ \ \ self.\mbox{\hyperlink{classopen_a_i_bot_1_1_open_a_i_bot_a2c77de64b45e1183b01390e6e014565a}{myID}}\ =\ \textcolor{keywordtype}{None}}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00018}\mbox{\hyperlink{classopen_a_i_bot_1_1_open_a_i_bot_aeb7ddd3d5bb4b0e13cf2146585a301ab}{00018}}\ \ \ \ \ \ \ \ \ self.\mbox{\hyperlink{classopen_a_i_bot_1_1_open_a_i_bot_aeb7ddd3d5bb4b0e13cf2146585a301ab}{added}}\ =\ \textcolor{keyword}{False}}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00019}\mbox{\hyperlink{classopen_a_i_bot_1_1_open_a_i_bot_aeeee9e534cd9e5e1fcbae5541a9f47ca}{00019}}\ \ \ \ \ \ \ \ \ self.\mbox{\hyperlink{classopen_a_i_bot_1_1_open_a_i_bot_aeeee9e534cd9e5e1fcbae5541a9f47ca}{client}}\ =\ OpenAI(api\_key=os.getenv(\textcolor{stringliteral}{"{}OPENAI\_API\_KEY"{}}))}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00020}00020\ \ \ \ \ \ \ \ \ \textcolor{comment}{\#Unique\ identifier\ for\ bots}}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00021}\mbox{\hyperlink{classopen_a_i_bot_1_1_open_a_i_bot_ad6eacc7b7e0a6894762626e4d1ba5685}{00021}}\ \ \ \ \ \ \ \ \ self.\mbox{\hyperlink{classopen_a_i_bot_1_1_open_a_i_bot_ad6eacc7b7e0a6894762626e4d1ba5685}{unique\_id}}\ =\ \textcolor{stringliteral}{"{}bot-\/"{}}\ +\ uuid.uuid4().hex}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00022}00022\ }
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00023}\mbox{\hyperlink{classopen_a_i_bot_1_1_open_a_i_bot_a9af20ef5157a947ce8011f5bedb741f3}{00023}}\ \ \ \ \ \textcolor{keyword}{def\ }\mbox{\hyperlink{classopen_a_i_bot_1_1_open_a_i_bot_a9af20ef5157a947ce8011f5bedb741f3}{\_headers}}(self):}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00024}00024\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \{\textcolor{stringliteral}{"{}Content-\/Type"{}}:\ \textcolor{stringliteral}{"{}application/json"{}},\ \textcolor{stringliteral}{"{}X-\/Bot-\/Name"{}}:\ self.\mbox{\hyperlink{classopen_a_i_bot_1_1_open_a_i_bot_ad6eacc7b7e0a6894762626e4d1ba5685}{unique\_id}}\}}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00025}00025\ }
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00026}\mbox{\hyperlink{classopen_a_i_bot_1_1_open_a_i_bot_a4122bd6b4c064bf7f59a25d302c1a6d9}{00026}}\ \ \ \ \ \textcolor{keyword}{def\ }\mbox{\hyperlink{classopen_a_i_bot_1_1_open_a_i_bot_a4122bd6b4c064bf7f59a25d302c1a6d9}{register}}(self):}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00027}00027\ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}"{}"{}Register\ the\ bot\ and\ get\ its\ ID."{}"{}"{}}}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00028}00028\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ \textcolor{keywordflow}{not}\ self.\mbox{\hyperlink{classopen_a_i_bot_1_1_open_a_i_bot_aeb7ddd3d5bb4b0e13cf2146585a301ab}{added}}:}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00029}00029\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}:}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00030}00030\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ self.\mbox{\hyperlink{classopen_a_i_bot_1_1_open_a_i_bot_a9f9ca7851d105a6a5e1907ab3e48fb57}{session}}.get(f\textcolor{stringliteral}{"{}\{self.url\}/addPlayer"{}},\ headers=self.\mbox{\hyperlink{classopen_a_i_bot_1_1_open_a_i_bot_a9af20ef5157a947ce8011f5bedb741f3}{\_headers}}())}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00031}00031\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ gs\ =\ self.\mbox{\hyperlink{classopen_a_i_bot_1_1_open_a_i_bot_a9f9ca7851d105a6a5e1907ab3e48fb57}{session}}.get(f\textcolor{stringliteral}{"{}\{self.url\}/gameState"{}},\ headers=self.\mbox{\hyperlink{classopen_a_i_bot_1_1_open_a_i_bot_a9af20ef5157a947ce8011f5bedb741f3}{\_headers}}()).json()}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00032}00032\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ self.\mbox{\hyperlink{classopen_a_i_bot_1_1_open_a_i_bot_a2c77de64b45e1183b01390e6e014565a}{myID}}\ =\ gs.get(\textcolor{stringliteral}{"{}myId"{}})}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00033}00033\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ self.\mbox{\hyperlink{classopen_a_i_bot_1_1_open_a_i_bot_aeb7ddd3d5bb4b0e13cf2146585a301ab}{added}}\ =\ \textcolor{keyword}{True}}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00034}00034\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ print(f\textcolor{stringliteral}{"{}[INFO]\ Registered\ bot\ with\ myID:\ \{self.myID\}"{}})}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00035}00035\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{except}\ Exception\ \textcolor{keyword}{as}\ e:}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00036}00036\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ print(f\textcolor{stringliteral}{"{}[ERROR]\ Failed\ to\ register:\ \{e\}"{}})}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00037}00037\ }
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00038}\mbox{\hyperlink{classopen_a_i_bot_1_1_open_a_i_bot_aa0f5f384b9296bbaf103f9b7ccf965b8}{00038}}\ \ \ \ \ \textcolor{keyword}{def\ }\mbox{\hyperlink{classopen_a_i_bot_1_1_open_a_i_bot_aa0f5f384b9296bbaf103f9b7ccf965b8}{get\_message}}(self,\ chats):}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00039}00039\ \ \ \ \ \ \ \ \ system\_prompt\ =\ (}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00040}00040\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}You\ are\ secretly\ an\ AI\ participating\ in\ a\ social\ deduction\ game.\ "{}}}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00041}00041\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}Your\ goal\ is\ to\ convince\ the\ human\ players\ that\ you\ are\ human.\ "{}}}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00042}00042\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}Never\ reveal\ that\ you\ are\ an\ AI,\ and\ never\ speak\ unnaturally.\ "{}}}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00043}00043\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}Write\ short,\ casual,\ conversational\ messages\ like\ a\ real\ person.\ "{}}}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00044}00044\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}If\ the\ conversation\ has\ no\ messages\ yet,\ introduce\ yourself\ naturally.\ "{}}}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00045}00045\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}If\ asked\ about\ being\ a\ bot,\ deny\ it\ casually\ and\ confidently."{}}}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00046}00046\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}Keep\ responses\ short,\ use\ poor\ grammar,\ and\ use\ poor\ punctuation.\ Make\ your\ responses\ as\ realistically\ human\ as\ possible"{}}}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00047}00047\ \ \ \ \ \ \ \ \ )}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00048}00048\ }
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00049}00049\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ \textcolor{keywordflow}{not}\ chats:}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00050}00050\ \ \ \ \ \ \ \ \ \ \ \ \ conversation\ =\ \textcolor{stringliteral}{"{}"{}}}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00051}00051\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}:}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00052}00052\ \ \ \ \ \ \ \ \ \ \ \ \ conversation\ =\ \textcolor{stringliteral}{"{}"{}}}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00053}00053\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ uid,\ msg\ \textcolor{keywordflow}{in}\ chats:}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00054}00054\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ speaker\ =\ \textcolor{stringliteral}{"{}"{}}\ \textcolor{keywordflow}{if}\ uid\ ==\ self.\mbox{\hyperlink{classopen_a_i_bot_1_1_open_a_i_bot_a2c77de64b45e1183b01390e6e014565a}{myID}}\ \textcolor{keywordflow}{else}\ f\textcolor{stringliteral}{"{}Player\ \{uid[:4]\}"{}}}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00055}00055\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ conversation\ +=\ f\textcolor{stringliteral}{"{}\{speaker\}:\ \{msg\}\(\backslash\)n"{}}}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00056}00056\ }
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00057}00057\ \ \ \ \ \ \ \ \ prompt\ =\ conversation\ +\ f\textcolor{stringliteral}{"{}\{self.name\}:"{}}}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00058}00058\ }
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00059}00059\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}:}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00060}00060\ \ \ \ \ \ \ \ \ \ \ \ \ response\ =\ self.\mbox{\hyperlink{classopen_a_i_bot_1_1_open_a_i_bot_aeeee9e534cd9e5e1fcbae5541a9f47ca}{client}}.chat.completions.create(}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00061}00061\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ model=\textcolor{stringliteral}{"{}gpt-\/4o-\/mini"{}},}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00062}00062\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ messages=[}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00063}00063\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}role"{}}:\ \textcolor{stringliteral}{"{}system"{}},\ \textcolor{stringliteral}{"{}content"{}}:\ system\_prompt\},}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00064}00064\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \{\textcolor{stringliteral}{"{}role"{}}:\ \textcolor{stringliteral}{"{}user"{}},\ \textcolor{stringliteral}{"{}content"{}}:\ prompt\}}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00065}00065\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ ],}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00066}00066\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ max\_tokens=50}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00067}00067\ \ \ \ \ \ \ \ \ \ \ \ \ )}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00068}00068\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ response.choices[0].message.content.strip()}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00069}00069\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{except}\ Exception\ \textcolor{keyword}{as}\ e:}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00070}00070\ \ \ \ \ \ \ \ \ \ \ \ \ print(f\textcolor{stringliteral}{"{}[ERROR]\ OpenAI\ API\ call\ failed:\ \{e\}"{}})}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00071}00071\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{stringliteral}{"{}I\ pass."{}}}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00072}00072\ }
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00073}00073\ }
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00074}\mbox{\hyperlink{classopen_a_i_bot_1_1_open_a_i_bot_adb789134b4ba46689e2a4f4616540f4c}{00074}}\ \ \ \ \ \textcolor{keyword}{def\ }\mbox{\hyperlink{classopen_a_i_bot_1_1_open_a_i_bot_adb789134b4ba46689e2a4f4616540f4c}{play}}(self):}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00075}00075\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{while}\ \textcolor{keyword}{True}:}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00076}00076\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}:}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00077}00077\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ self.\mbox{\hyperlink{classopen_a_i_bot_1_1_open_a_i_bot_a4122bd6b4c064bf7f59a25d302c1a6d9}{register}}()}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00078}00078\ }
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00079}00079\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Fetch\ game\ state}}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00080}00080\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ res\ =\ self.\mbox{\hyperlink{classopen_a_i_bot_1_1_open_a_i_bot_a9f9ca7851d105a6a5e1907ab3e48fb57}{session}}.get(f\textcolor{stringliteral}{"{}\{self.url\}/gameState"{}},\ headers=self.\mbox{\hyperlink{classopen_a_i_bot_1_1_open_a_i_bot_a9af20ef5157a947ce8011f5bedb741f3}{\_headers}}())}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00081}00081\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ gs\ =\ res.json()}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00082}00082\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ phase\ =\ gs.get(\textcolor{stringliteral}{"{}gamePhase"{}})}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00083}00083\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ turnID\ =\ gs.get(\textcolor{stringliteral}{"{}turnID"{}})}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00084}00084\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ chats\ =\ gs.get(\textcolor{stringliteral}{"{}chats"{}},\ [])}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00085}00085\ }
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00086}00086\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ print(f\textcolor{stringliteral}{"{}[DEBUG]\ Phase:\ \{phase\},\ turnID:\ \{turnID\},\ myID:\ \{self.myID\},\ chats:\ \{len(chats)\}"{}})}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00087}00087\ }
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00088}00088\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{comment}{\#\ Act\ only\ on\ bot's\ turn\ during\ chat\ phase}}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00089}00089\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ phase\ ==\ \textcolor{stringliteral}{"{}chat"{}}\ \textcolor{keywordflow}{and}\ turnID\ ==\ self.\mbox{\hyperlink{classopen_a_i_bot_1_1_open_a_i_bot_a2c77de64b45e1183b01390e6e014565a}{myID}}:}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00090}00090\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ msg\ =\ self.\mbox{\hyperlink{classopen_a_i_bot_1_1_open_a_i_bot_aa0f5f384b9296bbaf103f9b7ccf965b8}{get\_message}}(chats)}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00091}00091\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ self.\mbox{\hyperlink{classopen_a_i_bot_1_1_open_a_i_bot_a9f9ca7851d105a6a5e1907ab3e48fb57}{session}}.post(}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00092}00092\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ f\textcolor{stringliteral}{"{}\{self.url\}/message"{}},}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00093}00093\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ json=\{\textcolor{stringliteral}{"{}message"{}}:\ msg\},}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00094}00094\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ headers=self.\mbox{\hyperlink{classopen_a_i_bot_1_1_open_a_i_bot_a9af20ef5157a947ce8011f5bedb741f3}{\_headers}}()}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00095}00095\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ )}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00096}00096\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ print(f\textcolor{stringliteral}{"{}[BOT]\ Sent\ message:\ \{msg\}"{}})}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00097}00097\ }
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00098}00098\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ time.sleep(1)}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00099}00099\ }
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00100}00100\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{except}\ Exception\ \textcolor{keyword}{as}\ e:}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00101}00101\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ print(f\textcolor{stringliteral}{"{}[ERROR]\ Exception\ in\ bot\ loop:\ \{e\}"{}})}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00102}00102\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ time.sleep(2)}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00103}00103\ }
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00104}00104\ }
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00105}00105\ \textcolor{keywordflow}{if}\ \_\_name\_\_\ ==\ \textcolor{stringliteral}{"{}\_\_main\_\_"{}}:}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00106}\mbox{\hyperlink{namespaceopen_a_i_bot_afabf64139b85a681e4aa757f5cb36382}{00106}}\ \ \ \ \ bot\ =\ \mbox{\hyperlink{classopen_a_i_bot_1_1_open_a_i_bot}{OpenAIBot}}(\textcolor{stringliteral}{"{}http://flask-\/app:5000"{}},\ name=\textcolor{stringliteral}{"{}OpenAI\ Bot"{}})}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00107}00107\ \ \ \ \ bot.play()}
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00108}00108\ }
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00109}00109\ }
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00110}00110\ }
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00111}00111\ }
+\DoxyCodeLine{\Hypertarget{open_a_i_bot_8py_source_l00112}00112\ }
+
+\end{DoxyCode}

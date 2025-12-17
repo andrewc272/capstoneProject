@@ -1,0 +1,134 @@
+\doxysection{setup\+\_\+local\+\_\+agents.\+py}
+\hypertarget{setup__local__agents_8py_source}{}\label{setup__local__agents_8py_source}\index{scripts/setup\_local\_agents.py@{scripts/setup\_local\_agents.py}}
+\mbox{\hyperlink{setup__local__agents_8py}{Go to the documentation of this file.}}
+\begin{DoxyCode}{0}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00001}\mbox{\hyperlink{namespacesetup__local__agents}{00001}}\ \textcolor{comment}{\#!/usr/bin/env\ python}}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00002}00002\ \textcolor{stringliteral}{"{}"{}"{}}}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00003}00003\ \textcolor{stringliteral}{Bootstrap\ helper\ for\ local\ AI\ agents.}}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00004}00004\ \textcolor{stringliteral}{}}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00005}00005\ \textcolor{stringliteral}{This\ script\ attempts\ to\ install\ Ollama\ (when\ missing)\ and\ pull\ every\ model\ used}}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00006}00006\ \textcolor{stringliteral}{by\ presets\ that\ rely\ on\ local\ inference.\ After\ it\ completes\ successfully,\ you}}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00007}00007\ \textcolor{stringliteral}{can\ launch\ Flask\ (\`{}flask\ run\`{})\ and\ pick\ the\ "{}Local\ AI\ agents"{}\ option\ in\ the\ UI.}}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00008}00008\ \textcolor{stringliteral}{"{}"{}"{}}}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00009}00009\ }
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00010}00010\ \textcolor{keyword}{from}\ \_\_future\_\_\ \textcolor{keyword}{import}\ annotations}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00011}00011\ }
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00012}00012\ \textcolor{keyword}{import}\ importlib.util}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00013}00013\ \textcolor{keyword}{import}\ os}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00014}00014\ \textcolor{keyword}{import}\ platform}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00015}00015\ \textcolor{keyword}{import}\ shutil}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00016}00016\ \textcolor{keyword}{import}\ subprocess}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00017}00017\ \textcolor{keyword}{import}\ sys}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00018}00018\ \textcolor{keyword}{from}\ pathlib\ \textcolor{keyword}{import}\ Path}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00019}00019\ \textcolor{keyword}{from}\ typing\ \textcolor{keyword}{import}\ Dict,\ Iterable,\ Set}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00020}00020\ }
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00021}\mbox{\hyperlink{namespacesetup__local__agents_a4f042782c7ab073c73eb7bbbe7d6ba35}{00021}}\ REPO\_ROOT\ =\ Path(\_\_file\_\_).resolve().parents[1]}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00022}\mbox{\hyperlink{namespacesetup__local__agents_a65329037324150edd3ce69184dea36c7}{00022}}\ BOT\_PROFILES\_PATH\ =\ REPO\_ROOT\ /\ \textcolor{stringliteral}{"{}bot\_profiles.py"{}}}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00023}00023\ }
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00024}\mbox{\hyperlink{namespacesetup__local__agents_a0115c0c0c8b431c2e64a53689cbea96a}{00024}}\ EXTRA\_MODEL\_COMMANDS\ =\ [}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00025}00025\ \ \ \ \ [\textcolor{stringliteral}{"{}ollama"{}},\ \textcolor{stringliteral}{"{}pull"{}},\ \textcolor{stringliteral}{"{}llama3.1:8b"{}}],}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00026}00026\ \ \ \ \ [\textcolor{stringliteral}{"{}ollama"{}},\ \textcolor{stringliteral}{"{}pull"{}},\ \textcolor{stringliteral}{"{}llama3.1"{}}],}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00027}00027\ \ \ \ \ [\textcolor{stringliteral}{"{}ollama"{}},\ \textcolor{stringliteral}{"{}pull"{}},\ \textcolor{stringliteral}{"{}llama3.2"{}}],}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00028}00028\ ]}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00029}00029\ }
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00030}00030\ }
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00031}\mbox{\hyperlink{namespacesetup__local__agents_a4e71ac390395433c21ebd1bd7d935160}{00031}}\ \textcolor{keyword}{def\ }\mbox{\hyperlink{namespacesetup__local__agents_a4e71ac390395433c21ebd1bd7d935160}{\_load\_presets}}()\ -\/>\ Dict[str,\ dict]:}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00032}00032\ \ \ \ \ spec\ =\ importlib.util.spec\_from\_file\_location(\textcolor{stringliteral}{"{}bot\_profiles"{}},\ BOT\_PROFILES\_PATH)}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00033}00033\ \ \ \ \ \textcolor{keywordflow}{if}\ spec\ \textcolor{keywordflow}{is}\ \textcolor{keywordtype}{None}\ \textcolor{keywordflow}{or}\ spec.loader\ \textcolor{keywordflow}{is}\ \textcolor{keywordtype}{None}:}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00034}00034\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{raise}\ RuntimeError(\textcolor{stringliteral}{"{}Unable\ to\ locate\ bot\_profiles.py"{}})}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00035}00035\ \ \ \ \ module\ =\ importlib.util.module\_from\_spec(spec)}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00036}00036\ \ \ \ \ spec.loader.exec\_module(module)\ \ \textcolor{comment}{\#\ type:\ ignore[attr-\/defined]}}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00037}00037\ \ \ \ \ \textcolor{keywordflow}{return}\ getattr(module,\ \textcolor{stringliteral}{"{}LOCAL\_BOT\_PRESETS"{}},\ \{\})}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00038}00038\ }
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00039}00039\ }
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00040}\mbox{\hyperlink{namespacesetup__local__agents_a5f7c35284539566eadcd324519a1b4f0}{00040}}\ \textcolor{keyword}{def\ }\mbox{\hyperlink{namespacesetup__local__agents_a5f7c35284539566eadcd324519a1b4f0}{\_run}}(command:\ Iterable[str],\ *,\ check:\ bool\ =\ \textcolor{keyword}{True}):}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00041}00041\ \ \ \ \ print(f\textcolor{stringliteral}{"{}[setup]\ Running:\ \{'\ '.join(command)\}"{}})}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00042}00042\ \ \ \ \ \textcolor{keywordflow}{return}\ subprocess.run(command,\ check=check)}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00043}00043\ }
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00044}00044\ }
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00045}\mbox{\hyperlink{namespacesetup__local__agents_a999b071cc07e5c44be144e23cbb649f8}{00045}}\ \textcolor{keyword}{def\ }\mbox{\hyperlink{namespacesetup__local__agents_a999b071cc07e5c44be144e23cbb649f8}{ensure\_ollama\_installed}}()\ -\/>\ bool:}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00046}00046\ \ \ \ \ \textcolor{keywordflow}{if}\ shutil.which(\textcolor{stringliteral}{"{}ollama"{}}):}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00047}00047\ \ \ \ \ \ \ \ \ print(\textcolor{stringliteral}{"{}[setup]\ Ollama\ already\ available."{}})}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00048}00048\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{True}}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00049}00049\ }
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00050}00050\ \ \ \ \ system\ =\ platform.system().lower()}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00051}00051\ \ \ \ \ \textcolor{keywordflow}{try}:}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00052}00052\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ system\ ==\ \textcolor{stringliteral}{"{}windows"{}}:}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00053}00053\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ \textcolor{keywordflow}{not}\ shutil.which(\textcolor{stringliteral}{"{}winget"{}}):}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00054}00054\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ print(\textcolor{stringliteral}{"{}[setup]\ winget\ is\ required\ to\ install\ Ollama\ on\ Windows.\ "{}}}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00055}00055\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}Please\ install\ Ollama\ manually\ from\ https://ollama.com/download/windows."{}})}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00056}00056\ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{False}}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00057}00057\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespacesetup__local__agents_a5f7c35284539566eadcd324519a1b4f0}{\_run}}([\textcolor{stringliteral}{"{}winget"{}},\ \textcolor{stringliteral}{"{}install"{}},\ \textcolor{stringliteral}{"{}-\/e"{}},\ \textcolor{stringliteral}{"{}-\/-\/id"{}},\ \textcolor{stringliteral}{"{}Ollama.Ollama"{}}])}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00058}00058\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{elif}\ system\ \textcolor{keywordflow}{in}\ \{\textcolor{stringliteral}{"{}darwin"{}},\ \textcolor{stringliteral}{"{}linux"{}}\}:}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00059}00059\ \ \ \ \ \ \ \ \ \ \ \ \ shell\_cmd\ =\ \textcolor{stringliteral}{"{}curl\ -\/fsSL\ https://ollama.com/install.sh\ |\ sh"{}}}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00060}00060\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespacesetup__local__agents_a5f7c35284539566eadcd324519a1b4f0}{\_run}}([\textcolor{stringliteral}{"{}/bin/sh"{}},\ \textcolor{stringliteral}{"{}-\/c"{}},\ shell\_cmd])}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00061}00061\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{else}:}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00062}00062\ \ \ \ \ \ \ \ \ \ \ \ \ print(f\textcolor{stringliteral}{"{}[setup]\ Unsupported\ OS\ (\{system\}).\ Install\ Ollama\ manually."{}})}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00063}00063\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{False}}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00064}00064\ \ \ \ \ \textcolor{keywordflow}{except}\ subprocess.CalledProcessError\ \textcolor{keyword}{as}\ exc:}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00065}00065\ \ \ \ \ \ \ \ \ print(f\textcolor{stringliteral}{"{}[setup]\ Failed\ to\ install\ Ollama:\ \{exc\}"{}})}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00066}00066\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{False}}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00067}00067\ }
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00068}00068\ \ \ \ \ \textcolor{keywordflow}{if}\ shutil.which(\textcolor{stringliteral}{"{}ollama"{}}):}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00069}00069\ \ \ \ \ \ \ \ \ print(\textcolor{stringliteral}{"{}[setup]\ Ollama\ installed\ successfully."{}})}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00070}00070\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{True}}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00071}00071\ \ \ \ \ print(\textcolor{stringliteral}{"{}[setup]\ Ollama\ still\ not\ detected.\ Please\ verify\ installation."{}})}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00072}00072\ \ \ \ \ \textcolor{keywordflow}{return}\ \textcolor{keyword}{False}}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00073}00073\ }
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00074}00074\ }
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00075}\mbox{\hyperlink{namespacesetup__local__agents_a8ab68834f6b2315ebc67afc9f04f5c93}{00075}}\ \textcolor{keyword}{def\ }\mbox{\hyperlink{namespacesetup__local__agents_a8ab68834f6b2315ebc67afc9f04f5c93}{pull\_models}}(models:\ Set[str])\ -\/>\ Set[str]:}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00076}00076\ \ \ \ \ failures:\ Set[str]\ =\ set()}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00077}00077\ \ \ \ \ \textcolor{keywordflow}{for}\ model\ \textcolor{keywordflow}{in}\ sorted(models):}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00078}00078\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}:}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00079}00079\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespacesetup__local__agents_a5f7c35284539566eadcd324519a1b4f0}{\_run}}([\textcolor{stringliteral}{"{}ollama"{}},\ \textcolor{stringliteral}{"{}pull"{}},\ model])}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00080}00080\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{except}\ subprocess.CalledProcessError\ \textcolor{keyword}{as}\ exc:}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00081}00081\ \ \ \ \ \ \ \ \ \ \ \ \ print(f\textcolor{stringliteral}{"{}[setup]\ Failed\ to\ pull\ \{model\}:\ \{exc\}"{}})}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00082}00082\ \ \ \ \ \ \ \ \ \ \ \ \ failures.add(model)}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00083}00083\ \ \ \ \ \textcolor{keywordflow}{return}\ failures}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00084}00084\ }
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00085}00085\ }
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00086}\mbox{\hyperlink{namespacesetup__local__agents_affc73ffb9f7ca066b33a66cff010dead}{00086}}\ \textcolor{keyword}{def\ }\mbox{\hyperlink{namespacesetup__local__agents_affc73ffb9f7ca066b33a66cff010dead}{run\_extra\_pulls}}():}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00087}00087\ \ \ \ \ print(\textcolor{stringliteral}{"{}[setup]\ Running\ supplementary\ Ollama\ pulls\ for\ common\ llama\ variants..."{}})}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00088}00088\ \ \ \ \ \textcolor{keywordflow}{for}\ command\ \textcolor{keywordflow}{in}\ EXTRA\_MODEL\_COMMANDS:}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00089}00089\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{try}:}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00090}00090\ \ \ \ \ \ \ \ \ \ \ \ \ \mbox{\hyperlink{namespacesetup__local__agents_a5f7c35284539566eadcd324519a1b4f0}{\_run}}(command,\ check=\textcolor{keyword}{True})}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00091}00091\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{except}\ subprocess.CalledProcessError\ \textcolor{keyword}{as}\ exc:}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00092}00092\ \ \ \ \ \ \ \ \ \ \ \ \ print(f\textcolor{stringliteral}{"{}[setup]\ Optional\ pull\ failed\ (\{'\ '.join(command)\}):\ \{exc\}"{}})}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00093}00093\ }
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00094}00094\ }
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00095}\mbox{\hyperlink{namespacesetup__local__agents_ac5351f28fd5f0442ee0e4ef903e12584}{00095}}\ \textcolor{keyword}{def\ }\mbox{\hyperlink{namespacesetup__local__agents_ac5351f28fd5f0442ee0e4ef903e12584}{main}}():}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00096}00096\ \ \ \ \ presets\ =\ \mbox{\hyperlink{namespacesetup__local__agents_a4e71ac390395433c21ebd1bd7d935160}{\_load\_presets}}()}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00097}00097\ \ \ \ \ ollama\_models\ =\ \{}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00098}00098\ \ \ \ \ \ \ \ \ preset[\textcolor{stringliteral}{"{}model"{}}]}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00099}00099\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{for}\ preset\ \textcolor{keywordflow}{in}\ presets.values()}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00100}00100\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{if}\ preset.get(\textcolor{stringliteral}{"{}engine"{}})\ ==\ \textcolor{stringliteral}{"{}ollama"{}}}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00101}00101\ \ \ \ \ \}}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00102}00102\ \ \ \ \ \textcolor{keywordflow}{if}\ \textcolor{keywordflow}{not}\ ollama\_models:}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00103}00103\ \ \ \ \ \ \ \ \ print(\textcolor{stringliteral}{"{}[setup]\ No\ Ollama-\/based\ presets\ detected.\ Nothing\ to\ install."{}})}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00104}00104\ \ \ \ \ \ \ \ \ \textcolor{keywordflow}{return}}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00105}00105\ }
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00106}00106\ \ \ \ \ print(\textcolor{stringliteral}{"{}[setup]\ Preparing\ to\ install\ Ollama\ and\ pull\ models:"{}})}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00107}00107\ \ \ \ \ \textcolor{keywordflow}{for}\ model\ \textcolor{keywordflow}{in}\ sorted(ollama\_models):}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00108}00108\ \ \ \ \ \ \ \ \ print(f\textcolor{stringliteral}{"{}\ \ \ \ -\/\ \{model\}"{}})}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00109}00109\ }
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00110}00110\ \ \ \ \ \textcolor{keywordflow}{if}\ \textcolor{keywordflow}{not}\ \mbox{\hyperlink{namespacesetup__local__agents_a999b071cc07e5c44be144e23cbb649f8}{ensure\_ollama\_installed}}():}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00111}00111\ \ \ \ \ \ \ \ \ sys.exit(1)}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00112}00112\ }
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00113}00113\ \ \ \ \ \mbox{\hyperlink{namespacesetup__local__agents_affc73ffb9f7ca066b33a66cff010dead}{run\_extra\_pulls}}()}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00114}00114\ \ \ \ \ failures\ =\ \mbox{\hyperlink{namespacesetup__local__agents_a8ab68834f6b2315ebc67afc9f04f5c93}{pull\_models}}(ollama\_models)}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00115}00115\ \ \ \ \ \textcolor{keywordflow}{if}\ failures:}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00116}00116\ \ \ \ \ \ \ \ \ print(}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00117}00117\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}[setup]\ Some\ models\ could\ not\ be\ pulled\ automatically.\(\backslash\)n"{}}}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00118}00118\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}Try\ installing\ them\ manually\ with\ \`{}ollama\ pull\ <model>`\ or\ adjust\ \`{}bot\_profiles.py`\ "{}}}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00119}00119\ \ \ \ \ \ \ \ \ \ \ \ \ \textcolor{stringliteral}{"{}to\ reference\ a\ model\ that\ exists\ in\ your\ local\ ollama\ catalog."{}}}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00120}00120\ \ \ \ \ \ \ \ \ )}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00121}00121\ \ \ \ \ \ \ \ \ print(\textcolor{stringliteral}{"{}Missing\ models:"{}},\ \textcolor{stringliteral}{"{},\ "{}}.join(sorted(failures)))}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00122}00122\ \ \ \ \ \ \ \ \ sys.exit(1)}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00123}00123\ }
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00124}00124\ \ \ \ \ print(\textcolor{stringliteral}{"{}[setup]\ All\ models\ pulled.\ You\ can\ now\ run\ \`{}flask\ run`\ and\ select\ Local\ AI\ agents."{}})}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00125}00125\ }
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00126}00126\ }
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00127}00127\ \textcolor{keywordflow}{if}\ \_\_name\_\_\ ==\ \textcolor{stringliteral}{"{}\_\_main\_\_"{}}:}
+\DoxyCodeLine{\Hypertarget{setup__local__agents_8py_source_l00128}00128\ \ \ \ \ \mbox{\hyperlink{namespacesetup__local__agents_ac5351f28fd5f0442ee0e4ef903e12584}{main}}()}
+
+\end{DoxyCode}

@@ -1,0 +1,82 @@
+\doxysection{app.\+py File Reference}
+\hypertarget{app_8py}{}\label{app_8py}\index{app.py@{app.py}}
+\doxysubsubsection*{Classes}
+\begin{DoxyCompactItemize}
+\item 
+class \mbox{\hyperlink{classapp_1_1_player}{app.\+Player}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+namespace \mbox{\hyperlink{namespaceapp}{app}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Functions}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{namespaceapp_aa5ff1b306801d617f70d05e4c5447739}{app.\+reset\+\_\+state}} ()
+\item 
+\mbox{\hyperlink{namespaceapp_a8fdb1aa2a10f5e222604e8b5f7083e94}{app.\+serialize\+\_\+model\+\_\+options}} ()
+\item 
+\mbox{\hyperlink{namespaceapp_ad0462f2772bfd1c0031975f54631457f}{app.\+ensure\+\_\+host\+\_\+present}} ()
+\item 
+\mbox{\hyperlink{namespaceapp_a7f662e9abb1a9e3b22a668dd6684c903}{app.\+apply\+\_\+host\+\_\+configuration}} (data)
+\item 
+\mbox{\hyperlink{namespaceapp_ac91af40e234f3bae1b7f9d35a167292a}{app.\+sync\+\_\+local\+\_\+bots}} ()
+\item 
+\mbox{\hyperlink{namespaceapp_a6517551facf1204ec1ccafb7b11b8283}{app.\+assign\+Session\+ID}} ()
+\item 
+\mbox{\hyperlink{namespaceapp_a4727fbeb35bed8ec5000ba2eb4cec4a7}{app.\+index}} ()
+\item 
+\mbox{\hyperlink{namespaceapp_a3d1af7122717db8d2e89add422e3c8f0}{app.\+game\+State}} ()
+\item 
+\mbox{\hyperlink{namespaceapp_abea9c74167ca43fec7f1c7f762ae30d6}{app.\+add\+Player}} ()
+\item 
+\mbox{\hyperlink{namespaceapp_a3537ea7b6e50716481e475fca49c98b3}{app.\+remove\+Player}} ()
+\item 
+\mbox{\hyperlink{namespaceapp_a751e89089b8b9142964860ad7790e0a6}{app.\+add\+Message}} ()
+\item 
+\mbox{\hyperlink{namespaceapp_aec7c7a040d776c27e476e009d6df5c8a}{app.\+vote}} ()
+\item 
+\mbox{\hyperlink{namespaceapp_a4a3cda5529f69747894c2df0111adf80}{app.\+reset\+Game}} ()
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{namespaceapp_a675b4ea702c13dc4b8c05f985a25b496}{app.\+app}} = Flask(\+\_\+\+\_\+name\+\_\+\+\_\+)
+\item 
+\mbox{\hyperlink{namespaceapp_adca7658ff5c9024a5353574d2c01cbd2}{app.\+secret\+\_\+key}}
+\item 
+dict \mbox{\hyperlink{namespaceapp_a3374c1e4d3655c0d9083d07a4aa904f5}{app.\+players}} = \{\}
+\item 
+list \mbox{\hyperlink{namespaceapp_a2edf7cdb14bb61d700a66c61d6a0f819}{app.\+active\+\_\+users}} = \mbox{[}$\,$\mbox{]}
+\item 
+list \mbox{\hyperlink{namespaceapp_ac81176928fa40754afb18b8c90f5553c}{app.\+game\+Phase}} = \mbox{[}"{}intro"{}, "{}lobby"{}, "{}chat"{}, "{}guess"{}, "{}results"{}\mbox{]}
+\item 
+int \mbox{\hyperlink{namespaceapp_ab3e41f7e80def2df33ef56532015a4d0}{app.\+current\+\_\+phase\+\_\+index}} = 0
+\item 
+list \mbox{\hyperlink{namespaceapp_a4539acc17e1994e492dfba0068ed310f}{app.\+chats}} = \mbox{[}$\,$\mbox{]}
+\item 
+int \mbox{\hyperlink{namespaceapp_af0d82fe96f54ba47f4f3c97ccee9edaa}{app.\+turn\+\_\+index}} = 0
+\item 
+\mbox{\hyperlink{namespaceapp_a6dddbac012e3d8af810deafc0ef3e566}{app.\+turn\+ID}} = None
+\item 
+int \mbox{\hyperlink{namespaceapp_ab92bc9d199051e417d22590cde52f54d}{app.\+votes\+\_\+submitted}} = 0
+\item 
+\mbox{\hyperlink{namespaceapp_a370f49a795baf9e1f4aabb8bafa2bb4f}{app.\+votes\+\_\+recorded}} = set()
+\item 
+\mbox{\hyperlink{namespaceapp_a4f080334280d7b85d8c5d05c89163d06}{app.\+host\+\_\+id}} = None
+\item 
+dict \mbox{\hyperlink{namespaceapp_a5a9b59adbc87c63dd2d6c879219c1c14}{app.\+bot\+\_\+settings}}
+\item 
+\mbox{\hyperlink{namespaceapp_a0ae24c08fc5bd8e0ac46236150b9f102}{app.\+LOCAL\+\_\+\+SERVER\+\_\+\+URL}} = os.\+getenv("{}LOCAL\+\_\+\+BOT\+\_\+\+SERVER\+\_\+\+URL"{}, "{}http\+://127.\+0.\+0.\+1\+:5000"{}).rstrip("{}/"{})
+\item 
+str \mbox{\hyperlink{namespaceapp_aad37d43eae90059dc16541fd70320f0e}{app.\+BOT\+\_\+\+MANAGER\+\_\+\+DISABLED}} = "{}1"{}
+\item 
+\mbox{\hyperlink{namespaceapp_a802b197689642ad094031cecef0a539c}{app.\+project\+\_\+dir}} = Path(\+\_\+\+\_\+file\+\_\+\+\_\+).resolve().parent
+\item 
+\mbox{\hyperlink{namespaceapp_a6f8bf9b8be284251548cdfe4625b4fba}{app.\+bot\+\_\+manager}} = \mbox{\hyperlink{classbot__manager_1_1_local_bot_manager}{Local\+Bot\+Manager}}(\mbox{\hyperlink{namespaceapp_a802b197689642ad094031cecef0a539c}{project\+\_\+dir}}, disabled=\mbox{\hyperlink{namespaceapp_aad37d43eae90059dc16541fd70320f0e}{BOT\+\_\+\+MANAGER\+\_\+\+DISABLED}})
+\item 
+\mbox{\hyperlink{namespaceapp_a7fa7c11c7474c128736b1d34b15a0d5e}{app.\+host}}
+\item 
+\mbox{\hyperlink{namespaceapp_ae996542be63ac459a38531f7c2dd0a49}{app.\+port}}
+\end{DoxyCompactItemize}

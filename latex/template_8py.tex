@@ -1,0 +1,42 @@
+\doxysection{Bot/template.py File Reference}
+\hypertarget{template_8py}{}\label{template_8py}\index{Bot/template.py@{Bot/template.py}}
+\doxysubsubsection*{Namespaces}
+\begin{DoxyCompactItemize}
+\item 
+namespace \mbox{\hyperlink{namespacetemplate}{template}}
+\end{DoxyCompactItemize}
+\doxysubsubsection*{Variables}
+\begin{DoxyCompactItemize}
+\item 
+\mbox{\hyperlink{namespacetemplate_adefbc47648d925ae07d0c1e0b98bf2b3}{template.\+client}} = Open\+AI(api\+\_\+key=os.\+getenv("{}OPENAI\+\_\+\+API\+\_\+\+KEY"{}))
+\item 
+str \mbox{\hyperlink{namespacetemplate_ad101d6364715565d718c0f60ad3a0502}{template.\+url}} = "{}http\+://localhost\+:5000"{}
+\item 
+\mbox{\hyperlink{namespacetemplate_a349f47c5cc39f1011cf414ebf003bbf2}{template.\+session}} = requests.\+Session()
+\item 
+\mbox{\hyperlink{namespacetemplate_aa96013d46222243a2d12f88cd976a2e3}{template.\+seen\+\_\+messages}} = set()
+\item 
+\mbox{\hyperlink{namespacetemplate_a23c370149f0542efdcb455c4df447634}{template.\+game\+State\+\_\+response}} = session.\+get(f\textquotesingle{}\{\mbox{\hyperlink{namespacetemplate_ad101d6364715565d718c0f60ad3a0502}{url}}\}/\mbox{\hyperlink{namespacetemplate_a037af3342f304808c3df411d942c23e0}{game\+State}}\textquotesingle{})
+\item 
+\mbox{\hyperlink{namespacetemplate_a037af3342f304808c3df411d942c23e0}{template.\+game\+State}} = game\+State\+\_\+response.\+json()
+\item 
+\mbox{\hyperlink{namespacetemplate_a1e8e5c3e79d04b5c0f1099f914ad8fba}{template.\+chats}} = game\+State.\+get("{}chats"{}, \mbox{[}$\,$\mbox{]})
+\item 
+\mbox{\hyperlink{namespacetemplate_a0d96bf76f8ec4f58121cf3377d99188d}{template.\+phase}} = game\+State.\+get("{}game\+Phase"{}, "{}"{})
+\item 
+int \mbox{\hyperlink{namespacetemplate_ab7264ecb7088be8644e3a42435dbdb17}{template.\+sender}} = msg\mbox{[}0\mbox{]} if len(msg) $>$ 0 else None
+\item 
+int \mbox{\hyperlink{namespacetemplate_a0b13af3e2cdbf85df8a0f3669381d72d}{template.\+text}} = msg\mbox{[}1\mbox{]}.strip() if len(msg) $>$ 1 else "{}"{}
+\item 
+tuple \mbox{\hyperlink{namespacetemplate_aef966d0b77c31803693b38fc98ad8b1f}{template.\+msg\+\_\+id}} = (\mbox{\hyperlink{namespacetemplate_ab7264ecb7088be8644e3a42435dbdb17}{sender}}, \mbox{\hyperlink{namespacetemplate_a0b13af3e2cdbf85df8a0f3669381d72d}{text}})
+\item 
+int \mbox{\hyperlink{namespacetemplate_a551f4a8dc6d5bf55d9b39cebb48c4f93}{template.\+prompt}} = \mbox{\hyperlink{namespacetemplate_a0b13af3e2cdbf85df8a0f3669381d72d}{text}}\mbox{[}len("{}@bot"{})\+:\mbox{]}.strip()
+\item 
+\mbox{\hyperlink{namespacetemplate_aac50e471eb7b88cd23dabfbde293297a}{template.\+response}}
+\item 
+\mbox{\hyperlink{namespacetemplate_a68d36bc3584c2c9d791d202b8bac9ae5}{template.\+bot\+\_\+reply}} = response.\+choices\mbox{[}0\mbox{]}.message.\+content.\+strip()
+\item 
+dict \mbox{\hyperlink{namespacetemplate_a45d0138fdb835352791b651e3b9fe9d9}{template.\+message\+\_\+data}} = \{"{}message"{}\+: \mbox{\hyperlink{namespacetemplate_a68d36bc3584c2c9d791d202b8bac9ae5}{bot\+\_\+reply}}\}
+\item 
+\mbox{\hyperlink{namespacetemplate_ae0e58602da99153b2132bb286351b9a4}{template.\+post\+\_\+response}} = session.\+post(f"{}\{\mbox{\hyperlink{namespacetemplate_ad101d6364715565d718c0f60ad3a0502}{url}}\}/message"{}, json=\mbox{\hyperlink{namespacetemplate_a45d0138fdb835352791b651e3b9fe9d9}{message\+\_\+data}})
+\end{DoxyCompactItemize}
