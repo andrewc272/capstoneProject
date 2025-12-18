@@ -155,3 +155,15 @@ Switching back to “Cloud API bots” immediately tears down the local processe
 
 - Automated tests now cover the host selection flow. Run them with `python -m unittest test_app.py`.
 - If you need to disable process spawning during automated runs, export `CAPSTONE_SKIP_BOT_MANAGER=1` before starting the app (the tests do this automatically).
+
+### Release Notes
+- Milestone 1 (10/23/2025): We built a functional web UI with a built-in lobby and chatroom. No OpenAI implementation or game logic yet. The “bot” was a simple script which sent the same message repeatedly. 
+Video for Milestone 1: https://youtu.be/HZDx7sPO0L4?si=vfRcltICrmPYU5y3
+
+- Milestone 2 (11/10/2025): We implemented two OpenAI bots, introduced turn logic, and deployed our application on an AWS EC2 instance. At this point, our game only supported one real player, and the chat system worked but with a significant bug. The bot was player one, but the bot would not send a message until it was fed a prompt, so the human player needed to send the first message, prompting an “out of turn” alert and this is what the bot would always respond to. This bug was fixed by the next milestone. Also, there was no voting logic at this stage of the game. 
+Video for Milestone 2: https://drive.google.com/file/d/1sUkA05oDQHEEozn-vN2G2veg_bLCjMLB/view?usp=sharing
+
+- Milestone 3 (11/25/2025): The bug with the bots not sending the first message was fixed. By this milestone, you can get through an entire session of gameplay. Multiple players could join the game, turns were properly enforced in the chatroom, and the voting system was fully functional. Once all of the players casted their votes, the game would automatically transition to the “Results” page which displayed how many votes each player received. However, we had not yet implemented logic to reveal which players were bots, and to start a new game, you needed to restart the server.
+
+- Milestone 4 (12/08/2025): This milestone is very close to the final product. We implemented a banner in the chatroom that says which player’s turn it is, a section on the results page that reveals which players were bots, and a button which restarts the game. The Ollama AI model was not yet fully integrated into the game, but most of the logic for it was written.
+
